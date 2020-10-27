@@ -1,0 +1,380 @@
+<p>Stream filtering allows a subscriber to apply a filter to only receive messages that satisfy the conditions of the filter. The message filter is set by the subscribing client(s) but it's applied on the server side thus preventing unwanted messages (those that don't meet the conditions of the filter) from reaching the subscriber.</p><p>Stream filters are implemented with two components: <code>meta</code> dictionary on <code>publish</code> and <code>filter expression</code> on subscribe.</p><table class="table-icon-note"><tbody><tr><td class="icon"><i class="fa icon icon-note" title="note">&nbsp;</i></td><td><p>Filters are applied to all channels that the client is subscribed to. When messages are encrypted (using crypto key when initializing PubNub), the <code>meta</code> dictionary is plain text, so that the PubNub Network can properly apply the filters as required. It is important to only include information that is not confidential or otherwise requiring encryption.</p></td></tr></tbody></table><h2 class="inpage-link tag-link">Publishing With Meta</h2><div><p>To use stream filtering, it's important to include filtering information when publishing a new message. The <code>meta</code> field isn't included in the payload itself but allows other clients to filter on the supplied information.</p><p>To include <code>meta</code>, prepare the data dictionary and pass it to the publishing function as the following example.</p></div>
+
+<div class="code-toolbar"><pre class="line-numbers language-javascript"><code class="language-javascript"><span class="token keyword keyword-var">var</span> <span class="token pn-variable pn-before-equal">metaPayload</span> <span class="token operator">=</span> <span class="token punctuation">{</span> 
+	<span class="token string">"my"</span><span class="token operator">:</span> <span class="token string">"meta"</span><span class="token punctuation">,</span> 
+	<span class="token string">"name"</span><span class="token operator">:</span> <span class="token string">"PubNub"</span> 
+<span class="token punctuation">}</span>
+
+<span class="token keyword keyword-var">var</span> <span class="token function-variable function pn-before-equal">onResponse</span> <span class="token operator">=</span> <span class="token keyword keyword-function">function</span><span class="token punctuation">(</span><span class="token parameter"><span class="token pn-variable">status</span><span class="token punctuation">,</span> <span class="token pn-variable">response</span></span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	<span class="token comment">// handle response here.</span>
+<span class="token punctuation">}</span>
+
+<span class="token pn-variable">pubnub</span><span class="token punctuation">.</span><span class="token function">publish</span><span class="token punctuation">(</span>
+	<span class="token punctuation">{</span>
+		<span class="token pn-variable pn-before-colon">message</span><span class="token operator">:</span> <span class="token string">"hello"</span><span class="token punctuation">,</span>
+		<span class="token pn-variable pn-before-colon">channel</span><span class="token operator">:</span> <span class="token string">"ch1"</span><span class="token punctuation">,</span> 
+		<span class="token pn-variable pn-before-colon">meta</span><span class="token operator">:</span> <span class="token pn-variable">metaPayload</span>
+	<span class="token punctuation">}</span><span class="token punctuation">,</span>
+	<span class="token pn-variable">onResponse</span>
+<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></div>
+
+<h2 class="inpage-link tag-link">Subscribing with Filtering</h2><div><p>With the <code>meta</code> information being published on <code>publish</code>, you can now leverage the stream filtering to omit messages that aren't important for a particular client.</p></div><table class="table-icon-note"><tbody><tr><td class="icon"><i class="fa icon icon-note" title="note">&nbsp;</i></td><td>Always set the <code>UUID</code> to uniquely identify the user or device that connects to PubNub. This <code>UUID</code> should be persisted, and should remain unchanged for the lifetime of the user or the device. Not setting the <code>UUID</code> can significantly impact your billing if your account uses the <a href="/pricing/#pn-chat" title="Pricing">Monthly Active Users (MAUs)</a> based pricing model, and can also lead to unexpected behavior if you have Presence enabled.</td></tr></tbody></table>
+<div class="code-toolbar"><pre class="line-numbers language-javascript"><code class="language-javascript"><span class="token keyword keyword-var">var</span> <span class="token pn-variable pn-before-equal">pubnub</span> <span class="token operator">=</span> <span class="token keyword keyword-new">new</span> <span class="token pn-variable">PubNub</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+    <span class="token pn-variable pn-before-colon">subscribeKey</span><span class="token operator">:</span> <span class="token string">"myKey"</span><span class="token punctuation">,</span>
+    <span class="token pn-variable pn-before-colon">uuid</span><span class="token operator">:</span> <span class="token string">"myUniqueUUID"</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token pn-variable">pubnub</span><span class="token punctuation">.</span><span class="token function">setFilterExpression</span><span class="token punctuation">(</span><span class="token string">"filter=expression"</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></div>
+<h3 class="inpage-link tag-link">Example One: Prevent Receiving Your Own Messages</h3><div><p>Setting a filter applies to all channels that you will subscribe to from that particular client. This client filter excludes messages that have this subscriber's <code>UUID</code> set at the sender's <code>UUID</code>:</p></div><table class="table-icon-note"><tbody><tr><td class="icon"><i class="fa icon icon-note" title="note">&nbsp;</i></td><td>Always set the <code>UUID</code> to uniquely identify the user or device that connects to PubNub. This <code>UUID</code> should be persisted, and should remain unchanged for the lifetime of the user or the device. Not setting the <code>UUID</code> can significantly impact your billing if your account uses the <a href="/pricing/#pn-chat" title="Pricing">Monthly Active Users (MAUs)</a> based pricing model, and can also lead to unexpected behavior if you have Presence enabled.</td></tr></tbody></table>
+<div class="code-toolbar"><pre class="line-numbers language-javascript"><code class="language-javascript"><span class="token keyword keyword-var">var</span> <span class="token pn-variable pn-before-equal">pubnub</span> <span class="token operator">=</span> <span class="token keyword keyword-new">new</span> <span class="token pn-variable">PubNub</span><span class="token punctuation">(</span><span class="token punctuation">{</span> 
+    <span class="token pn-variable pn-before-colon">subscribeKey</span><span class="token operator">:</span> <span class="token string">"myKey"</span><span class="token punctuation">,</span>
+    <span class="token pn-variable pn-before-colon">publishKey</span><span class="token operator">:</span><span class="token string">"myPubKey"</span><span class="token punctuation">,</span>
+    <span class="token pn-variable pn-before-colon">uuid</span><span class="token operator">:</span> <span class="token string">"myUniqueUUID"</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword keyword-var">var</span> <span class="token pn-variable pn-before-equal">filterExprStr</span> <span class="token operator">=</span> <span class="token string">"uuid != '"</span> <span class="token operator">+</span> <span class="token pn-variable">pubnub</span><span class="token punctuation">.</span><span class="token function">getUUID</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token string">"'"</span><span class="token punctuation">;</span>
+<span class="token pn-variable">pubnub</span><span class="token punctuation">.</span><span class="token function">setFilterExpression</span><span class="token punctuation">(</span><span class="token pn-variable">filterExprStr</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></div>
+
+<div><p>When publishing messages, you need to include the sender's <code>UUID</code> if you want the subscriber side client filter to work:</p></div><table class="table-icon-note"><tbody><tr><td class="icon"><i class="fa icon icon-note" title="note">&nbsp;</i></td><td>Always set the <code>UUID</code> to uniquely identify the user or device that connects to PubNub. This <code>UUID</code> should be persisted, and should remain unchanged for the lifetime of the user or the device. Not setting the <code>UUID</code> can significantly impact your billing if your account uses the <a href="/pricing/#pn-chat" title="Pricing">Monthly Active Users (MAUs)</a> based pricing model, and can also lead to unexpected behavior if you have Presence enabled.</td></tr></tbody></table>
+
+<div class="code-toolbar"><pre class="line-numbers language-javascript"><code class="language-javascript"><span class="token keyword keyword-var">var</span> <span class="token pn-variable pn-before-equal">pubnub</span> <span class="token operator">=</span> <span class="token keyword keyword-new">new</span> <span class="token pn-variable">PubNub</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+    <span class="token pn-variable pn-before-colon">subscribeKey</span><span class="token operator">:</span> <span class="token string">"myKey"</span><span class="token punctuation">,</span>
+    <span class="token pn-variable pn-before-colon">publishKey</span><span class="token operator">:</span> <span class="token string">"myPubKey"</span><span class="token punctuation">,</span>
+    <span class="token pn-variable pn-before-colon">uuid</span><span class="token operator">:</span> <span class="token string">"myUniqueUUID"</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword keyword-var">var</span> <span class="token pn-variable pn-before-equal">metaPayload</span> <span class="token operator">=</span> <span class="token punctuation">{</span>
+    <span class="token string">"uuid"</span><span class="token operator">:</span> <span class="token pn-variable">pubnub</span><span class="token punctuation">.</span><span class="token function">getUUID</span><span class="token punctuation">(</span><span class="token punctuation">)</span> 
+<span class="token punctuation">}</span>
+ 
+<span class="token keyword keyword-var">var</span> <span class="token function-variable function pn-before-equal">onResponse</span> <span class="token operator">=</span> <span class="token keyword keyword-function">function</span><span class="token punctuation">(</span><span class="token parameter"><span class="token pn-variable">status</span><span class="token punctuation">,</span> <span class="token pn-variable">response</span></span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token comment">// handle response here.</span>
+<span class="token punctuation">}</span>
+ 
+<span class="token pn-variable">pubnub</span><span class="token punctuation">.</span><span class="token function">publish</span><span class="token punctuation">(</span>
+    <span class="token punctuation">{</span>
+        <span class="token pn-variable pn-before-colon">message</span><span class="token operator">:</span> <span class="token string">"Bonjour"</span><span class="token punctuation">,</span>
+        <span class="token pn-variable pn-before-colon">channel</span><span class="token operator">:</span> <span class="token string">"ch1"</span><span class="token punctuation">,</span> 
+        <span class="token pn-variable pn-before-colon">meta</span><span class="token operator">:</span> <span class="token pn-variable">metaPayload</span> 
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token pn-variable">onResponse</span>
+<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></div>
+
+<h3 class="inpage-link tag-link">Example Two: Filter by Language</h3><div><p>For the second example, publish the locale for which the published message was generated and allow the client to only receive languages in a specific language.</p><p>When publishing, the client uses the <code>meta</code> field to <code>publish</code>:</p></div>
+<div class="code-toolbar"><pre class="line-numbers language-javascript"><code class="language-javascript"><span class="token keyword keyword-var">var</span> <span class="token pn-variable pn-before-equal">metaPayload</span> <span class="token operator">=</span> <span class="token punctuation">{</span> 
+	<span class="token string">"language"</span><span class="token operator">:</span> <span class="token string">"english"</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword keyword-var">var</span> <span class="token function-variable function pn-before-equal">onResponse</span> <span class="token operator">=</span> <span class="token keyword keyword-function">function</span><span class="token punctuation">(</span><span class="token parameter"><span class="token pn-variable">status</span><span class="token punctuation">,</span> <span class="token pn-variable">response</span></span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	<span class="token comment">// handle response here.</span>
+<span class="token punctuation">}</span>
+
+<span class="token pn-variable">pubnub</span><span class="token punctuation">.</span><span class="token function">publish</span><span class="token punctuation">(</span>
+	<span class="token punctuation">{</span>
+		<span class="token pn-variable pn-before-colon">message</span><span class="token operator">:</span> <span class="token string">"hello"</span><span class="token punctuation">,</span> 
+		<span class="token pn-variable pn-before-colon">channel</span><span class="token operator">:</span> <span class="token string">"ch1"</span><span class="token punctuation">,</span> 
+		<span class="token pn-variable pn-before-colon">meta</span><span class="token operator">:</span> <span class="token pn-variable">metaPayload</span> 
+	<span class="token punctuation">}</span><span class="token punctuation">,</span>
+	<span class="token pn-variable">onResponse</span>
+<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></div>
+
+<div><p>On the subscriber side, the filter expression is specified to make sure only english messages will come to the subscriber.</p></div><table class="table-icon-note"><tbody><tr><td class="icon"><i class="fa icon icon-note" title="note">&nbsp;</i></td><td>Always set the <code>UUID</code> to uniquely identify the user or device that connects to PubNub. This <code>UUID</code> should be persisted, and should remain unchanged for the lifetime of the user or the device. Not setting the <code>UUID</code> can significantly impact your billing if your account uses the <a href="/pricing/#pn-chat" title="Pricing">Monthly Active Users (MAUs)</a> based pricing model, and can also lead to unexpected behavior if you have Presence enabled.</td></tr></tbody></table>
+<div class="code-toolbar"><pre class="line-numbers language-javascript"><code class="language-javascript"><span class="token keyword keyword-var">var</span> <span class="token pn-variable pn-before-equal">pubnub</span> <span class="token operator">=</span> <span class="token keyword keyword-new">new</span> <span class="token pn-variable">PubNub</span><span class="token punctuation">(</span><span class="token punctuation">{</span> 
+    <span class="token pn-variable pn-before-colon">subscribeKey</span><span class="token operator">:</span> <span class="token string">"myKey"</span><span class="token punctuation">,</span>
+    <span class="token pn-variable pn-before-colon">uuid</span><span class="token operator">:</span> <span class="token string">"myUniqueUUID"</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token pn-variable">pubnub</span><span class="token punctuation">.</span><span class="token function">addListener</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+    <span class="token function-variable function">message</span><span class="token operator">:</span> <span class="token keyword keyword-function">function</span> <span class="token punctuation">(</span><span class="token parameter"><span class="token pn-variable">message</span></span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token comment">// handle message</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span>
+
+<span class="token pn-variable">pubnub</span><span class="token punctuation">.</span><span class="token function">setFilterExpression</span><span class="token punctuation">(</span><span class="token string">"language == 'english'"</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></div>
+
+<div><p>Any messages that don't have <code>language=english</code> in the <code>meta</code> won't arrive to the client. For example, the following <code>publish</code> won't be received:</p></div>
+<div class="code-toolbar"><pre class="line-numbers language-javascript"><code class="language-javascript"><span class="token keyword keyword-var">var</span> <span class="token pn-variable pn-before-equal">metaPayload</span> <span class="token operator">=</span> <span class="token punctuation">{</span>
+	<span class="token string">"language"</span><span class="token operator">:</span> <span class="token string">"french"</span> 
+<span class="token punctuation">}</span>
+
+<span class="token keyword keyword-var">var</span> <span class="token function-variable function pn-before-equal">onResponse</span> <span class="token operator">=</span> <span class="token keyword keyword-function">function</span><span class="token punctuation">(</span><span class="token parameter"><span class="token pn-variable">status</span><span class="token punctuation">,</span> <span class="token pn-variable">response</span></span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	<span class="token comment">// handle response here.</span>
+<span class="token punctuation">}</span>
+
+<span class="token pn-variable">pubnub</span><span class="token punctuation">.</span><span class="token function">publish</span><span class="token punctuation">(</span>
+	<span class="token punctuation">{</span>
+		<span class="token pn-variable pn-before-colon">message</span><span class="token operator">:</span> <span class="token string">"Bonjour"</span><span class="token punctuation">,</span>
+		<span class="token pn-variable pn-before-colon">channel</span><span class="token operator">:</span> <span class="token string">"ch1"</span><span class="token punctuation">,</span> 
+		<span class="token pn-variable pn-before-colon">meta</span><span class="token operator">:</span> <span class="token pn-variable">metaPayload</span> 
+	<span class="token punctuation">}</span><span class="token punctuation">,</span>
+	<span class="token pn-variable">onResponse</span>
+<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></div>
+
+<h3 class="inpage-link tag-link">Example Three: Filter multiple Languages</h3><div><p>We can improve the second example with support for multiple languages. As the second example we're going to <code>publish</code> in English, French, and Spanish, but receive only French and Spanish.</p></div>
+
+<div class="code-toolbar"><pre class="line-numbers language-javascript"><code class="language-javascript"><span class="token keyword keyword-var">var</span> <span class="token pn-variable pn-before-equal">metaPayload</span> <span class="token operator">=</span> <span class="token punctuation">{</span>
+	<span class="token string">"language"</span><span class="token operator">:</span> <span class="token string">"english"</span> 
+<span class="token punctuation">}</span>
+
+<span class="token keyword keyword-var">var</span> <span class="token function-variable function pn-before-equal">onResponse</span> <span class="token operator">=</span> <span class="token keyword keyword-function">function</span><span class="token punctuation">(</span><span class="token parameter"><span class="token pn-variable">status</span><span class="token punctuation">,</span> <span class="token pn-variable">response</span></span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	<span class="token comment">// handle response here.</span>
+<span class="token punctuation">}</span>
+
+<span class="token pn-variable">pubnub</span><span class="token punctuation">.</span><span class="token function">publish</span><span class="token punctuation">(</span>
+	<span class="token punctuation">{</span>
+		<span class="token pn-variable pn-before-colon">message</span><span class="token operator">:</span> <span class="token string">"Hi!"</span><span class="token punctuation">,</span> 
+		<span class="token pn-variable pn-before-colon">channel</span><span class="token operator">:</span> <span class="token string">"ch1"</span><span class="token punctuation">,</span> 
+		<span class="token pn-variable pn-before-colon">meta</span><span class="token operator">:</span> <span class="token pn-variable">metaPayload</span> 
+	<span class="token punctuation">}</span><span class="token punctuation">,</span>
+	<span class="token pn-variable">onResponse</span>
+<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></div>
+<div class="code-toolbar"><pre class="line-numbers language-javascript"><code class="language-javascript"><span class="token keyword keyword-var">var</span> <span class="token pn-variable pn-before-equal">metaPayload</span> <span class="token operator">=</span> <span class="token punctuation">{</span> 
+	<span class="token string">"language"</span><span class="token operator">:</span> <span class="token string">"french"</span> 
+<span class="token punctuation">}</span>
+
+<span class="token keyword keyword-var">var</span> <span class="token function-variable function pn-before-equal">onResponse</span> <span class="token operator">=</span> <span class="token keyword keyword-function">function</span><span class="token punctuation">(</span><span class="token parameter"><span class="token pn-variable">status</span><span class="token punctuation">,</span> <span class="token pn-variable">response</span></span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	<span class="token comment">// handle response here.</span>
+<span class="token punctuation">}</span>
+
+<span class="token pn-variable">pubnub</span><span class="token punctuation">.</span><span class="token function">publish</span><span class="token punctuation">(</span>
+	<span class="token punctuation">{</span>
+		<span class="token pn-variable pn-before-colon">message</span><span class="token operator">:</span> <span class="token string">"Bonjour"</span><span class="token punctuation">,</span> 
+		<span class="token pn-variable pn-before-colon">channel</span><span class="token operator">:</span> <span class="token string">"ch1"</span><span class="token punctuation">,</span>
+		<span class="token pn-variable pn-before-colon">meta</span><span class="token operator">:</span> <span class="token pn-variable">metaPayload</span> 
+	<span class="token punctuation">}</span><span class="token punctuation">,</span>
+	<span class="token pn-variable">onResponse</span>
+<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></div>
+<div class="code-toolbar"><pre class="line-numbers language-javascript"><code class="language-javascript"><span class="token keyword keyword-var">var</span> <span class="token pn-variable pn-before-equal">metaPayload</span> <span class="token operator">=</span> <span class="token punctuation">{</span> 
+	<span class="token string">"language"</span><span class="token operator">:</span> <span class="token string">"spanish"</span> 
+<span class="token punctuation">}</span>
+
+<span class="token keyword keyword-var">var</span> <span class="token function-variable function pn-before-equal">onResponse</span> <span class="token operator">=</span> <span class="token keyword keyword-function">function</span><span class="token punctuation">(</span><span class="token parameter"><span class="token pn-variable">status</span><span class="token punctuation">,</span> <span class="token pn-variable">response</span></span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	<span class="token comment">// handle response here.</span>
+<span class="token punctuation">}</span>
+
+<span class="token pn-variable">pubnub</span><span class="token punctuation">.</span><span class="token function">publish</span><span class="token punctuation">(</span>
+	<span class="token punctuation">{</span>
+		<span class="token pn-variable pn-before-colon">message</span><span class="token operator">:</span> <span class="token string">"Hola"</span><span class="token punctuation">,</span>
+		<span class="token pn-variable pn-before-colon">channel</span><span class="token operator">:</span> <span class="token string">"ch1"</span><span class="token punctuation">,</span>
+		<span class="token pn-variable pn-before-colon">meta</span><span class="token operator">:</span> <span class="token pn-variable">metaPayload</span> 
+	<span class="token punctuation">}</span><span class="token punctuation">,</span>
+	<span class="token pn-variable">onResponse</span>
+<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></div>
+
+<div><p>On the subscribe side, we're going to use the <code>contains</code> operator to support multiple languages.</p><p>Be aware that the <code>contains</code> operator has a very low precedence. When you're using it in a more complex expression, use it with parentheses to ensure it gets evaluated in the way you expect.</p></div><table class="table-icon-note"><tbody><tr><td class="icon"><i class="fa icon icon-note" title="note">&nbsp;</i></td><td>Always set the <code>UUID</code> to uniquely identify the user or device that connects to PubNub. This <code>UUID</code> should be persisted, and should remain unchanged for the lifetime of the user or the device. Not setting the <code>UUID</code> can significantly impact your billing if your account uses the <a href="/pricing/#pn-chat" title="Pricing">Monthly Active Users (MAUs)</a> based pricing model, and can also lead to unexpected behavior if you have Presence enabled.</td></tr></tbody></table>
+<div class="code-toolbar"><pre class="line-numbers language-javascript"><code class="language-javascript"><span class="token keyword keyword-var">var</span> <span class="token pn-variable pn-before-equal">pubnub</span> <span class="token operator">=</span> <span class="token keyword keyword-new">new</span> <span class="token pn-variable">PubNub</span><span class="token punctuation">(</span><span class="token punctuation">{</span> 
+    <span class="token pn-variable pn-before-colon">subscribeKey</span><span class="token operator">:</span> <span class="token string">"myKey"</span><span class="token punctuation">,</span>
+    <span class="token pn-variable pn-before-colon">uuid</span><span class="token operator">:</span> <span class="token string">"myUniqueUUID"</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token pn-variable">pubnub</span><span class="token punctuation">.</span><span class="token function">addListener</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+    <span class="token function-variable function">message</span><span class="token operator">:</span> <span class="token keyword keyword-function">function</span> <span class="token punctuation">(</span><span class="token parameter"><span class="token pn-variable">message</span></span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token comment">// handle message</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span>
+
+<span class="token pn-variable">pubnub</span><span class="token punctuation">.</span><span class="token function">setFilterExpression</span><span class="token punctuation">(</span><span class="token string">"('french', 'spanish') contains language"</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></div>
+
+<h3 class="inpage-link tag-link">Example Four: Negation</h3><div><p>For the fourth example, we would like to subscribe to all languages except spanish. We begin by publishing similar to example two.</p></div>
+
+<div class="code-toolbar"><pre class="line-numbers language-javascript"><code class="language-javascript"><span class="token keyword keyword-var">var</span> <span class="token pn-variable pn-before-equal">metaPayload</span> <span class="token operator">=</span> <span class="token punctuation">{</span>
+	<span class="token string">"language"</span><span class="token operator">:</span> <span class="token string">"english"</span> 
+<span class="token punctuation">}</span>
+
+<span class="token keyword keyword-var">var</span> <span class="token function-variable function pn-before-equal">onResponse</span> <span class="token operator">=</span> <span class="token keyword keyword-function">function</span><span class="token punctuation">(</span><span class="token parameter"><span class="token pn-variable">status</span><span class="token punctuation">,</span> <span class="token pn-variable">response</span></span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	<span class="token comment">// handle response here.</span>
+<span class="token punctuation">}</span>
+
+<span class="token pn-variable">pubnub</span><span class="token punctuation">.</span><span class="token function">publish</span><span class="token punctuation">(</span>
+	<span class="token punctuation">{</span>
+		<span class="token pn-variable pn-before-colon">message</span><span class="token operator">:</span> <span class="token string">"Hi!"</span><span class="token punctuation">,</span> 
+		<span class="token pn-variable pn-before-colon">channel</span><span class="token operator">:</span> <span class="token string">"ch1"</span><span class="token punctuation">,</span>
+		<span class="token pn-variable pn-before-colon">meta</span><span class="token operator">:</span> <span class="token pn-variable">metaPayload</span>
+	<span class="token punctuation">}</span><span class="token punctuation">,</span>
+	<span class="token pn-variable">onResponse</span>
+<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></div>
+<div class="code-toolbar"><pre class="line-numbers language-javascript"><code class="language-javascript"><span class="token keyword keyword-var">var</span> <span class="token pn-variable pn-before-equal">metaPayload</span> <span class="token operator">=</span> <span class="token punctuation">{</span>
+	<span class="token string">"language"</span><span class="token operator">:</span> <span class="token string">"french"</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword keyword-var">var</span> <span class="token function-variable function pn-before-equal">onResponse</span> <span class="token operator">=</span> <span class="token keyword keyword-function">function</span><span class="token punctuation">(</span><span class="token parameter"><span class="token pn-variable">status</span><span class="token punctuation">,</span> <span class="token pn-variable">response</span></span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	<span class="token comment">// handle response here.</span>
+<span class="token punctuation">}</span>
+
+<span class="token pn-variable">pubnub</span><span class="token punctuation">.</span><span class="token function">publish</span><span class="token punctuation">(</span>
+	<span class="token punctuation">{</span>
+		<span class="token pn-variable pn-before-colon">message</span><span class="token operator">:</span> <span class="token string">"Bonjour"</span><span class="token punctuation">,</span> 
+		<span class="token pn-variable pn-before-colon">channel</span><span class="token operator">:</span> <span class="token string">"ch1"</span><span class="token punctuation">,</span>
+		<span class="token pn-variable pn-before-colon">meta</span><span class="token operator">:</span> <span class="token pn-variable">metaPayload</span> 
+	<span class="token punctuation">}</span><span class="token punctuation">,</span>
+	<span class="token pn-variable">onResponse</span>
+<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></div>
+<div class="code-toolbar"><pre class="line-numbers language-javascript"><code class="language-javascript"><span class="token keyword keyword-var">var</span> <span class="token pn-variable pn-before-equal">metaPayload</span> <span class="token operator">=</span> <span class="token punctuation">{</span> 
+	<span class="token string">"language"</span><span class="token operator">:</span> <span class="token string">"spanish"</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword keyword-var">var</span> <span class="token function-variable function pn-before-equal">onResponse</span> <span class="token operator">=</span> <span class="token keyword keyword-function">function</span><span class="token punctuation">(</span><span class="token parameter"><span class="token pn-variable">status</span><span class="token punctuation">,</span> <span class="token pn-variable">response</span></span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	<span class="token comment">// handle response here.</span>
+<span class="token punctuation">}</span>
+
+<span class="token pn-variable">pubnub</span><span class="token punctuation">.</span><span class="token function">publish</span><span class="token punctuation">(</span>
+	<span class="token punctuation">{</span>
+		<span class="token pn-variable pn-before-colon">message</span><span class="token operator">:</span> <span class="token string">"Hola"</span><span class="token punctuation">,</span> 
+		<span class="token pn-variable pn-before-colon">channel</span><span class="token operator">:</span> <span class="token string">"ch1"</span><span class="token punctuation">,</span>
+		<span class="token pn-variable pn-before-colon">meta</span><span class="token operator">:</span> <span class="token pn-variable">metaPayload</span>
+	<span class="token punctuation">}</span><span class="token punctuation">,</span>
+	<span class="token pn-variable">onResponse</span>
+<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></div>
+
+<div><p>On the subscribe side, we're going to use the <code>!=</code> operator to reject messages written in spanish.</p></div><table class="table-icon-note"><tbody><tr><td class="icon"><i class="fa icon icon-note" title="note">&nbsp;</i></td><td>Always set the <code>UUID</code> to uniquely identify the user or device that connects to PubNub. This <code>UUID</code> should be persisted, and should remain unchanged for the lifetime of the user or the device. Not setting the <code>UUID</code> can significantly impact your billing if your account uses the <a href="/pricing/#pn-chat" title="Pricing">Monthly Active Users (MAUs)</a> based pricing model, and can also lead to unexpected behavior if you have Presence enabled.</td></tr></tbody></table>
+<div class="code-toolbar"><pre class="line-numbers language-javascript"><code class="language-javascript"><span class="token keyword keyword-var">var</span> <span class="token pn-variable pn-before-equal">pubnub</span> <span class="token operator">=</span> <span class="token keyword keyword-new">new</span> <span class="token pn-variable">PubNub</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+    <span class="token pn-variable pn-before-colon">subscribeKey</span><span class="token operator">:</span> <span class="token string">"myKey"</span><span class="token punctuation">,</span>
+    <span class="token pn-variable pn-before-colon">uuid</span><span class="token operator">:</span> <span class="token string">"myUniqueUUID"</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token pn-variable">pubnub</span><span class="token punctuation">.</span><span class="token function">addListener</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+    <span class="token function-variable function">message</span><span class="token operator">:</span> <span class="token keyword keyword-function">function</span> <span class="token punctuation">(</span><span class="token parameter"><span class="token pn-variable">message</span></span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token comment">// handle message</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span>
+
+<span class="token pn-variable">pubnub</span><span class="token punctuation">.</span><span class="token function">setFilterExpression</span><span class="token punctuation">(</span><span class="token string">"language != 'spanish'"</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></div>
+
+<h3 class="inpage-link tag-link">Example Five: Multiple filters</h3><h4 class="inpage-link tag-link">Publish messages to channel AAPL with meta dict.</h4>
+<div class="code-toolbar"><pre class="line-numbers language-javascript"><code class="language-javascript"><span class="token keyword keyword-var">var</span> <span class="token pn-variable pn-before-equal">metaPayload</span> <span class="token operator">=</span> <span class="token punctuation">{</span>
+	<span class="token string">"price"</span><span class="token operator">:</span> <span class="token string">"99.75"</span><span class="token punctuation">,</span>
+	<span class="token string">"channel"</span><span class="token operator">:</span> <span class="token string">"AAPL"</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword keyword-var">var</span> <span class="token function-variable function pn-before-equal">onResponse</span> <span class="token operator">=</span> <span class="token keyword keyword-function">function</span><span class="token punctuation">(</span><span class="token parameter"><span class="token pn-variable">status</span><span class="token punctuation">,</span> <span class="token pn-variable">response</span></span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	<span class="token comment">// handle response here.</span>
+<span class="token punctuation">}</span>
+
+<span class="token pn-variable">pubnub</span><span class="token punctuation">.</span><span class="token function">publish</span><span class="token punctuation">(</span>
+	<span class="token punctuation">{</span>
+		<span class="token pn-variable pn-before-colon">message</span><span class="token operator">:</span> <span class="token string">"99.75"</span><span class="token punctuation">,</span>
+		<span class="token pn-variable pn-before-colon">channel</span><span class="token operator">:</span> <span class="token string">"AAPL"</span><span class="token punctuation">,</span>
+		<span class="token pn-variable pn-before-colon">meta</span><span class="token operator">:</span> <span class="token pn-variable">metaPayload</span>
+	<span class="token punctuation">}</span><span class="token punctuation">,</span>
+	<span class="token pn-variable">onResponse</span>
+<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></div>
+<div class="code-toolbar"><pre class="line-numbers language-javascript"><code class="language-javascript"><span class="token keyword keyword-var">var</span> <span class="token pn-variable pn-before-equal">metaPayload</span> <span class="token operator">=</span> <span class="token punctuation">{</span>
+	<span class="token string">"price"</span><span class="token operator">:</span> <span class="token string">"100.10"</span><span class="token punctuation">,</span>
+	<span class="token string">"channel"</span><span class="token operator">:</span> <span class="token string">"AAPL"</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword keyword-var">var</span> <span class="token function-variable function pn-before-equal">onResponse</span> <span class="token operator">=</span> <span class="token keyword keyword-function">function</span><span class="token punctuation">(</span><span class="token parameter"><span class="token pn-variable">status</span><span class="token punctuation">,</span> <span class="token pn-variable">response</span></span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	<span class="token comment">// handle response here.</span>
+<span class="token punctuation">}</span>
+
+<span class="token pn-variable">pubnub</span><span class="token punctuation">.</span><span class="token function">publish</span><span class="token punctuation">(</span>
+	<span class="token punctuation">{</span>
+		<span class="token pn-variable pn-before-colon">message</span><span class="token operator">:</span> <span class="token string">"100.10"</span><span class="token punctuation">,</span>
+		<span class="token pn-variable pn-before-colon">channel</span><span class="token operator">:</span> <span class="token string">"AAPL"</span><span class="token punctuation">,</span>
+		<span class="token pn-variable pn-before-colon">meta</span><span class="token operator">:</span> <span class="token pn-variable">metaPayload</span>
+	<span class="token punctuation">}</span><span class="token punctuation">,</span>
+	<span class="token pn-variable">onResponse</span>
+<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></div>
+
+<h4 class="inpage-link tag-link">Publish messages to channel GOOG with meta dict.</h4>
+<div class="code-toolbar"><pre class="line-numbers language-javascript"><code class="language-javascript"><span class="token keyword keyword-var">var</span> <span class="token pn-variable pn-before-equal">metaPayload</span> <span class="token operator">=</span> <span class="token punctuation">{</span>
+	<span class="token string">"price"</span><span class="token operator">:</span> <span class="token string">"15.50"</span><span class="token punctuation">,</span>
+	<span class="token string">"channel"</span><span class="token operator">:</span> <span class="token string">"GOOG"</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword keyword-var">var</span> <span class="token function-variable function pn-before-equal">onResponse</span> <span class="token operator">=</span> <span class="token keyword keyword-function">function</span><span class="token punctuation">(</span><span class="token parameter"><span class="token pn-variable">status</span><span class="token punctuation">,</span> <span class="token pn-variable">response</span></span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	<span class="token comment">// handle response here.</span>
+<span class="token punctuation">}</span>
+
+<span class="token pn-variable">pubnub</span><span class="token punctuation">.</span><span class="token function">publish</span><span class="token punctuation">(</span>
+	<span class="token punctuation">{</span>
+		<span class="token pn-variable pn-before-colon">message</span><span class="token operator">:</span> <span class="token string">"15.50"</span><span class="token punctuation">,</span>
+		<span class="token pn-variable pn-before-colon">channel</span><span class="token operator">:</span> <span class="token string">"GOOG"</span><span class="token punctuation">,</span>
+		<span class="token pn-variable pn-before-colon">meta</span><span class="token operator">:</span> <span class="token pn-variable">metaPayload</span>
+	<span class="token punctuation">}</span><span class="token punctuation">,</span>
+	<span class="token pn-variable">onResponse</span>
+<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></div>
+<div class="code-toolbar"><pre class="line-numbers language-javascript"><code class="language-javascript"><span class="token keyword keyword-var">var</span> <span class="token pn-variable pn-before-equal">metaPayload</span> <span class="token operator">=</span> <span class="token punctuation">{</span>
+    <span class="token string">"price"</span><span class="token operator">:</span> <span class="token string">"14.95"</span><span class="token punctuation">,</span>
+    <span class="token string">"channel"</span><span class="token operator">:</span> <span class="token string">"GOOG"</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword keyword-var">var</span> <span class="token function-variable function pn-before-equal">onResponse</span> <span class="token operator">=</span> <span class="token keyword keyword-function">function</span><span class="token punctuation">(</span><span class="token parameter"><span class="token pn-variable">status</span><span class="token punctuation">,</span> <span class="token pn-variable">response</span></span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token comment">// handle response here.</span>
+<span class="token punctuation">}</span>
+
+<span class="token pn-variable">pubnub</span><span class="token punctuation">.</span><span class="token function">publish</span><span class="token punctuation">(</span>
+    <span class="token punctuation">{</span>
+        <span class="token pn-variable pn-before-colon">message</span><span class="token operator">:</span> <span class="token string">"14.95"</span><span class="token punctuation">,</span>
+        <span class="token pn-variable pn-before-colon">channel</span><span class="token operator">:</span> <span class="token string">"GOOG"</span><span class="token punctuation">,</span>
+        <span class="token pn-variable pn-before-colon">meta</span><span class="token operator">:</span> <span class="token pn-variable">metaPayload</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token pn-variable">onResponse</span>
+<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></div>
+
+<div>Client filter would be applied to all channels by default, but you could do something like this:</div><table class="table-icon-note"><tbody><tr><td class="icon"><i class="fa icon icon-note" title="note">&nbsp;</i></td><td>Always set the <code>UUID</code> to uniquely identify the user or device that connects to PubNub. This <code>UUID</code> should be persisted, and should remain unchanged for the lifetime of the user or the device. Not setting the <code>UUID</code> can significantly impact your billing if your account uses the <a href="/pricing/#pn-chat" title="Pricing">Monthly Active Users (MAUs)</a> based pricing model, and can also lead to unexpected behavior if you have Presence enabled.</td></tr></tbody></table>
+<div class="code-toolbar"><pre class="line-numbers language-javascript"><code class="language-javascript"><span class="token keyword keyword-var">var</span> <span class="token pn-variable pn-before-equal">pubnub</span> <span class="token operator">=</span> <span class="token keyword keyword-new">new</span> <span class="token pn-variable">PubNub</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+    <span class="token pn-variable pn-before-colon">subscribeKey</span><span class="token operator">:</span> <span class="token string">"myKey"</span><span class="token punctuation">,</span>
+    <span class="token pn-variable pn-before-colon">uuid</span><span class="token operator">:</span> <span class="token string">"myUniqueUUID"</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token pn-variable">pubnub</span><span class="token punctuation">.</span><span class="token function">addListener</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+	<span class="token function-variable function">message</span><span class="token operator">:</span> <span class="token keyword keyword-function">function</span> <span class="token punctuation">(</span><span class="token parameter"><span class="token pn-variable">message</span></span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+		<span class="token comment">// handle message</span>
+	<span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span>
+
+<span class="token pn-variable">pubnub</span><span class="token punctuation">.</span><span class="token function">setFilterExpression</span><span class="token punctuation">(</span><span class="token string">"(price &gt; 100.00 &amp;&amp; channel == 'AAPL') || (price &lt; 15.00 &amp;&amp; channel == 'GOOG')"</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></div>
+<h3 class="inpage-link tag-link">Example Six: Arithmetic Operations</h3><div><p>Arithmetic operations are useful when subscribing to stream readings such as temperature. In our example, we're going to <code>publish</code> temperature and only subscribe to events when the temperature is greater than the limit.</p></div>
+
+<div class="code-toolbar"><pre class="line-numbers language-javascript"><code class="language-javascript"><span class="token keyword keyword-var">var</span> <span class="token pn-variable pn-before-equal">metaPayload</span> <span class="token operator">=</span> <span class="token punctuation">{</span>
+    <span class="token string">"temperature"</span><span class="token operator">:</span> <span class="token number">60</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword keyword-var">var</span> <span class="token function-variable function pn-before-equal">onResponse</span> <span class="token operator">=</span> <span class="token keyword keyword-function">function</span><span class="token punctuation">(</span><span class="token parameter"><span class="token pn-variable">status</span><span class="token punctuation">,</span> <span class="token pn-variable">response</span></span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	<span class="token comment">// handle response here.</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></div>
+
+<div><p>On the subscriber side, we modify the expression to use the <code>&gt;</code> operator</p></div><table class="table-icon-note"><tbody><tr><td class="icon"><i class="fa icon icon-note" title="note">&nbsp;</i></td><td>Always set the <code>UUID</code> to uniquely identify the user or device that connects to PubNub. This <code>UUID</code> should be persisted, and should remain unchanged for the lifetime of the user or the device. Not setting the <code>UUID</code> can significantly impact your billing if your account uses the <a href="/pricing/#pn-chat" title="Pricing">Monthly Active Users (MAUs)</a> based pricing model, and can also lead to unexpected behavior if you have Presence enabled.</td></tr></tbody></table>
+<div class="code-toolbar"><pre class="line-numbers language-javascript"><code class="language-javascript"><span class="token keyword keyword-var">var</span> <span class="token pn-variable pn-before-equal">pubnub</span> <span class="token operator">=</span> <span class="token keyword keyword-new">new</span> <span class="token pn-variable">PubNub</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+    <span class="token pn-variable pn-before-colon">subscribeKey</span><span class="token operator">:</span> <span class="token string">"myKey"</span><span class="token punctuation">,</span>
+    <span class="token pn-variable pn-before-colon">uuid</span><span class="token operator">:</span> <span class="token string">"myUniqueUUID"</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token pn-variable">pubnub</span><span class="token punctuation">.</span><span class="token function">addListener</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+	<span class="token function-variable function">message</span><span class="token operator">:</span> <span class="token keyword keyword-function">function</span> <span class="token punctuation">(</span><span class="token parameter"><span class="token pn-variable">message</span></span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+		<span class="token comment">// handle message</span>
+	<span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span>
+
+<span class="token pn-variable">pubnub</span><span class="token punctuation">.</span><span class="token function">setFilterExpression</span><span class="token punctuation">(</span><span class="token string">"temperature &gt; 50"</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></div>
+<h2 class="inpage-link tag-link">Filtering Language Definition</h2><div><p>The filtering language is extensive, and supports advanced use cases:</p></div>
+
+<div class="code-toolbar"><pre class="line-numbers language-javascript"><code class="language-javascript"><span class="token pn-variable">compound_expression</span> <span class="token pn-variable">is</span> <span class="token pn-variable">root</span>
+
+<span class="token operator">&lt;</span><span class="token pn-variable">compound_expression</span><span class="token operator">&gt;</span>         <span class="token operator">:</span><span class="token operator">:</span><span class="token operator">=</span>   <span class="token operator">&lt;</span><span class="token pn-variable">expression</span><span class="token operator">&gt;</span> <span class="token operator">|</span> <span class="token operator">&lt;</span><span class="token pn-variable">expression</span><span class="token operator">&gt;</span> <span class="token operator">&lt;</span><span class="token pn-variable">binary_logical_op</span><span class="token operator">&gt;</span> <span class="token operator">&lt;</span><span class="token pn-variable">expression</span><span class="token operator">&gt;</span>
+<span class="token operator">&lt;</span><span class="token pn-variable">binary_logical_op</span><span class="token operator">&gt;</span>           <span class="token operator">:</span><span class="token operator">:</span><span class="token operator">=</span>   <span class="token operator">&amp;&amp;</span> <span class="token operator">|</span> <span class="token operator">||</span>
+<span class="token operator">&lt;</span><span class="token pn-variable">expression</span><span class="token operator">&gt;</span>                  <span class="token operator">:</span><span class="token operator">:</span><span class="token operator">=</span>   <span class="token punctuation">(</span><span class="token operator">&lt;</span><span class="token pn-variable">expression</span><span class="token operator">&gt;</span><span class="token punctuation">)</span> <span class="token operator">|</span> <span class="token operator">&lt;</span><span class="token pn-variable">operand</span><span class="token operator">&gt;</span> <span class="token operator">&lt;</span><span class="token pn-variable">comparison_operator</span><span class="token operator">&gt;</span> <span class="token operator">&lt;</span><span class="token pn-variable">operand</span><span class="token operator">&gt;</span> <span class="token operator">|</span> <span class="token operator">&lt;</span><span class="token pn-variable">unary_logical_op</span><span class="token operator">&gt;</span> <span class="token operator">&lt;</span><span class="token pn-variable">operand</span><span class="token operator">&gt;</span>
+<span class="token operator">&lt;</span><span class="token pn-variable">numeric_comparison_operator</span><span class="token operator">&gt;</span> <span class="token operator">:</span><span class="token operator">:</span><span class="token operator">=</span>   <span class="token punctuation">{</span><span class="token operator">==</span><span class="token punctuation">,</span> <span class="token operator">!=</span><span class="token punctuation">,</span> <span class="token operator">&lt;</span><span class="token punctuation">,</span> <span class="token operator">&gt;</span><span class="token punctuation">,</span> <span class="token operator">&lt;=</span><span class="token punctuation">,</span> <span class="token operator">&gt;=</span><span class="token punctuation">}</span>
+<span class="token operator">&lt;</span><span class="token pn-variable">string_comparison_operator</span><span class="token operator">&gt;</span>  <span class="token operator">:</span><span class="token operator">:</span><span class="token operator">=</span>   <span class="token punctuation">{</span><span class="token pn-variable">contains</span><span class="token punctuation">,</span> <span class="token pn-variable">like</span><span class="token punctuation">}</span>
+<span class="token operator">&lt;</span><span class="token pn-variable">unary_logical_op</span><span class="token operator">&gt;</span>            <span class="token operator">:</span><span class="token operator">:</span><span class="token operator">=</span>   <span class="token operator">!</span>
+<span class="token operator">&lt;</span><span class="token pn-variable">operand</span><span class="token operator">&gt;</span>                     <span class="token operator">:</span><span class="token operator">:</span><span class="token operator">=</span>   <span class="token punctuation">(</span><span class="token operator">&lt;</span><span class="token pn-variable">operand</span><span class="token operator">&gt;</span><span class="token punctuation">)</span> <span class="token operator">|</span> <span class="token operator">&lt;</span><span class="token pn-variable">unary_op</span><span class="token operator">&gt;</span> <span class="token operator">&lt;</span><span class="token pn-variable">operand</span><span class="token operator">&gt;</span> <span class="token operator">|</span> <span class="token operator">&lt;</span><span class="token pn-variable">literals</span><span class="token operator">&gt;</span> <span class="token operator">&lt;</span><span class="token pn-variable">binary_op</span><span class="token operator">&gt;</span> <span class="token operator">&lt;</span><span class="token pn-variable">literals</span><span class="token operator">&gt;</span>
+<span class="token operator">&lt;</span><span class="token pn-variable">unary_op</span><span class="token operator">&gt;</span>                    <span class="token operator">:</span><span class="token operator">:</span><span class="token operator">=</span>   <span class="token operator">~</span>
+<span class="token operator">&lt;</span><span class="token pn-variable">binary_op</span><span class="token operator">&gt;</span>                   <span class="token operator">:</span><span class="token operator">:</span><span class="token operator">=</span>   <span class="token operator">|</span><span class="token punctuation">,</span> <span class="token operator">&amp;</span><span class="token punctuation">,</span> <span class="token operator">^</span><span class="token punctuation">,</span> <span class="token operator">+</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token punctuation">,</span> <span class="token operator">/</span><span class="token punctuation">,</span> \<span class="token operator">*</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></div>
+
+<div class="code-toolbar"><pre class="line-numbers language-javascript"><code class="language-javascript"><span class="token pn-variable pn-before-equal">string</span> <span class="token operator">==</span> <span class="token string">'match'</span>                 <span class="token operator">=&gt;</span> <span class="token pn-variable">exact</span> <span class="token pn-variable">match</span>
+<span class="token pn-variable">string</span> <span class="token constant">LIKE</span> <span class="token string">'match*'</span>              <span class="token operator">=&gt;</span> <span class="token constant">LIKE</span> <span class="token pn-variable pn-before-colon">operator</span><span class="token operator">:</span> <span class="token pn-variable">asterisk</span> <span class="token pn-variable">wildcarding</span><span class="token punctuation">,</span> <span class="token keyword keyword-case">case</span> <span class="token pn-variable">insensitive</span>
+<span class="token pn-variable">string</span> <span class="token constant">LIKE</span> <span class="token string">'match\*'</span>             <span class="token operator">=&gt;</span> <span class="token constant">LIKE</span> <span class="token pn-variable pn-before-colon">operator</span><span class="token operator">:</span> <span class="token pn-variable">literal</span> <span class="token pn-variable">match</span> <span class="token keyword keyword-with">with</span> <span class="token pn-variable">string</span> <span class="token pn-variable">containing</span> <span class="token pn-variable">asterisk</span> <span class="token function">character</span>
+<span class="token punctuation">(</span><span class="token string">'Anne'</span><span class="token punctuation">,</span><span class="token string">'anna'</span><span class="token punctuation">,</span><span class="token string">'Ann'</span><span class="token punctuation">)</span> <span class="token pn-variable">like</span> <span class="token string">'ann*'</span> <span class="token operator">=&gt;</span> <span class="token constant">LIKE</span> <span class="token pn-variable pn-before-colon">operator</span><span class="token operator">:</span> <span class="token pn-variable">any</span> <span class="token keyword keyword-of">of</span> <span class="token pn-variable">the</span> <span class="token pn-variable">three</span> <span class="token keyword keyword-set">set</span> <span class="token pn-variable">members</span> <span class="token pn-variable">would</span> <span class="token pn-variable">be</span> <span class="token pn-variable">a</span> <span class="token pn-variable">sufficient</span> <span class="token function">match</span>
+
+<span class="token punctuation">(</span><span class="token string">'a'</span><span class="token punctuation">,</span><span class="token string">'b'</span><span class="token punctuation">,</span><span class="token string">'c'</span><span class="token punctuation">)</span> <span class="token constant">CONTAINS</span> <span class="token parameter"><span class="token pn-variable">string</span></span>     <span class="token operator">=&gt;</span> <span class="token pn-variable">Compare</span> <span class="token pn-variable">against</span> <span class="token pn-variable">a</span> <span class="token pn-variable">list</span> <span class="token keyword keyword-of">of</span> <span class="token pn-variable">values</span>
+<span class="token pn-variable">otherstring</span> <span class="token constant">CONTAINS</span> <span class="token parameter"><span class="token pn-variable">string</span></span>       <span class="token operator">=&gt;</span> <span class="token pn-variable">Check</span> <span class="token keyword keyword-for">for</span> <span class="token pn-variable">a</span> <span class="token pn-variable">substring</span> <span class="token function">match</span>
+
+<span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">,</span><span class="token number">5</span><span class="token punctuation">,</span><span class="token number">9</span><span class="token punctuation">)</span> <span class="token pn-variable">contains</span> <span class="token parameter"><span class="token pn-variable">numValue</span></span>         <span class="token operator">=&gt;</span> <span class="token pn-variable">compare</span> <span class="token pn-variable">number</span> <span class="token pn-variable">to</span> <span class="token pn-variable">a</span> <span class="token pn-variable">list</span> <span class="token keyword keyword-of">of</span> <span class="token pn-variable">values</span>
+<span class="token operator">!</span><span class="token punctuation">(</span><span class="token parameter pn-before-equal-greater"><span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">,</span><span class="token number">5</span><span class="token punctuation">,</span><span class="token number">9</span><span class="token punctuation">)</span> <span class="token pn-variable">contains</span> <span class="token pn-variable">numValue</span></span><span class="token punctuation">)</span>      <span class="token operator">=&gt;</span> <span class="token pn-variable">Negation</span>
+
+<span class="token pn-variable">string</span> <span class="token pn-variable">contains</span> <span class="token parameter"><span class="token pn-variable">numValue</span></span>          <span class="token operator">=&gt;</span> <span class="token function">str</span><span class="token punctuation">(</span><span class="token pn-variable">numValue</span><span class="token punctuation">)</span> <span class="token keyword keyword-in">in</span> <span class="token pn-variable">string</span>
+
+<span class="token pn-variable">numValue</span> <span class="token operator">&gt;</span> <span class="token punctuation">(</span><span class="token parameter pn-before-equal-greater"><span class="token pn-variable">numA</span> <span class="token operator">+</span> <span class="token pn-variable">numB</span> <span class="token operator">-</span> <span class="token pn-variable">numC</span></span><span class="token punctuation">)</span>   <span class="token operator">=&gt;</span> <span class="token pn-variable">compare</span> <span class="token pn-variable">number</span> <span class="token pn-variable">to</span> <span class="token pn-variable">an</span> <span class="token pn-variable">arithmetic</span> <span class="token function">expression</span>
+<span class="token punctuation">(</span><span class="token pn-variable">numA</span> <span class="token operator">^</span> <span class="token pn-variable">numB</span><span class="token punctuation">)</span> <span class="token operator">!=</span> <span class="token punctuation">(</span><span class="token parameter pn-before-equal-greater"><span class="token pn-variable">numValue</span> <span class="token operator">*</span> <span class="token number">10</span></span><span class="token punctuation">)</span>  <span class="token operator">=&gt;</span> <span class="token pn-variable">compare</span> <span class="token number">2</span> <span class="token function">expressions</span>
+<span class="token punctuation">(</span><span class="token operator">~</span><span class="token pn-variable">numA</span> <span class="token operator">/</span> <span class="token pn-variable">numB</span><span class="token punctuation">)</span> <span class="token operator">&lt;=</span> <span class="token pn-variable">numValue</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></div>

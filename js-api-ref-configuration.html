@@ -1,0 +1,539 @@
+    <p>JavaScript V4 complete API reference for building Realtime Applications on PubNub, including basic usage and sample code.</p>
+    <p>You must include the PubNub JavaScript V4 SDK in your code before initializing the client.</p>
+    <div class="code-toolbar">
+        <pre class=" language-html"><code class=" language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span> <span class="token attr-name">src</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>https://cdn.pubnub.com/sdk/javascript/pubnub.4.29.9.js<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span><span class="token script"></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">&gt;</span></span></code></pre>
+
+    </div>
+    <h2 class="inpage-link tag-link main-placeholder">Initialization</h2>
+    <h3 class="inpage-link tag-link">Description</h3>
+    <p>Use this method to initialize the PubNub Client API context and establish account-level credentials such as publish and subscribe keys. You can create an account and get your keys from the Admin Portal.</p>
+    <h3 class="inpage-link tag-link">Method(s)</h3>
+    <p>To <code>Initialize</code> Pubnub you can use the following method(s) in the JavaScript V4 SDK:</p>
+    <ol class="ol-margin-extra">
+        <li>
+            <div>
+                <code class="inpage-plink tag-link padding-left-0"><a class="title-red" data-id="init-args-1-" href="#init-args-1" id="init-args-1-" title="Init Argument">PubNub(<br>
+                <span class="margin-left-1">{String <code>subscribeKey</code>, String <code>publishKey</code>, String <code>cipherKey</code>, String <code>authKey</code>, Boolean <code>logVerbosity</code>, String <code>uuid</code>, Boolean <code>ssl</code>, String <code>origin</code>, Number <code>presenceTimeout</code>, Number <code>heartbeatInterval</code>, Boolean <code>restore</code>, Boolean <code>keepAlive</code>, Object <code>keepAliveSettings</code>, Boolean <code>useInstanceId</code>, Boolean <code>suppressLeaveEvents</code>, Number <code>requestMessageCountThreshold</code>, Boolean <code>autoNetworkDetection</code>, Boolean <code>listenToBrowserNetworkEvents</code>}</span> )</a></code>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Parameter</th>
+                            <th>Type</th>
+                            <th>Required</th>
+                            <th>Defaults</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Operation Arguments</td>
+                            <td>Hash</td>
+                            <td>Yes</td>
+                            <td></td>
+                            <td>A hash of arguments.</td>
+                        </tr>
+                        <tr>
+                            <td><code class="margin-left-1">subscribeKey</code></td>
+                            <td>String</td>
+                            <td>Yes</td>
+                            <td></td>
+                            <td>Specifies the <code>subscribeKey</code> to be used for subscribing to a channel. This key can be specified at initialization or along with a <code>subscribe()</code>.</td>
+                        </tr>
+                        <tr>
+                            <td><code class="margin-left-1">publishKey</code></td>
+                            <td>String</td>
+                            <td>Optional</td>
+                            <td></td>
+                            <td>Specifies the <code>publishKey</code> to be used for publishing messages to a channel. This key can be specified at initialization or along with a <code>publish()</code>.</td>
+                        </tr>
+                        <tr>
+                            <td><code class="margin-left-1">cipherKey</code></td>
+                            <td>String</td>
+                            <td>Optional</td>
+                            <td></td>
+                            <td>If passed, will encrypt the payloads.</td>
+                        </tr>
+                        <tr>
+                            <td><code class="margin-left-1">authKey</code></td>
+                            <td>String</td>
+                            <td>Optional</td>
+                            <td></td>
+                            <td>If PAM enabled, this key will be used on all requests.</td>
+                        </tr>
+                        <tr>
+                            <td><code class="margin-left-1">logVerbosity</code></td>
+                            <td>Boolean</td>
+                            <td>Optional</td>
+                            <td><code>false</code></td>
+                            <td>log HTTP information.</td>
+                        </tr>
+                        <tr>
+                            <td><code class="margin-left-1">uuid</code></td>
+                            <td>String</td>
+                            <td>Yes</td>
+                            <td><code>SDK generated random uuid</code></td>
+                            <td>
+                                <p><code>UUID</code> to use. You should set a unique <code>UUID</code> to identify the user or the device that connects to PubNub.</p>
+                                <p>Allowing the SDK to generate a random <code>UUID</code> can result in significant billing impacts, particularly on an MAU pricing plan.</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><code class="margin-left-1">ssl</code></td>
+                            <td>Boolean</td>
+                            <td>Optional</td>
+                            <td>
+                                <p><code>true</code> for v4.20.0 onwards,</p>
+                                <p><code>false</code> before v4.20.0</p>
+                            </td>
+                            <td>If set to <code>true</code>, requests will be made over HTTPS.</td>
+                        </tr>
+                        <tr>
+                            <td><code class="margin-left-1">origin</code></td>
+                            <td>String</td>
+                            <td>Optional</td>
+                            <td><code>ps.pndsn.com</code></td>
+                            <td>If a custom domain is required, SDK accepts it here.</td>
+                        </tr>
+                        <tr>
+                            <td><code class="margin-left-1">presenceTimeout</code></td>
+                            <td>Number</td>
+                            <td>Optional</td>
+                            <td><code>300</code></td>
+                            <td>
+                                <p>How long the server will consider the client alive for presence.</p><br>
+                                <p>The value is in seconds.</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><code class="margin-left-1">heartbeatInterval</code></td>
+                            <td>Number</td>
+                            <td>Optional</td>
+                            <td><code>Not Set</code></td>
+                            <td>
+                                <p>How often the client will announce itself to server.</p><br>
+                                <p>The value is in seconds.</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><code class="margin-left-1">restore</code></td>
+                            <td>Boolean</td>
+                            <td>Optional</td>
+                            <td><code>false</code></td>
+                            <td><code>true</code> to allow catch up on the front-end applications.</td>
+                        </tr>
+                        <tr>
+                            <td><code class="margin-left-1">keepAlive</code></td>
+                            <td>Boolean</td>
+                            <td>Optional</td>
+                            <td>
+                                <p><code>true</code> for v4.18.0 onwards,</p>
+                                <p><code>false</code> before v4.18.0</p>
+                            </td>
+                            <td>If set to <code>true</code>, SDK will use the same TCP connection for each HTTP request, instead of opening a new one for each new request.</td>
+                        </tr>
+                        <tr>
+                            <td><code class="margin-left-1">keepAliveSettings</code></td>
+                            <td>Object</td>
+                            <td>Optional</td>
+                            <td>
+                                <div class="desktop-hidden">
+                                    <p><code>keepAliveMsecs</code>: 1000</p>
+                                    <p><code>freeSocketKeepAliveTimeout</code>: 15000</p>
+                                    <p><code>timeout</code>: 30000</p>
+                                    <p><code>maxSockets</code>: Infinity</p>
+                                    <p><code>maxFreeSockets</code>: 256</p>
+                                </div>
+                            </td>
+                            <td>
+                                Set a custom parameters for setting your connection <code>keepAlive</code> if this is set to <code>true</code>.
+                                <div class="desktop-hidden">
+                                    <p><code>keepAliveMsecs: (Number)</code> how often to send TCP KeepAlive packets over sockets.</p>
+                                    <p><code>freeSocketKeepAliveTimeout: (Number)</code> sets the free socket to timeout after freeSocketKeepAliveTimeout milliseconds of inactivity on the free socket.</p>
+                                    <p><code>timeout: (Number)</code> sets the working socket to timeout after timeout milliseconds of inactivity on the working socket.</p>
+                                    <p><code>maxSockets: (Number)</code> maximum number of sockets to allow per host.</p>
+                                    <p><code>maxFreeSockets: (Number)</code> maximum number of sockets to leave open in a free state.</p>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="mobile-hidden">
+                            <td style="background:#fff;border-top:0"></td>
+                            <td style="background:#fff;border-top:0"></td>
+                            <td style="background:#fff;border-top:0"></td>
+                            <td style="background:#fff;border-top:0"><code>keepAliveMsecs</code>: 1000</td>
+                            <td style="background:#fff;border-top:0"><code>keepAliveMsecs: (Number)</code> how often to send TCP KeepAlive packets over sockets.</td>
+                        </tr>
+                        <tr class="mobile-hidden">
+                            <td style="background:#fff;border-top:0"></td>
+                            <td style="background:#fff;border-top:0"></td>
+                            <td style="background:#fff;border-top:0"></td>
+                            <td style="background:#fff;border-top:0"><code>freeSocketKeepAliveTimeout</code>: 15000</td>
+                            <td style="background:#fff;border-top:0"><code>freeSocketKeepAliveTimeout: (Number)</code> sets the free socket to timeout after freeSocketKeepAliveTimeout milliseconds of inactivity on the free socket.</td>
+                        </tr>
+                        <tr class="mobile-hidden">
+                            <td style="background:#fff;border-top:0"></td>
+                            <td style="background:#fff;border-top:0"></td>
+                            <td style="background:#fff;border-top:0"></td>
+                            <td style="background:#fff;border-top:0"><code>timeout</code>: 30000</td>
+                            <td style="background:#fff;border-top:0"><code>timeout: (Number)</code> sets the working socket to timeout after timeout milliseconds of inactivity on the working socket.</td>
+                        </tr>
+                        <tr class="mobile-hidden">
+                            <td style="background:#fff;border-top:0"></td>
+                            <td style="background:#fff;border-top:0"></td>
+                            <td style="background:#fff;border-top:0"></td>
+                            <td style="background:#fff;border-top:0"><code>maxSockets</code>: Infinity</td>
+                            <td style="background:#fff;border-top:0"><code>maxSockets: (Number)</code> maximum number of sockets to allow per host.</td>
+                        </tr>
+                        <tr class="mobile-hidden">
+                            <td style="background:#fff;border-top:0"></td>
+                            <td style="background:#fff;border-top:0"></td>
+                            <td style="background:#fff;border-top:0"></td>
+                            <td style="background:#fff;border-top:0"><code>maxFreeSockets</code>: 256</td>
+                            <td style="background:#fff;border-top:0"><code>maxFreeSockets: (Number)</code> maximum number of sockets to leave open in a free state.</td>
+                        </tr>
+                        <tr>
+                            <td><code class="margin-left-1">suppressLeaveEvents</code></td>
+                            <td>Boolean</td>
+                            <td>Optional</td>
+                            <td><code>false</code></td>
+                            <td>When <code>true</code> the SDK doesn't send out the leave requests.</td>
+                        </tr>
+                        <tr>
+                            <td><code class="margin-left-1">requestMessageCountThreshold</code></td>
+                            <td>Number</td>
+                            <td>Optional</td>
+                            <td><code>100</code></td>
+                            <td><code>PNRequestMessageCountExceededCategory</code> is thrown when the number of messages into the payload is above of <code>requestMessageCountThreshold</code>.</td>
+                        </tr>
+                        <tr>
+                            <td><code class="margin-left-1">autoNetworkDetection</code></td>
+                            <td>Boolean</td>
+                            <td>Optional</td>
+                            <td><code>false</code></td>
+                            <td>This flag announces when the network is down or up using the states <code>PNNetworkDownCategory</code> and <code>PNNetworkUpCategory</code>.</td>
+                        </tr>
+                        <tr>
+                            <td><code class="margin-left-1">listenToBrowserNetworkEvents</code></td>
+                            <td>Boolean</td>
+                            <td>Optional</td>
+                            <td><code>true</code></td>
+                            <td>If the browser fails to detect the network changes from WiFi to LAN and vice versa or you get reconnection issues, set the flag to <code>false</code>. This allows the SDK reconnection logic to take over.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </li>
+    </ol>
+    <h3 class="inpage-link tag-link">Basic Usage</h3>
+    <p>Applications can <code>initialize</code> the PubNub object by passing the <code>subscribeKey</code> and <code>publishKey</code> keys from your account. Each client should also pass a <code>UUID</code> that represents the user or the device that connects to PubNub.</p>
+    <table class="table-icon-note">
+        <tbody>
+            <tr>
+                <td class="icon"><i class="fa icon icon-note" title="note">&nbsp;</i></td>
+                <td>
+                    Always set the <code>UUID</code> to uniquely identify the user or device that connects to PubNub. This <code>UUID</code> should be persisted, and should remain unchanged for the lifetime of the user or the device. Not setting the <code>UUID</code> can significantly impact your billing if your account uses the <a href="/pricing/#pn-chat" title="Pricing">Monthly Active Users (MAUs)</a> based pricing model, and can also lead to unexpected behavior if you have Presence enabled.
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="code-toolbar">
+        <pre class="line-numbers language-javascript"><code class="language-javascript"><span class="token keyword keyword-var">var</span> <span class="token pn-variable pn-before-equal">pubnub</span> <span class="token operator">=</span> <span class="token keyword keyword-new">new</span> <span class="token pn-variable">PubNub</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+    <span class="token pn-variable pn-before-colon">subscribeKey</span><span class="token operator">:</span> <span class="token string">"mySubscribeKey"</span><span class="token punctuation">,</span>
+    <span class="token pn-variable pn-before-colon">publishKey</span><span class="token operator">:</span> <span class="token string">"myPublishKey"</span><span class="token punctuation">,</span>
+    <span class="token pn-variable pn-before-colon">cipherKey</span><span class="token operator">:</span> <span class="token string">"myCipherKey"</span><span class="token punctuation">,</span>
+    <span class="token pn-variable pn-before-colon">authKey</span><span class="token operator">:</span> <span class="token string">"myAuthKey"</span><span class="token punctuation">,</span>
+    <span class="token pn-variable pn-before-colon">logVerbosity</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+    <span class="token pn-variable pn-before-colon">uuid</span><span class="token operator">:</span> <span class="token string">"myUniqueUUID"</span><span class="token punctuation">,</span>
+    <span class="token pn-variable pn-before-colon">ssl</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+    <span class="token pn-variable pn-before-colon">presenceTimeout</span><span class="token operator">:</span> <span class="token number">130</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+    </div>
+    <h3 class="inpage-link tag-link">Server Operations</h3>
+    <p>For servers connecting to PubNub, setting a <code>UUID</code> is different than for a client device as there can be multiple instances of the server on the same machine and there is no "authentication" process for a server (at least not like an end user).</p>
+    <p>The API can be initialized with the <code>secretKey</code> if the server needs to administer PAM permissions for client applications. When you initialize PubNub with <code>secretKey</code>, you get root permissions for the <a href="/docs/web-javascript/pam-security" title="Access Manager Tutorial">Access Manager</a>. With this feature you don't have to grant access to your servers to access channels or channel groups. The servers get all access on all channels and channel groups.</p>
+    <table class="table-icon-note">
+        <tbody>
+            <tr>
+                <td class="icon"><i class="fa icon icon-note" title="note">&nbsp;</i></td>
+                <td>
+                    <p>Anyone with the <code>secretKey</code> can grant and revoke permissions to your app. Never let your <code>secretKey</code> be discovered, and only exchange and deliver it securely. Only use the <code>secretKey</code> on secure environments such as <code>Node.js</code> application or other server-side platforms.</p>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table-icon-note">
+        <tbody>
+            <tr>
+                <td class="icon"><i class="fa icon icon-note" title="note">&nbsp;</i></td>
+                <td>
+                    Always set the <code>UUID</code> to uniquely identify the user or device that connects to PubNub. This <code>UUID</code> should be persisted, and should remain unchanged for the lifetime of the user or the device. Not setting the <code>UUID</code> can significantly impact your billing if your account uses the <a href="/pricing/#pn-chat" title="Pricing">Monthly Active Users (MAUs)</a> based pricing model, and can also lead to unexpected behavior if you have Presence enabled.
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="code-toolbar">
+        <pre class="line-numbers language-javascript"><code class="language-javascript"><span class="token keyword keyword-var">var</span> <span class="token pn-variable pn-before-equal">pubnub</span> <span class="token operator">=</span> <span class="token keyword keyword-new">new</span> <span class="token pn-variable">PubNub</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+    <span class="token pn-variable pn-before-colon">subscribeKey</span><span class="token operator">:</span> <span class="token string">"mySubscribeKey"</span><span class="token punctuation">,</span>
+    <span class="token pn-variable pn-before-colon">publishKey</span><span class="token operator">:</span> <span class="token string">"myPublishKey"</span><span class="token punctuation">,</span>
+    <span class="token pn-variable pn-before-colon">uuid</span><span class="token operator">:</span> <span class="token string">"myUniqueUUID"</span><span class="token punctuation">,</span>
+    <span class="token pn-variable pn-before-colon">secretKey</span><span class="token operator">:</span> <span class="token string">"secretKey"</span><span class="token punctuation">,</span>
+    <span class="token pn-variable pn-before-colon">heartbeatInterval</span><span class="token operator">:</span> <span class="token number">0</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+    </div>
+    <p>Now that the pubnub object is instantiated, the client will be able to access the PAM functions. The pubnub object will use the <code>secretKey</code> to sign all PAM messages to the PubNub Network.</p>
+    <h3 class="inpage-link tag-link">Other Examples</h3>
+    <ol class="ol-margin-extra">
+        <li>
+            <div class="inpage-plink tag-link">
+                <a class="title-red" data-id="init-example-2-" href="#init-example-2" id="init-example-2-" title="Initialization for a Read-Only client">Initialization for a Read-Only client:</a>
+            </div>
+            <div>
+                In the case where a client will only read messages and never publish to a channel, you can simply omit the <code>publishKey</code> when initializing the client:
+            </div>
+            <table class="table-icon-note">
+                <tbody>
+                    <tr>
+                        <td class="icon"><i class="fa icon icon-note" title="note">&nbsp;</i></td>
+                        <td>
+                            Always set the <code>UUID</code> to uniquely identify the user or device that connects to PubNub. This <code>UUID</code> should be persisted, and should remain unchanged for the lifetime of the user or the device. Not setting the <code>UUID</code> can significantly impact your billing if your account uses the <a href="/pricing/#pn-chat" title="Pricing">Monthly Active Users (MAUs)</a> based pricing model, and can also lead to unexpected behavior if you have Presence enabled.
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="code-toolbar">
+                <pre class="line-numbers language-javascript"><code class="language-javascript"><span class="token comment">// Initialize for Read Only Client</span>
+
+<span class="token keyword keyword-var">var</span> <span class="token pn-variable pn-before-equal">pubnub</span> <span class="token operator">=</span> <span class="token keyword keyword-new">new</span> <span class="token pn-variable">PubNub</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+    <span class="token pn-variable pn-before-colon">subscribeKey</span><span class="token operator">:</span> <span class="token string">"mySubscribeKey"</span><span class="token punctuation">,</span>
+    <span class="token pn-variable pn-before-colon">uuid</span><span class="token operator">:</span> <span class="token string">"myUniqueUUID"</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+            </div>
+        </li>
+        <li>
+            <div class="inpage-plink tag-link">
+                <a class="title-red" data-id="initializing-with-ssl-enabled-" href="#initializing-with-ssl-enabled" id="initializing-with-ssl-enabled-" title="Initializing with SSL Enabled">Initializing with SSL Enabled:</a>
+            </div>
+            <p>This examples demonstrates how to enable PubNub Transport Layer Encryption with <code>TLS</code>(<i>formerly known as <code>SSL</code></i>). Just initialize the client with <code>ssl</code> set to <code>true</code>. The hard work is done, now the PubNub API takes care of the rest. Just subscribe and publish as usual and you are good to go.</p>
+            <table class="table-icon-note">
+                <tbody>
+                    <tr>
+                        <td class="icon"><i class="fa icon icon-note" title="note">&nbsp;</i></td>
+                        <td>
+                            Always set the <code>UUID</code> to uniquely identify the user or device that connects to PubNub. This <code>UUID</code> should be persisted, and should remain unchanged for the lifetime of the user or the device. Not setting the <code>UUID</code> can significantly impact your billing if your account uses the <a href="/pricing/#pn-chat" title="Pricing">Monthly Active Users (MAUs)</a> based pricing model, and can also lead to unexpected behavior if you have Presence enabled.
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="code-toolbar">
+                <pre class="line-numbers language-javascript"><code class="language-javascript"><span class="token keyword keyword-var">var</span> <span class="token pn-variable pn-before-equal">pubnub</span> <span class="token operator">=</span> <span class="token keyword keyword-new">new</span> <span class="token pn-variable">PubNub</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+    <span class="token pn-variable pn-before-colon">subscribeKey</span><span class="token operator">:</span> <span class="token string">"mySubscribeKey"</span><span class="token punctuation">,</span>
+    <span class="token pn-variable pn-before-colon">publishKey</span><span class="token operator">:</span> <span class="token string">"myPublishKey"</span><span class="token punctuation">,</span>
+    <span class="token pn-variable pn-before-colon">cipherKey</span><span class="token operator">:</span> <span class="token string">"myCipherKey"</span><span class="token punctuation">,</span>
+    <span class="token pn-variable pn-before-colon">authKey</span><span class="token operator">:</span> <span class="token string">"myAuthKey"</span><span class="token punctuation">,</span>
+    <span class="token pn-variable pn-before-colon">logVerbosity</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span> <span class="token comment">// set false for production</span>
+    <span class="token pn-variable pn-before-colon">uuid</span><span class="token operator">:</span> <span class="token string">"myUniqueUUID"</span><span class="token punctuation">,</span>
+    <span class="token pn-variable pn-before-colon">ssl</span><span class="token operator">:</span> <span class="token boolean">true</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+            </div>
+        </li>
+    </ol>
+    <h2 class="inpage-link tag-link main-placeholder">UUID</h2>
+    <h3 class="inpage-link tag-link">Description</h3>
+    <p>A <code>UUID</code> (Universal Unique Identifier) is a unique alphanumeric identifier used to identify the client to the PubNub platform. Each client should pass a <code>UUID</code> that represents the user or the device that connects to PubNub.</p>
+    <h3 class="inpage-link tag-link">Setting the UUID</h3>
+    <p>Set the <code>UUID</code> parameter when you instantiate a PubNub instance (i.e., new <code>PubNub()</code>). It is important that your application reuse the <code>UUID</code> on each device instead of generating a new <code>UUID</code> on each connection.</p>
+    <table class="table-icon-note">
+        <tbody>
+            <tr>
+                <td class="icon"><i class="fa icon icon-note" title="note">&nbsp;</i></td>
+                <td>
+                    Always set the <code>UUID</code> to uniquely identify the user or device that connects to PubNub. This <code>UUID</code> should be persisted, and should remain unchanged for the lifetime of the user or the device. Not setting the <code>UUID</code> can significantly impact your billing if your account uses the <a href="/pricing/#pn-chat" title="Pricing">Monthly Active Users (MAUs)</a> based pricing model, and can also lead to unexpected behavior if you have Presence enabled.
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="code-toolbar">
+        <pre class="line-numbers language-javascript"><code class="language-javascript"><span class="token keyword keyword-var">var</span> <span class="token pn-variable pn-before-equal">pubnub</span> <span class="token operator">=</span> <span class="token keyword keyword-new">new</span> <span class="token pn-variable">PubNub</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+    <span class="token pn-variable pn-before-colon">subscribeKey</span><span class="token operator">:</span> <span class="token string">"mySubscribeKey"</span><span class="token punctuation">,</span>
+    <span class="token pn-variable pn-before-colon">publishKey</span><span class="token operator">:</span> <span class="token string">"myPublishKey"</span><span class="token punctuation">,</span>
+    <span class="token pn-variable pn-before-colon">uuid</span><span class="token operator">:</span> <span class="token string">"myUniqueUUID"</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+    </div>You can also call the following method to explicitly set the <code>UUID</code>:
+    <ol class="ol-margin-extra">
+        <li>
+            <div>
+                <code class="inpage-plink tag-link"><a class="title-red" data-id="uuid-args-1-" href="#uuid-args-1" id="uuid-args-1-" title="Set UUID Argument">pubnub.setUUID(string)</a></code>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Parameter</th>
+                            <th>Type</th>
+                            <th>Required</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>uuid</code></td>
+                            <td>String</td>
+                            <td>Yes</td>
+                            <td><code>UUID</code> to set.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </li>
+    </ol>
+    <div class="code-toolbar">
+        <pre class="line-numbers language-javascript"><code class="language-javascript"><span class="token pn-variable">pubnub</span><span class="token punctuation">.</span><span class="token function">setUUID</span><span class="token punctuation">(</span><span class="token string">"myUniqueUUID"</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+    </div>
+    <h3 class="inpage-link tag-link">Saving the UUID</h3>
+    <p>Providing a value for the <code>uuid</code> parameter in the PubNub object initialization will result in that value getting saved in the browser's localStorage key (described above) automatically by the PubNub SDK. You may implement a different local caching strategy, as required.</p>
+    <p>Consider the following when implementing a <code>UUID</code> reuse strategy:</p>
+    <ol>
+        <li>On your server, generate a <code>UUID</code> the when a user creates a user profile (user registration process). You can generate this with the SDK, or by another method of your choosing.</li>
+        <li>Pass the <code>UUID</code> back to the user upon successful login (authentication process).</li>
+        <li>Persist the <code>UUID</code> on the device where it can be retrieved the next time the PubNub instance is instantiated. The PubNub instance might be instantiated multiple times as the app is left and re-entered, and you may not require a login with each new session.</li>
+    </ol>
+    <h3 class="inpage-link tag-link">Getting the UUID</h3>
+    <p>Use this method to get the current <code>UUID</code> set on your application.This method doesn't take any arguments.</p>
+    <div class="code-toolbar">
+        <pre class="line-numbers language-javascript"><code class="language-javascript"><span class="token pn-variable">pubnub</span><span class="token punctuation">.</span><span class="token function">getUUID</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+    </div>
+    <table class="table-icon-note">
+        <tbody>
+            <tr>
+                <td class="icon"><i class="fa icon icon-note" title="note">&nbsp;</i></td>
+                <td>
+                    <p>If you have not explicitly set a <code>UUID</code>, this method returns a generated <code>UUID</code> of the form "<i>pn-...</i>".</p>
+                    <p>Each PubNub SDK provides a <code>UUID</code> generator API (for example, generateUUID). It is not required that you use this API to create a <code>UUID</code> and this format of the <code>UUID</code> is not required (any string will do up to 64 characters). Just consider that whatever you use will be visible to other users (if a user peeks behind the scenes using the browser console or other tools), so you should not use a username or email as the <code>UUID</code>. The <code>UUID</code> should be something that can be easily replaced as required without user interaction or even knowledge that it has happened.</p>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <h3 class="inpage-link tag-link">Generating the UUID</h3>
+    <p>If your application does not need to use the <code>UUID</code> parameter for presence operations and account is not billed based on <a href="/pricing/#pn-chat" title="Pricing">Monthly Active Users (MAUs)</a> based pricing model.</p>
+    <div class="code-toolbar">
+        <pre class="line-numbers language-javascript"><code class="language-javascript"><span class="token pn-variable">PubNub</span><span class="token punctuation">.</span><span class="token function">generateUUID</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+    </div>
+    <h2 class="inpage-link tag-link main-placeholder">Authentication Key</h2>
+    <h3 class="inpage-link tag-link">Description</h3>
+    <div>
+        This function provides the capability to reset a user's auth Key.
+    </div>
+    <div>
+        Typically auth Key is specified during initialization for PubNub Access Manager enabled applications. In the event that auth Key has expired or a new auth Key is issued to the client from a Security Authority, the new auth Key can be sent using <code>setAuthKey()</code>.
+    </div>
+    <h3 class="inpage-link tag-link">Property</h3>
+    <div>
+        To <code>Set Authentication Key</code> you can use the following method(s) in the JavaScript V4 SDK
+    </div>
+    <ol class="ol-margin-extra">
+        <li class="list-inline">
+            <div>
+                <code class="inpage-plink tag-link"><a class="title-red" data-id="setauthkey_args_1-" href="#setauthkey_args_1" id="setauthkey_args_1-" title="Set Auth Key">pubnub.setAuthKey(string)</a></code>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Parameter</th>
+                            <th>Type</th>
+                            <th>Required</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>key</code></td>
+                            <td>String</td>
+                            <td>Yes</td>
+                            <td><code>Auth key</code> to set.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </li>
+    </ol>
+    <h3 class="inpage-link tag-link">Basic Usage</h3>
+    <div class="code-toolbar">
+        <pre class="line-numbers language-javascript"><code class="language-javascript"><span class="token pn-variable">pubnub</span><span class="token punctuation">.</span><span class="token function">setAuthKey</span><span class="token punctuation">(</span><span class="token string">"my_authkey"</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+    </div>
+    <h3 class="inpage-link tag-link">Returns</h3>
+    <div>
+        None.
+    </div>
+    <hr>
+    <h2 class="inpage-link tag-link main-placeholder inline">Filter Expression</h2>
+    <div class="custom-popup-main">
+        <span class="popup-button">Requires <i>Stream Controller</i> add-on</span> <span class="popup-content"><a class="custom-popup-close" href="javascript:void(0)" title="Close">X</a><span class="inner-content">Requires that the Stream Controller add-on is enabled for your key. See this page on enabling add-on features on your keys:<br>
+        <br>
+        <a href="/knowledge-base/discussion/644/how-do-i-enable-add-on-features-for-my-keys" target="_blank" title="Open in New window">http://www.pubnub.com/knowledge-base/discussion/644/how-do-i-enable-add-on-features-for-my-keys</a>.</span></span>
+    </div>
+    <h3 class="inpage-link tag-link">Description</h3>
+    <div>
+        <p>Stream filtering allows a subscriber to apply a filter to only receive messages that satisfy the conditions of the filter. The message filter is set by the subscribing client(s) but it is applied on the server side thus preventing unwanted messages (those that do not meet the conditions of the filter) from reaching the subscriber.</p>
+        <p>To set/get filters you can use the following method. To learn more about stream filtering, refer to the <a href="/docs/web-javascript/stream-filtering-tutorial">stream filtering tutorial</a>.</p>
+    </div>
+    <h3 class="inpage-link tag-link">Method(s)</h3>
+    <ol class="ol-margin-extra">
+        <li>
+            <div>
+                <code class="inpage-plink tag-link"><a class="title-red" data-id="set-filter-expression-args-1-" href="#set-filter-expression-args-1" id="set-filter-expression-args-1-" title="Set Filter Expression Method">pubnub.setFilterExpression(String filterExpression)</a></code>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Parameter</th>
+                            <th>Type</th>
+                            <th>Required</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="tableblock halign-left valign-top"><code>filterExpression</code></td>
+                            <td class="tableblock halign-left valign-top">String</td>
+                            <td class="tableblock halign-left valign-top">Yes</td>
+                            <td class="tableblock halign-left valign-top">PSV2 feature to <code>subscribe</code> with a custom filter expression.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </li>
+        <li>
+            <div>
+                <code class="inpage-plink tag-link"><a class="title-red" data-id="get-filter-expression-args-1-" href="#get-filter-expression-args-1" id="get-filter-expression-args-1-" title="Get Filter Expression Method">pubnub.getFilterExpression()</a></code>
+            </div>
+            <p>This method doesn't take any arguments.</p>
+        </li>
+    </ol>
+    <h3 class="inpage-link tag-link">Basic Usage</h3>
+    <div class="inpage-plink tag-link">
+        <a class="title-red" data-id="set-filter-expression-usage-" href="#set-filter-expression-usage" id="set-filter-expression-usage-" title="Set Filter Expression">Set Filter Expression</a>
+    </div>
+    <div class="code-toolbar">
+        <pre class="line-numbers language-javascript"><code class="language-javascript"><span class="token pn-variable">pubnub</span><span class="token punctuation">.</span><span class="token function">setFilterExpression</span><span class="token punctuation">(</span><span class="token string">"such=wow"</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+    </div>
+    <div class="inpage-plink tag-link">
+        <a class="title-red" data-id="get-filter-expression-usage-" href="#get-filter-expression-usage" id="get-filter-expression-usage-" title="Get Filter Expression">Get Filter Expression</a>
+    </div>
+    <div class="code-toolbar">
+        <pre class="line-numbers language-javascript"><code class="language-javascript"><span class="token pn-variable">pubnub</span><span class="token punctuation">.</span><span class="token function">getFilterExpression</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+    </div>

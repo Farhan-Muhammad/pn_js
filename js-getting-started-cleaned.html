@@ -1,0 +1,340 @@
+    <p>This page outlines the steps to follow to create a simple Hello, World application with PubNub. This covers the basics of integrating PubNub in your application: setting up a connection to PubNub, and sending and receiving messages.</p>
+    <table style="width:90%;margin-left:5%">
+        <thead>
+            <tr>
+                <th style="width:initial;border-bottom: 1px solid #e4e4eb;">SDK getting started</th>
+                <th style="width:initial;border-bottom: 1px solid #e4e4eb;">Sample app quickstart</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td style="width:initial">
+                    <ol>
+                        <li>
+                            <a href="#pubnub-account">PubNub account</a>
+                        </li>
+                        <li>
+                            <a href="#download-the-sdk">Download the SDK</a>
+                        </li>
+                        <li>
+                            <a href="#putting-it-together">Send messages</a>
+                        </li>
+                    </ol>
+                </td>
+                <td style="width:initial">
+                    <ul>
+                        <li>
+                            <a href="/docs/platform/quickstarts/javascript">JavaScript Quickstart</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <h2 class="inpage-link tag-link">PubNub account</h2><br>
+    <p><a class="portal-get-started" href="https://dashboard.pubnub.com/signup" target="_self">Sign in</a> or <a class="portal-get-started" href="https://dashboard.pubnub.com/signup" target="_self">create an account</a> to create an app on the Admin Portal and get the keys to use in your application.</p>
+    <p>When you create a new app, the first set of keys is generated automatically, but a single app can have as many keysets as you like. We recommend that you create separate keysets for production and test environments.</p>
+    <h2 class="download-the-sdk">Download the SDK</h2>
+    <p>Download the SDK from any of the following sources:</p>
+    <h4 data-id="use-a-cdn">Use a CDN</h4>
+    <p>To integrate PubNub into your project using a content delivery network:</p>
+    <div class="code-toolbar">
+        <pre class="line-numbers language-html"><code class="language-html">https://cdn.pubnub.com/sdk/javascript/pubnub.4.29.8.js
+https://cdn.pubnub.com/sdk/javascript/pubnub.4.29.8.min.js<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+        <div class="toolbar">
+            <div class="toolbar-item">
+                <button>Copy</button>
+            </div>
+        </div>
+    </div>
+    <h4 data-id="use-a-package-manager">Use a package manager</h4>
+    <div class="code-toolbar">
+        <pre class=" language-bash"><code class=" language-bash"><span class="token function">yarn</span> <span class="token function">add</span> pubnub</code></pre>
+        <div class="toolbar">
+            <div class="toolbar-item">
+                <button>Copy</button>
+            </div>
+        </div>
+    </div>
+    <h4 data-id="get-source-code">Get the source code</h4>
+    <div class="copy-to-clipboard">
+        <a data-id="cb-1-" href="https://github.com/pubnub/javascript" id="cb-1-" target="_blank" title="SDK source-code repository on GitHub">https://github.com/pubnub/javascript</a><button class="clipboardjs-button" data-clipboard-text="https://github.com/pubnub/javascript" title="Copy to Clipboard">Copy</button>
+    </div>
+    <h2 class="configure-pubnub">Configure PubNub</h2>
+    <p>Create an <code>index.html</code> file with the following content. This is the minimum configuration you need to send and receive messages with PubNub.</p>
+    <p>Make sure to replace <em>urlToContentDeliveryNetworkVersionOfSDK</em> with the URL to the SDK's <a href="#download-the-sdk">CDN URL</a> and replace <em>myPublishKey</em> and <em>mySubscribeKey</em> with your app's publish and subscribe keys from the Admin Portal.</p>
+    <div class="code-toolbar">
+        <pre class="line-numbers language-javascript"><code class="language-javascript"><span class="token operator">&lt;</span><span class="token operator">!</span><span class="token constant">DOCTYPE</span> <span class="token pn-variable">html</span><span class="token operator">&gt;</span>
+ <span class="token operator">&lt;</span><span class="token pn-variable">head</span><span class="token operator">&gt;</span>
+ <span class="token operator">&lt;</span><span class="token pn-variable">meta</span> <span class="token pn-variable pn-before-equal">charset</span><span class="token operator">=</span><span class="token string">"utf-8"</span><span class="token operator">/</span><span class="token operator">&gt;</span>
+ <span class="token operator">&lt;</span><span class="token pn-variable">title</span><span class="token operator">&gt;</span><span class="token pn-variable">Hello</span><span class="token punctuation">,</span> <span class="token pn-variable">PubNub</span><span class="token operator">&lt;</span><span class="token operator">/</span><span class="token pn-variable">title</span><span class="token operator">&gt;</span>
+ <span class="token operator">&lt;</span><span class="token operator">!</span><span class="token operator">--</span> <span class="token pn-variable">Update</span> <span class="token keyword keyword-this">this</span> <span class="token pn-variable">block</span> <span class="token keyword keyword-with">with</span> <span class="token pn-variable">the</span> <span class="token constant">URL</span> <span class="token pn-variable">to</span> <span class="token pn-variable">the</span> <span class="token pn-variable">content</span> <span class="token pn-variable">delivery</span> <span class="token pn-variable">network</span> <span class="token pn-variable">version</span> <span class="token keyword keyword-of">of</span> <span class="token pn-variable">the</span> <span class="token constant">SDK</span> <span class="token operator">--</span><span class="token operator">&gt;</span>
+ <span class="token operator">&lt;</span><span class="token pn-variable">script</span> <span class="token pn-variable pn-before-equal">src</span><span class="token operator">=</span><span class="token string">"urlToContentDeliveryNetworkVersionOfSDK"</span><span class="token operator">&gt;</span><span class="token operator">&lt;</span><span class="token operator">/</span><span class="token pn-variable">script</span><span class="token operator">&gt;</span>
+ <span class="token operator">&lt;</span><span class="token operator">/</span><span class="token pn-variable">head</span><span class="token operator">&gt;</span>
+ <span class="token operator">&lt;</span><span class="token pn-variable">body</span><span class="token operator">&gt;</span>
+ <span class="token operator">&lt;</span><span class="token pn-variable">script</span><span class="token operator">&gt;</span>
+
+ <span class="token keyword keyword-function">function</span> <span class="token function">letsGo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+
+     <span class="token comment">// Update this block with your publish/subscribe keys</span>
+     <span class="token pn-variable pn-before-equal">pubnub</span> <span class="token operator">=</span> <span class="token keyword keyword-new">new</span> <span class="token pn-variable">PubNub</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+         <span class="token pn-variable pn-before-colon">publishKey</span> <span class="token operator">:</span> <span class="token string">"myPublishKey"</span><span class="token punctuation">,</span>
+         <span class="token pn-variable pn-before-colon">subscribeKey</span> <span class="token operator">:</span> <span class="token string">"mySubscribeKey"</span><span class="token punctuation">,</span>
+         <span class="token pn-variable pn-before-colon">uuid</span><span class="token operator">:</span> <span class="token string">"myUniqueUUID"</span>
+     <span class="token punctuation">}</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+ <span class="token operator">&lt;</span><span class="token operator">/</span><span class="token pn-variable">script</span><span class="token operator">&gt;</span>
+ <span class="token operator">&lt;</span><span class="token operator">/</span><span class="token pn-variable">body</span><span class="token operator">&gt;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code> </pre>
+        <div class="toolbar">
+            <div class="toolbar-item">
+                <button>Copy</button>
+            </div>
+        </div>
+    </div>
+    <p>For more information, refer to the <a href="/docs/web-javascript/api-reference-configuration">Configuration</a> section of the SDK documentation.</p>
+    <h2 class="inpage-link tag-link">Add event listeners</h2>
+    <p>Listeners help your app react to events and messages. You can implement custom app logic to respond to each type of message or event.</p>
+    <p>Copy the following code to configure your app such that when it receives an event of type <code>PNConnectedCategory</code>, it calls the <code>publishSampleMessage()</code> function.</p>
+    <div class="code-toolbar">
+        <pre class="line-numbers language-javascript"><code class="language-javascript"><span class="token pn-variable">pubnub</span><span class="token punctuation">.</span><span class="token function">addListener</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+        <span class="token function-variable function">status</span><span class="token operator">:</span> <span class="token keyword keyword-function">function</span><span class="token punctuation">(</span><span class="token parameter"><span class="token pn-variable">statusEvent</span></span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword keyword-if">if</span> <span class="token punctuation">(</span><span class="token pn-variable">statusEvent</span><span class="token punctuation">.</span><span class="token pn-variable pn-before-equal pn-after-dot">category</span> <span class="token operator">===</span> <span class="token string">"PNConnectedCategory"</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                <span class="token function">publishSampleMessage</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span><span class="token punctuation">,</span>
+        <span class="token function-variable function">message</span><span class="token operator">:</span> <span class="token keyword keyword-function">function</span><span class="token punctuation">(</span><span class="token parameter"><span class="token pn-variable">msg</span></span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token pn-variable">console</span><span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token pn-variable">msg</span><span class="token punctuation">.</span><span class="token pn-variable pn-after-dot">message</span><span class="token punctuation">.</span><span class="token pn-variable pn-after-dot">title</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token pn-variable">console</span><span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token pn-variable">msg</span><span class="token punctuation">.</span><span class="token pn-variable pn-after-dot">message</span><span class="token punctuation">.</span><span class="token pn-variable pn-after-dot">description</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span><span class="token punctuation">,</span>
+        <span class="token function-variable function">presence</span><span class="token operator">:</span> <span class="token keyword keyword-function">function</span><span class="token punctuation">(</span><span class="token parameter"><span class="token pn-variable">presenceEvent</span></span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token comment">// This is where you handle presence. Not important for now :)</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+        <div class="toolbar">
+            <div class="toolbar-item">
+                <button>Copy</button>
+            </div>
+        </div>
+    </div>
+    <p>For more information, refer to the <a href="/docs/web-javascript/api-reference-publish-and-subscribe#listeners">Listeners</a> section of the SDK documentation.</p>
+    <h2 class="inpage-link tag-link">Publish and subscribe</h2>
+    <p>To receive messages sent to a particular channel, you <em>subscribe</em> to it. When you <em>publish</em> a message to a channel, PubNub delivers that message to everyone subscribed to that channel.</p>
+    <p>Copy the code below to define the message and the channel you're going to send the message to in the <code>publishPayload</code> variable within the <code>publishSampleMessage()</code> function declaration.</p>
+    <div class="code-toolbar">
+        <pre class="line-numbers language-javascript"><code class="language-javascript"><span class="token keyword keyword-function">function</span> <span class="token function">publishSampleMessage</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token pn-variable">console</span><span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">"Publish to a channel 'hello_world'"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token comment">// With the right payload, you can publish a message, add a reaction to a message, </span>
+        <span class="token comment">// send a push notification, or send a small payload called a signal.</span>
+        <span class="token keyword keyword-var">var</span> <span class="token pn-variable pn-before-equal">publishPayload</span> <span class="token operator">=</span> <span class="token punctuation">{</span>
+            <span class="token pn-variable pn-before-colon">channel</span> <span class="token operator">:</span> <span class="token string">"hello_world"</span><span class="token punctuation">,</span>
+            <span class="token pn-variable pn-before-colon">message</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+                <span class="token pn-variable pn-before-colon">title</span><span class="token operator">:</span> <span class="token string">"greeting"</span><span class="token punctuation">,</span>
+                <span class="token pn-variable pn-before-colon">description</span><span class="token operator">:</span> <span class="token string">"This is my first message!"</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+        <span class="token pn-variable">pubnub</span><span class="token punctuation">.</span><span class="token function">publish</span><span class="token punctuation">(</span><span class="token pn-variable">publishPayload</span><span class="token punctuation">,</span> <span class="token keyword keyword-function">function</span><span class="token punctuation">(</span><span class="token parameter"><span class="token pn-variable">status</span><span class="token punctuation">,</span> <span class="token pn-variable">response</span></span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token pn-variable">console</span><span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token pn-variable">status</span><span class="token punctuation">,</span> <span class="token pn-variable">response</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span><span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token pn-variable">pubnub</span><span class="token punctuation">.</span><span class="token function">subscribe</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+        <span class="token pn-variable pn-before-colon">channels</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">"hello_world"</span><span class="token punctuation">]</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+        <div class="toolbar">
+            <div class="toolbar-item">
+                <button>Copy</button>
+            </div>
+        </div>
+    </div>
+    <p>For more information, refer to the <a href="/docs/web-javascript/api-reference-publish-and-subscribe">Publish and Subscribe</a> section of the SDK documentation, and to <a href="/docs/platform/messages/publish">Publishing a Message</a>.</p>
+    <h2 class="inpage-link tag-link">Putting it all together</h2>
+    <p>Your <code>index.html</code> file should now look similar to the one below:</p>
+    <div class="code-toolbar">
+        <pre class="line-numbers language-javascript"><code class="language-javascript"> <span class="token operator">&lt;</span><span class="token operator">!</span><span class="token constant">DOCTYPE</span> <span class="token pn-variable">html</span><span class="token operator">&gt;</span>
+<span class="token operator">&lt;</span><span class="token pn-variable">head</span><span class="token operator">&gt;</span>
+<span class="token operator">&lt;</span><span class="token pn-variable">meta</span> <span class="token pn-variable pn-before-equal">charset</span><span class="token operator">=</span><span class="token string">"utf-8"</span><span class="token operator">/</span><span class="token operator">&gt;</span>
+<span class="token operator">&lt;</span><span class="token pn-variable">title</span><span class="token operator">&gt;</span><span class="token pn-variable">Hello</span><span class="token punctuation">,</span> <span class="token pn-variable">PubNub</span><span class="token operator">&lt;</span><span class="token operator">/</span><span class="token pn-variable">title</span><span class="token operator">&gt;</span>
+<span class="token operator">&lt;</span><span class="token operator">!</span><span class="token operator">--</span> <span class="token pn-variable">Update</span> <span class="token keyword keyword-this">this</span> <span class="token pn-variable">block</span> <span class="token keyword keyword-with">with</span> <span class="token pn-variable">the</span> <span class="token constant">URL</span> <span class="token pn-variable">to</span> <span class="token pn-variable">the</span> <span class="token pn-variable">content</span> <span class="token pn-variable">delivery</span> <span class="token pn-variable">network</span> <span class="token pn-variable">version</span> <span class="token keyword keyword-of">of</span> <span class="token pn-variable">the</span> <span class="token constant">SDK</span> <span class="token operator">--</span><span class="token operator">&gt;</span>
+<span class="token operator">&lt;</span><span class="token pn-variable">script</span> <span class="token pn-variable pn-before-equal">src</span><span class="token operator">=</span><span class="token string">"https://cdn.pubnub.com/sdk/javascript/pubnub.4.29.9.js"</span><span class="token operator">&gt;</span><span class="token operator">&lt;</span><span class="token operator">/</span><span class="token pn-variable">script</span><span class="token operator">&gt;</span>
+<span class="token operator">&lt;</span><span class="token operator">/</span><span class="token pn-variable">head</span><span class="token operator">&gt;</span>
+<span class="token operator">&lt;</span><span class="token pn-variable">body</span><span class="token operator">&gt;</span>
+<span class="token operator">&lt;</span><span class="token pn-variable">script</span><span class="token operator">&gt;</span>
+
+<span class="token keyword keyword-function">function</span> <span class="token function">letsGo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+
+    <span class="token comment">// Update this block with your publish/subscribe keys</span>
+    <span class="token pn-variable pn-before-equal">pubnub</span> <span class="token operator">=</span> <span class="token keyword keyword-new">new</span> <span class="token pn-variable">PubNub</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+        <span class="token pn-variable pn-before-colon">publishKey</span> <span class="token operator">:</span> <span class="token string">"myPublishKey"</span><span class="token punctuation">,</span>
+        <span class="token pn-variable pn-before-colon">subscribeKey</span> <span class="token operator">:</span> <span class="token string">"mySubscribeKey"</span><span class="token punctuation">,</span>
+        <span class="token pn-variable pn-before-colon">uuid</span><span class="token operator">:</span> <span class="token string">"myUniqueUUID"</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span>
+
+    <span class="token keyword keyword-function">function</span> <span class="token function">publishSampleMessage</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token pn-variable">console</span><span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">"Publish to a channel 'hello_world'"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment">// With the right payload, you can publish a message, add a reaction to a message, </span>
+        <span class="token comment">// send a push notification, or send a small payload called a signal.</span>
+        <span class="token keyword keyword-var">var</span> <span class="token pn-variable pn-before-equal">publishPayload</span> <span class="token operator">=</span> <span class="token punctuation">{</span>
+            <span class="token pn-variable pn-before-colon">channel</span> <span class="token operator">:</span> <span class="token string">"hello_world"</span><span class="token punctuation">,</span>
+            <span class="token pn-variable pn-before-colon">message</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+                <span class="token pn-variable pn-before-colon">title</span><span class="token operator">:</span> <span class="token string">"greeting"</span><span class="token punctuation">,</span>
+                <span class="token pn-variable pn-before-colon">description</span><span class="token operator">:</span> <span class="token string">"This is my first message!"</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+        <span class="token pn-variable">pubnub</span><span class="token punctuation">.</span><span class="token function">publish</span><span class="token punctuation">(</span><span class="token pn-variable">publishPayload</span><span class="token punctuation">,</span> <span class="token keyword keyword-function">function</span><span class="token punctuation">(</span><span class="token parameter"><span class="token pn-variable">status</span><span class="token punctuation">,</span> <span class="token pn-variable">response</span></span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token pn-variable">console</span><span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token pn-variable">status</span><span class="token punctuation">,</span> <span class="token pn-variable">response</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span><span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token pn-variable">pubnub</span><span class="token punctuation">.</span><span class="token function">addListener</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+        <span class="token function-variable function">status</span><span class="token operator">:</span> <span class="token keyword keyword-function">function</span><span class="token punctuation">(</span><span class="token parameter"><span class="token pn-variable">statusEvent</span></span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword keyword-if">if</span> <span class="token punctuation">(</span><span class="token pn-variable">statusEvent</span><span class="token punctuation">.</span><span class="token pn-variable pn-before-equal pn-after-dot">category</span> <span class="token operator">===</span> <span class="token string">"PNConnectedCategory"</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                <span class="token function">publishSampleMessage</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span><span class="token punctuation">,</span>
+        <span class="token function-variable function">message</span><span class="token operator">:</span> <span class="token keyword keyword-function">function</span><span class="token punctuation">(</span><span class="token parameter"><span class="token pn-variable">msg</span></span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token pn-variable">console</span><span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token pn-variable">msg</span><span class="token punctuation">.</span><span class="token pn-variable pn-after-dot">message</span><span class="token punctuation">.</span><span class="token pn-variable pn-after-dot">title</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token pn-variable">console</span><span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token pn-variable">msg</span><span class="token punctuation">.</span><span class="token pn-variable pn-after-dot">message</span><span class="token punctuation">.</span><span class="token pn-variable pn-after-dot">description</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span><span class="token punctuation">,</span>
+        <span class="token function-variable function">presence</span><span class="token operator">:</span> <span class="token keyword keyword-function">function</span><span class="token punctuation">(</span><span class="token parameter"><span class="token pn-variable">presenceEvent</span></span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token comment">// This is where you handle presence. Not important for now :)</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span>
+
+    <span class="token pn-variable">console</span><span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">"Subscribing..."</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token pn-variable">pubnub</span><span class="token punctuation">.</span><span class="token function">subscribe</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+        <span class="token pn-variable pn-before-colon">channels</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">'hello_world'</span><span class="token punctuation">]</span> 
+    <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+<span class="token operator">&lt;</span><span class="token operator">/</span><span class="token pn-variable">script</span><span class="token operator">&gt;</span>
+<span class="token operator">&lt;</span><span class="token operator">/</span><span class="token pn-variable">body</span><span class="token operator">&gt;</span>
+
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+        <div class="toolbar">
+            <div class="toolbar-item">
+                <button>Copy</button>
+            </div>
+        </div>
+    </div>
+    <p>Now, run your app to see if you did everything correctly:</p>
+    <ol>
+        <li>
+            <p>Save <code>index.html</code> and open it in a web browser. Then, using the browser's developer tools, open the JavaScript console.</p>
+        </li>
+        <li>
+            <p>In the console, type <code>letsGo()</code> and press Enter. This invokes the function, and you should see output similar to the following:</p>
+            <div class="code-toolbar">
+                <pre class="line-numbers language-json"><code class="language-json">Subscribing...
+Since we're publishing on subscribe connectEvent<span class="token punctuation">,</span> we're sure we'll receive the following publish.
+Object <span class="token punctuation">{</span> error<span class="token operator">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span> operation<span class="token operator">:</span> <span class="token string">"PNPublishOperation"</span><span class="token punctuation">,</span> statusCode<span class="token operator">:</span> <span class="token number">200</span> <span class="token punctuation">}</span>
+Object <span class="token punctuation">{</span> timetoken<span class="token operator">:</span> <span class="token string">"15885924757665604"</span> <span class="token punctuation">}</span>
+greeting
+This is my first message!
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+                <div class="toolbar">
+                    <div class="toolbar-item">
+                        <button>Copy</button>
+                    </div>
+                </div>
+            </div>
+        </li>
+    </ol>
+    <p>Congratulations! You've just subscribed to a channel and sent your first message.</p>
+    <h3 class="inpage-link tag-link">Walkthrough</h3>
+    <p>Instead of focusing on the order in which you <em>wrote</em> the code, let's focus on the <em>order in which it runs</em>. The app you just created does a few things:</p>
+    <ul>
+        <li>defines a <code>letsGo()</code> function</li>
+        <li>configures a PubNub connection</li>
+        <li>adds an event listener</li>
+        <li>subscribes to a channel</li>
+        <li>publishes a message</li>
+    </ul>
+    <h3 class="inpage-link tag-link">Creating a JavaScript function</h3>
+    <p>The <code>letsGo()</code> function is where all the magic happens. This function uses methods in the JavaScript SDK to initialize the PubNub configuration object, subscribe to a channel, and publish a message to it.</p>
+    <h3 class="inpage-link tag-link">Configuring PubNub</h3>
+    <p>The following code is the minimum configuration you need to send and receive messages with PubNub. For more information, refer to the <a href="/docs/web-javascript/api-reference-configuration">Configuration</a> section of the SDK documentation.</p>
+    <div class="code-toolbar">
+        <pre class="line-numbers language-javascript"><code class="language-javascript"><span class="token pn-variable pn-before-equal">pubnub</span> <span class="token operator">=</span> <span class="token keyword keyword-new">new</span> <span class="token pn-variable">PubNub</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+        <span class="token pn-variable pn-before-colon">publishKey</span> <span class="token operator">:</span> <span class="token string">"myPublishKey"</span><span class="token punctuation">,</span>
+        <span class="token pn-variable pn-before-colon">subscribeKey</span> <span class="token operator">:</span> <span class="token string">"mySubscribeKey"</span><span class="token punctuation">,</span>
+        <span class="token pn-variable pn-before-colon">uuid</span><span class="token operator">:</span> <span class="token string">"myUniqueUUID"</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+        <div class="toolbar">
+            <div class="toolbar-item">
+                <button>Copy</button>
+            </div>
+        </div>
+    </div>
+    <h3 class="inpage-link tag-link">Adding event listeners</h3>
+    <p>Listeners help your app react to events and messages. You can implement custom app logic to respond to each type of message or event. When the sample app receives an event of type <code>PNConnectedCategory</code>, it calls the <code>publishSampleMessage()</code> function. What does this mean?</p>
+    <p>When you successfully subscribe to a channel, PubNub sends a <code>PNConnectedCategory</code> status event. The app listens for this event, and calls the <code>publishSampleMessage()</code> function when it receives this event, which triggers publishing of the "This is my first message!" message.</p>
+    <p>The sample app also listens for messages. When it receives a message, the app simply prints the received message's title and description. This is why you see "greeting" and "This is my first message!" displayed in the console.</p>
+    <div class="code-toolbar">
+        <pre class="line-numbers language-javascript"><code class="language-javascript"><span class="token pn-variable">pubnub</span><span class="token punctuation">.</span><span class="token function">addListener</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+        <span class="token function-variable function">status</span><span class="token operator">:</span> <span class="token keyword keyword-function">function</span><span class="token punctuation">(</span><span class="token parameter"><span class="token pn-variable">statusEvent</span></span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword keyword-if">if</span> <span class="token punctuation">(</span><span class="token pn-variable">statusEvent</span><span class="token punctuation">.</span><span class="token pn-variable pn-before-equal pn-after-dot">category</span> <span class="token operator">===</span> <span class="token string">"PNConnectedCategory"</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                <span class="token function">publishSampleMessage</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span><span class="token punctuation">,</span>
+        <span class="token function-variable function">message</span><span class="token operator">:</span> <span class="token keyword keyword-function">function</span><span class="token punctuation">(</span><span class="token parameter"><span class="token pn-variable">msg</span></span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token pn-variable">console</span><span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token pn-variable">msg</span><span class="token punctuation">.</span><span class="token pn-variable pn-after-dot">message</span><span class="token punctuation">.</span><span class="token pn-variable pn-after-dot">title</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token pn-variable">console</span><span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token pn-variable">msg</span><span class="token punctuation">.</span><span class="token pn-variable pn-after-dot">message</span><span class="token punctuation">.</span><span class="token pn-variable pn-after-dot">description</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span><span class="token punctuation">,</span>
+        <span class="token function-variable function">presence</span><span class="token operator">:</span> <span class="token keyword keyword-function">function</span><span class="token punctuation">(</span><span class="token parameter"><span class="token pn-variable">presenceEvent</span></span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token comment">// This is where you handle presence. Not important for now :)</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+        <div class="toolbar">
+            <div class="toolbar-item">
+                <button>Copy</button>
+            </div>
+        </div>
+    </div>
+    <p>For more information, refer to the <a href="/docs/web-javascript/api-reference-publish-and-subscribe#listeners">Listeners</a> section of the SDK documentation.</p>
+    <h3 class="inpage-link tag-link">Publishing and subscribing</h3>
+    <p>PubNub uses the Publish/Subscribe model for realtime communication. This model involves two essential parts:</p>
+    <ul>
+        <li>Channels are transient paths over which your data is transmitted</li>
+        <li>Messages contain the data you want to send to one or more recipients</li>
+    </ul>
+    <p>To receive messages sent to a particular channel, you <em>subscribe</em> to it. When you <em>publish</em> a message to a channel, PubNub delivers that message to everyone subscribed to that channel. In this example, you subscribe to a channel named <code>hello_world</code>.</p>
+    <p>A message can be any type of JSON-serializable data (such as objects, arrays, integers, and strings) that is smaller than 32 KiB. PubNub will, in most cases, deliver your message to its intended recipients in fewer than 100 ms regardless of their location.</p>
+    <p>In the example app, you define the message and the channel you're going to send the message to in the <code>publishPayload</code> variable within the <code>publishSampleMessage()</code> function declaration:</p>
+    <div class="code-toolbar">
+        <pre class="line-numbers language-javascript"><code class="language-javascript"><span class="token keyword keyword-function">function</span> <span class="token function">publishSampleMessage</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token pn-variable">console</span><span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">"Publish to a channel 'hello_world'"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token comment">// With the right payload, you can publish a message, add a reaction to a message, </span>
+        <span class="token comment">// send a push notification, or send a small payload called a signal.</span>
+        <span class="token keyword keyword-var">var</span> <span class="token pn-variable pn-before-equal">publishPayload</span> <span class="token operator">=</span> <span class="token punctuation">{</span>
+            <span class="token pn-variable pn-before-colon">channel</span> <span class="token operator">:</span> <span class="token string">"hello_world"</span><span class="token punctuation">,</span>
+            <span class="token pn-variable pn-before-colon">message</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+                <span class="token pn-variable pn-before-colon">title</span><span class="token operator">:</span> <span class="token string">"greeting"</span><span class="token punctuation">,</span>
+                <span class="token pn-variable pn-before-colon">description</span><span class="token operator">:</span> <span class="token string">"This is my first message!"</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+        <span class="token pn-variable">pubnub</span><span class="token punctuation">.</span><span class="token function">publish</span><span class="token punctuation">(</span><span class="token pn-variable">publishPayload</span><span class="token punctuation">,</span> <span class="token keyword keyword-function">function</span><span class="token punctuation">(</span><span class="token parameter"><span class="token pn-variable">status</span><span class="token punctuation">,</span> <span class="token pn-variable">response</span></span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token pn-variable">console</span><span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token pn-variable">status</span><span class="token punctuation">,</span> <span class="token pn-variable">response</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span><span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+    <span class="token punctuation">(</span><span class="token operator">...</span><span class="token punctuation">)</span>
+
+    <span class="token pn-variable">pubnub</span><span class="token punctuation">.</span><span class="token function">subscribe</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+        <span class="token pn-variable pn-before-colon">channels</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">"hello_world"</span><span class="token punctuation">]</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+        <div class="toolbar">
+            <div class="toolbar-item">
+                <button>Copy</button>
+            </div>
+        </div>
+    </div>
+    <p>For more information, refer to the <a href="/docs/web-javascript/api-reference-publish-and-subscribe">Publish and Subscribe</a> section of the SDK documentation, and to <a href="/docs/platform/channels/send">Publishing a Message</a>.</p>
+    <h2 class="inpage-link tag-link" data-id="next-steps">Next steps</h2>
+    <p>You have just learned how to use the JavaScript SDK to send and receive messages using PubNub. Next, take a look at the SDK's <a href="/docs/web-javascript/api-reference-configuration">reference documentation</a>, which covers PubNub API in more detail.</p>

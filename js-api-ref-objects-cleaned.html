@@ -1,0 +1,2151 @@
+    <p>Objects provides easy-to-use, serverless storage for user and channel data you need to build innovative, reliable, scalable applications. Use Objects to easily store metadata about your application users and channels, and their membership associations, without the need to stand up your own databases.</p>
+    <p>PubNub also triggers events when object data is set or removed from the database. Clients can receive these events in realtime and update their front-end application accordingly.</p>
+    <h2 class="inpage-link tag-link main-placeholder">User</h2>
+    <h3 class="inpage-link tag-link main-placeholder">Get Metadata for All Users</h3>
+    <h4 class="inpage-link tag-link">Description</h4>
+    <p>Returns a paginated list of UUID Metadata objects, optionally including the custom data object for each.</p>
+    <h4 class="inpage-link tag-link">Method(s)</h4>
+    <p>To <code>Get All UUID Metadata</code> you can use the following method(s) in the JavaScript V4 SDK:</p>
+    <ol>
+        <li>
+            <div>
+                <code class="inpage-plink tag-link padding-left-0"><a class="title-red" data-id="get-metadata-for-all-users-arg-" href="#get-metadata-for-all-users-arg" id="get-metadata-for-all-users-arg-" title="Get Metadata for All Users Argument">pubnub.objects.getAllUUIDMetadata(<br>
+                <span class="margin-left-1">{Object <code>include</code>, String <code>filter</code>, Object <code>sort</code>, Number <code>limit</code>, Object <code>page</code>},</span> <span class="margin-left-1">Function <code>callback</code></span> )</a></code>
+            </div>
+            <div class="table-responsive wide-parm">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Parameter</th>
+                            <th>Type</th>
+                            <th>Required</th>
+                            <th>Defaults</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>include</code></td>
+                            <td>Object</td>
+                            <td>Optional</td>
+                            <td></td>
+                            <td>Include respective additional fields in the response.</td>
+                        </tr>
+                        <tr>
+                            <td><code class="margin-left-1">totalCount</code></td>
+                            <td>Boolean</td>
+                            <td>Optional</td>
+                            <td><code>false</code></td>
+                            <td>Request <code>totalCount</code> to be included in paginated response. By default, <code>totalCount</code> is omitted.</td>
+                        </tr>
+                        <tr>
+                            <td><code class="margin-left-1">customFields</code></td>
+                            <td>Boolean</td>
+                            <td>Optional</td>
+                            <td><code>false</code></td>
+                            <td>Whether to fetch <code>custom</code> fields or not.</td>
+                        </tr>
+                        <tr>
+                            <td><code>filter</code></td>
+                            <td>String</td>
+                            <td>Optional</td>
+                            <td></td>
+                            <td>
+                                Expression used to filter the results. Only objects whose properties satisfy the given expression are returned. The filter language is <a href="#objects-filtering-language-definition">defined here</a>.
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><code>sort</code></td>
+                            <td>Object</td>
+                            <td>Optional</td>
+                            <td></td>
+                            <td>Key-value pair of a property to sort by, and a sort direction. Available options are <code>id</code>, <code>name</code>, and <code>updated</code>.<br>
+                            <br>
+                            Use <code>asc</code> or <code>desc</code> to specify sort direction, or specify <code>null</code> to take the default sort direction (ascending).<br>
+                            <br>
+                            For example: <code>{name: 'asc'}</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>limit</code></td>
+                            <td>Number</td>
+                            <td>Optional</td>
+                            <td><code>100</code></td>
+                            <td>Number of objects to return in response. Default is <code>100</code>, which is also the maximum value.</td>
+                        </tr>
+                        <tr>
+                            <td><code>page</code></td>
+                            <td>Object</td>
+                            <td>Optional</td>
+                            <td></td>
+                            <td>Use for pagination.</td>
+                        </tr>
+                        <tr>
+                            <td><code class="margin-left-1">next</code></td>
+                            <td>String</td>
+                            <td>Optional</td>
+                            <td></td>
+                            <td>Previously-returned cursor bookmark for fetching the next page.</td>
+                        </tr>
+                        <tr>
+                            <td><code class="margin-left-1">prev</code></td>
+                            <td>String</td>
+                            <td>Optional</td>
+                            <td></td>
+                            <td>Previously-returned cursor bookmark for fetching the previous page. Ignored if you also supply the start parameter.</td>
+                        </tr>
+                        <tr>
+                            <td><code>callback</code></td>
+                            <td>(result) =&gt; void</td>
+                            <td>Optional</td>
+                            <td></td>
+                            <td>Callback to the function. If not passed, the function will return a Promise instead.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </li>
+    </ol>
+    <h4 class="inpage-link tag-link">Basic Usage</h4>
+    <div class="code-toolbar">
+        <pre class="line-numbers language-javascript"><code class="language-javascript"><span class="token pn-variable">pubnub</span><span class="token punctuation">.</span><span class="token pn-variable pn-after-dot">objects</span><span class="token punctuation">.</span><span class="token function">getAllUUIDMetadata</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+        <div class="toolbar">
+            <div class="toolbar-item">
+                <button>Copy</button>
+            </div>
+        </div>
+    </div>
+    <h4 class="inpage-link tag-link">Response</h4>
+    <div class="code-toolbar">
+        <pre class="line-numbers language-json"><code class="language-json"><span class="token punctuation">{</span>
+    <span class="token property">"status"</span><span class="token operator">:</span> <span class="token number">200</span><span class="token punctuation">,</span>
+    <span class="token property">"data"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+        <span class="token punctuation">{</span>
+            <span class="token property">"id"</span><span class="token operator">:</span> <span class="token string">"uuid-1"</span><span class="token punctuation">,</span>
+            <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"John Doe"</span><span class="token punctuation">,</span>
+            <span class="token property">"externalId"</span><span class="token operator">:</span> <span class="token null keyword">null</span><span class="token punctuation">,</span>
+            <span class="token property">"profileUrl"</span><span class="token operator">:</span> <span class="token null keyword">null</span><span class="token punctuation">,</span>
+            <span class="token property">"email"</span><span class="token operator">:</span> <span class="token string">"johndoe@pubnub.com"</span><span class="token punctuation">,</span>
+            <span class="token property">"custom"</span><span class="token operator">:</span> <span class="token null keyword">null</span><span class="token punctuation">,</span>
+            <span class="token property">"updated"</span><span class="token operator">:</span> <span class="token string">"2019-02-20T23:11:20.893755"</span><span class="token punctuation">,</span>
+            <span class="token property">"eTag"</span><span class="token operator">:</span> <span class="token string">"MDcyQ0REOTUtNEVBOC00QkY2LTgwOUUtNDkwQzI4MjgzMTcwCg=="</span>
+        <span class="token punctuation">}</span><span class="token punctuation">,</span>
+        <span class="token punctuation">{</span>
+            <span class="token property">"id"</span><span class="token operator">:</span> <span class="token string">"uuid-2"</span><span class="token punctuation">,</span>
+            <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"Bob Cat"</span><span class="token punctuation">,</span>
+            <span class="token property">"externalId"</span><span class="token operator">:</span> <span class="token null keyword">null</span><span class="token punctuation">,</span>
+            <span class="token property">"profileUrl"</span><span class="token operator">:</span> <span class="token null keyword">null</span><span class="token punctuation">,</span>
+            <span class="token property">"email"</span><span class="token operator">:</span> <span class="token string">"bobc@example.com"</span><span class="token punctuation">,</span>
+            <span class="token property">"custom"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+                <span class="token property">"phone"</span><span class="token operator">:</span> <span class="token string">"999-999-9999"</span>
+            <span class="token punctuation">}</span><span class="token punctuation">,</span>
+            <span class="token property">"updated"</span><span class="token operator">:</span> <span class="token string">"2019-02-21T03:29:00.173452"</span><span class="token punctuation">,</span>
+            <span class="token property">"eTag"</span><span class="token operator">:</span> <span class="token string">"QkRENDA5MjItMUZCNC00REI5LUE4QTktRjJGNUMxNTc2MzE3Cg=="</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">]</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+        <div class="toolbar">
+            <div class="toolbar-item">
+                <button>Copy</button>
+            </div>
+        </div>
+    </div>
+    <h3 class="inpage-link tag-link main-placeholder">Get User Metadata</h3>
+    <h4 class="inpage-link tag-link">Description</h4>
+    <p>Returns metadata for the specified UUID, optionally including the custom data object for each.</p>
+    <h4 class="inpage-link tag-link">Method(s)</h4>
+    <p>To <code>Get UUID Metadata</code> you can use the following method(s) in the JavaScript V4 SDK:</p>
+    <ol>
+        <li>
+            <div>
+                <code class="inpage-plink tag-link padding-left-0"><a class="title-red" data-id="get-user-metadata-arg-" href="#get-user-metadata-arg" id="get-user-metadata-arg-" title="Get User Metadata Argument">pubnub.objects.getUUIDMetadata(<br>
+                <span class="margin-left-1">{String <code>uuid</code>, Object <code>include</code>},</span> <span class="margin-left-1">Function <code>callback</code></span> )</a></code>
+            </div>
+            <div class="table-responsive wide-parm">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Parameter</th>
+                            <th>Type</th>
+                            <th>Required</th>
+                            <th>Defaults</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>uuid</code></td>
+                            <td>String</td>
+                            <td>Optional</td>
+                            <td>current <code>uuid</code></td>
+                            <td>Unique user identifier. If not supplied then current user’s <code>uuid</code> is used.</td>
+                        </tr>
+                        <tr>
+                            <td><code>include</code></td>
+                            <td>Object</td>
+                            <td>Optional</td>
+                            <td></td>
+                            <td>Include respective additional fields in the response.</td>
+                        </tr>
+                        <tr>
+                            <td><code class="margin-left-1">customFields</code></td>
+                            <td>Boolean</td>
+                            <td>Optional</td>
+                            <td><code>true</code></td>
+                            <td>Whether to fetch <code>custom</code> fields or not.</td>
+                        </tr>
+                        <tr>
+                            <td><code>callback</code></td>
+                            <td>(result) =&gt; void</td>
+                            <td>Optional</td>
+                            <td></td>
+                            <td>Callback to the function. If not passed, the function will return a Promise instead.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </li>
+    </ol>
+    <h4 class="inpage-link tag-link">Basic Usage</h4>
+    <div class="code-toolbar">
+        <pre class="line-numbers language-javascript"><code class="language-javascript"><span class="token comment">// using UUID from the config</span>
+<span class="token pn-variable">pubnub</span><span class="token punctuation">.</span><span class="token pn-variable pn-after-dot">objects</span><span class="token punctuation">.</span><span class="token function">getUUIDMetadata</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> 
+
+<span class="token comment">// using passed in UUID</span>
+<span class="token pn-variable">pubnub</span><span class="token punctuation">.</span><span class="token pn-variable pn-after-dot">objects</span><span class="token punctuation">.</span><span class="token function">getUUIDMetadata</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+    <span class="token pn-variable pn-before-colon">uuid</span><span class="token operator">:</span> <span class="token string">'myUuid'</span><span class="token punctuation">,</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+        <div class="toolbar">
+            <div class="toolbar-item">
+                <button>Copy</button>
+            </div>
+        </div>
+    </div>
+    <h4 class="inpage-link tag-link">Response</h4>
+    <div class="code-toolbar">
+        <pre class="line-numbers language-json"><code class="language-json"><span class="token punctuation">{</span>
+    <span class="token property">"status"</span><span class="token operator">:</span> <span class="token number">200</span><span class="token punctuation">,</span>
+    <span class="token property">"data"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+        <span class="token property">"id"</span><span class="token operator">:</span> <span class="token string">"uuid-1"</span><span class="token punctuation">,</span>
+        <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"John Doe"</span><span class="token punctuation">,</span>
+        <span class="token property">"externalId"</span><span class="token operator">:</span> <span class="token null keyword">null</span><span class="token punctuation">,</span>
+        <span class="token property">"profileUrl"</span><span class="token operator">:</span> <span class="token null keyword">null</span><span class="token punctuation">,</span>
+        <span class="token property">"email"</span><span class="token operator">:</span> <span class="token string">"johndoe@pubnub.com"</span><span class="token punctuation">,</span>
+        <span class="token property">"updated"</span><span class="token operator">:</span> <span class="token string">"2019-02-20T23:11:20.893755"</span><span class="token punctuation">,</span>
+        <span class="token property">"eTag"</span><span class="token operator">:</span> <span class="token string">"MDcyQ0REOTUtNEVBOC00QkY2LTgwOUUtNDkwQzI4MjgzMTcwCg=="</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+        <div class="toolbar">
+            <div class="toolbar-item">
+                <button>Copy</button>
+            </div>
+        </div>
+    </div>
+    <h3 class="inpage-link tag-link main-placeholder">Set User Metadata</h3>
+    <h4 class="inpage-link tag-link">Description</h4>
+    <p>Set metadata for a UUID in the database, optionally including the custom data object for each.</p>
+    <h4 class="inpage-link tag-link">Method(s)</h4>
+    <p>To <code>Set UUID Metadata</code> you can use the following method(s) in the JavaScript V4 SDK:</p>
+    <ol>
+        <li>
+            <div>
+                <code class="inpage-plink tag-link padding-left-0"><a class="title-red" data-id="set-user-metadata-arg-" href="#set-user-metadata-arg" id="set-user-metadata-arg-" title="Set User Metadata Argument">pubnub.objects.setUUIDMetadata(<br>
+                <span class="margin-left-1">{String <code>uuid</code>, Object <code>data</code>, Object <code>include</code>},</span> <span class="margin-left-1">Function <code>callback</code></span> )</a></code>
+            </div>
+            <div class="table-responsive wide-parm">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Parameter</th>
+                            <th>Type</th>
+                            <th>Required</th>
+                            <th>Defaults</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>uuid</code></td>
+                            <td>String</td>
+                            <td>Optional</td>
+                            <td>current <code>uuid</code></td>
+                            <td>Unique user identifier. If not supplied then current user’s <code>uuid</code> is used.</td>
+                        </tr>
+                        <tr>
+                            <td><code>data</code></td>
+                            <td>Object</td>
+                            <td>Yes</td>
+                            <td></td>
+                            <td>JSON object with uuid metadata to set.</td>
+                        </tr>
+                        <tr>
+                            <td><code class="margin-left-1">name</code></td>
+                            <td>String</td>
+                            <td>Optional</td>
+                            <td></td>
+                            <td>Display name for the user.<br>
+                            Maximum 200 characters.</td>
+                        </tr>
+                        <tr>
+                            <td><code class="margin-left-1">externalId</code></td>
+                            <td>String</td>
+                            <td>Optional</td>
+                            <td></td>
+                            <td>User's identifier in an external system</td>
+                        </tr>
+                        <tr>
+                            <td><code class="margin-left-1">profileUrl</code></td>
+                            <td>String</td>
+                            <td>Optional</td>
+                            <td></td>
+                            <td>The URL of the user's profile picture</td>
+                        </tr>
+                        <tr>
+                            <td><code class="margin-left-1">email</code></td>
+                            <td>String</td>
+                            <td>Optional</td>
+                            <td></td>
+                            <td>The user's email address.<br>
+                            Maximum 80 characters.</td>
+                        </tr>
+                        <tr>
+                            <td><code class="margin-left-1">custom</code></td>
+                            <td>Object</td>
+                            <td>Optional</td>
+                            <td></td>
+                            <td>JSON object of key-value pairs with supported data types.</td>
+                        </tr>
+                        <tr>
+                            <td><code>include</code></td>
+                            <td>Object</td>
+                            <td>Optional</td>
+                            <td></td>
+                            <td>Include respective additional fields in the response.</td>
+                        </tr>
+                        <tr>
+                            <td><code class="margin-left-1">customFields</code></td>
+                            <td>Boolean</td>
+                            <td>Optional</td>
+                            <td><code>true</code></td>
+                            <td>Whether to fetch <code>custom</code> fields or not.</td>
+                        </tr>
+                        <tr>
+                            <td><code>callback</code></td>
+                            <td>(result) =&gt; void</td>
+                            <td>Optional</td>
+                            <td></td>
+                            <td>Callback to the function. If not passed, the function will return a Promise instead.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </li>
+    </ol>
+    <h4 class="inpage-link tag-link">Basic Usage</h4>
+    <div class="code-toolbar">
+        <pre class="line-numbers language-javascript"><code class="language-javascript"> <span class="token comment">// using UUID from the config</span>
+<span class="token pn-variable">pubnub</span><span class="token punctuation">.</span><span class="token pn-variable pn-after-dot">objects</span><span class="token punctuation">.</span><span class="token function">setUUIDMetadata</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+    <span class="token pn-variable pn-before-colon">data</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+        <span class="token pn-variable pn-before-colon">name</span><span class="token operator">:</span> <span class="token string">'John Doe'</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment">// using passed in UUID</span>
+<span class="token pn-variable">pubnub</span><span class="token punctuation">.</span><span class="token pn-variable pn-after-dot">objects</span><span class="token punctuation">.</span><span class="token function">setUUIDMetadata</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+    <span class="token pn-variable pn-before-colon">uuid</span><span class="token operator">:</span> <span class="token string">'myUuid'</span><span class="token punctuation">,</span>
+    <span class="token pn-variable pn-before-colon">data</span><span class="token operator">:</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+        <div class="toolbar">
+            <div class="toolbar-item">
+                <button>Copy</button>
+            </div>
+        </div>
+    </div>
+    <h4 class="inpage-link tag-link">Response</h4>
+    <div class="code-toolbar">
+        <pre class="line-numbers language-json"><code class="language-json"><span class="token punctuation">{</span>
+    <span class="token property">"status"</span><span class="token operator">:</span> <span class="token number">200</span><span class="token punctuation">,</span>
+    <span class="token property">"data"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+        <span class="token property">"id"</span><span class="token operator">:</span> <span class="token string">"uuid-1"</span><span class="token punctuation">,</span>
+        <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"John Doe"</span><span class="token punctuation">,</span>
+        <span class="token property">"externalId"</span><span class="token operator">:</span> <span class="token null keyword">null</span><span class="token punctuation">,</span>
+        <span class="token property">"profileUrl"</span><span class="token operator">:</span> <span class="token null keyword">null</span><span class="token punctuation">,</span>
+        <span class="token property">"email"</span><span class="token operator">:</span> <span class="token string">"johndoe@pubnub.com"</span><span class="token punctuation">,</span>
+        <span class="token property">"updated"</span><span class="token operator">:</span> <span class="token string">"2019-02-20T23:11:20.893755"</span><span class="token punctuation">,</span>
+        <span class="token property">"eTag"</span><span class="token operator">:</span> <span class="token string">"MDcyQ0REOTUtNEVBOC00QkY2LTgwOUUtNDkwQzI4MjgzMTcwCg=="</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+        <div class="toolbar">
+            <div class="toolbar-item">
+                <button>Copy</button>
+            </div>
+        </div>
+    </div>
+    <h3 class="inpage-link tag-link main-placeholder">Remove User Metadata</h3>
+    <h4 class="inpage-link tag-link">Description</h4>
+    <p>Removes the metadata from a specified UUID.</p>
+    <h4 class="inpage-link tag-link">Method(s)</h4>
+    <p>To <code>Remove UUID Metadata</code> you can use the following method(s) in the JavaScript V4 SDK:</p>
+    <ol>
+        <li>
+            <div>
+                <code class="inpage-plink tag-link padding-left-0"><a class="title-red" data-id="remove-user-metadata-arg-" href="#remove-user-metadata-arg" id="remove-user-metadata-arg-" title="Remove User Metadata Argument">pubnub.objects.removeUUIDMetadata(<br>
+                <span class="margin-left-1">{String <code>uuid</code>},</span> <span class="margin-left-1">Function <code>callback</code></span> )</a></code>
+            </div>
+            <div class="table-responsive wide-parm">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Parameter</th>
+                            <th>Type</th>
+                            <th>Required</th>
+                            <th>Defaults</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>uuid</code></td>
+                            <td>String</td>
+                            <td>Optional</td>
+                            <td>current <code>uuid</code></td>
+                            <td>Unique user identifier. If not supplied then current user’s <code>uuid</code> is used.</td>
+                        </tr>
+                        <tr>
+                            <td><code>callback</code></td>
+                            <td>(result) =&gt; void</td>
+                            <td>Optional</td>
+                            <td></td>
+                            <td>Callback to the function. If not passed, the function will return a Promise instead.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </li>
+    </ol>
+    <h4 class="inpage-link tag-link">Basic Usage</h4>
+    <div class="code-toolbar">
+        <pre class="line-numbers language-javascript"><code class="language-javascript"><span class="token comment">// using UUID from the config</span>
+<span class="token pn-variable">pubnub</span><span class="token punctuation">.</span><span class="token pn-variable pn-after-dot">objects</span><span class="token punctuation">.</span><span class="token function">removeUUIDMetadata</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment">// using passed in UUID</span>
+<span class="token pn-variable">pubnub</span><span class="token punctuation">.</span><span class="token pn-variable pn-after-dot">objects</span><span class="token punctuation">.</span><span class="token function">removeUUIDMetadata</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+    <span class="token pn-variable pn-before-colon">uuid</span><span class="token operator">:</span> <span class="token string">'myUuid'</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+        <div class="toolbar">
+            <div class="toolbar-item">
+                <button>Copy</button>
+            </div>
+        </div>
+    </div>
+    <h4 class="inpage-link tag-link">Response</h4>
+    <div class="code-toolbar">
+        <pre class="line-numbers language-json"><code class="language-json"><span class="token punctuation">{</span>
+    <span class="token property">"status"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span>
+    <span class="token property">"data"</span><span class="token operator">:</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+        <div class="toolbar">
+            <div class="toolbar-item">
+                <button>Copy</button>
+            </div>
+        </div>
+    </div>
+    <h2 class="inpage-link tag-link main-placeholder">Channel</h2>
+    <h3 class="inpage-link tag-link main-placeholder">Get Metadata for All Channels</h3>
+    <h4 class="inpage-link tag-link">Description</h4>
+    <p>Returns a paginated list of Channel Metadata objects, optionally including the custom data object for each.</p>
+    <h4 class="inpage-link tag-link">Method(s)</h4>
+    <p>To <code>Get All Channel Metadata</code> you can use the following method(s) in the JavaScript V4 SDK:</p>
+    <ol>
+        <li>
+            <div>
+                <code class="inpage-plink tag-link padding-left-0"><a class="title-red" data-id="get-metadata-for-all-channels-arg-" href="#get-metadata-for-all-channels-arg" id="get-metadata-for-all-channels-arg-" title="Get Metadata for All Channels Argument">pubnub.objects.getAllChannelMetadata(<br>
+                <span class="margin-left-1">{Object <code>include</code>, String <code>filter</code>, Object <code>sort</code>, Number <code>limit</code>, Object <code>page</code>},</span> <span class="margin-left-1">Function <code>callback</code></span> )</a></code>
+            </div>
+            <div class="table-responsive wide-parm">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Parameter</th>
+                            <th>Type</th>
+                            <th>Required</th>
+                            <th>Defaults</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>include</code></td>
+                            <td>Object</td>
+                            <td>Optional</td>
+                            <td></td>
+                            <td>Include respective additional fields in the response.</td>
+                        </tr>
+                        <tr>
+                            <td><code class="margin-left-1">totalCount</code></td>
+                            <td>Boolean</td>
+                            <td>Optional</td>
+                            <td><code>false</code></td>
+                            <td>Request <code>totalCount</code> to be included in paginated response. By default, <code>totalCount</code> is omitted.</td>
+                        </tr>
+                        <tr>
+                            <td><code class="margin-left-1">customFields</code></td>
+                            <td>Boolean</td>
+                            <td>Optional</td>
+                            <td><code>false</code></td>
+                            <td>Whether to fetch <code>custom</code> fields or not.</td>
+                        </tr>
+                        <tr>
+                            <td><code>filter</code></td>
+                            <td>String</td>
+                            <td>Optional</td>
+                            <td></td>
+                            <td>
+                                Expression used to filter the results. Only objects whose properties satisfy the given expression are returned. The filter language is <a href="#objects-filtering-language-definition">defined here</a>.
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><code>sort</code></td>
+                            <td>Object</td>
+                            <td>Optional</td>
+                            <td></td>
+                            <td>Key-value pair of a property to sort by, and a sort direction. Available options are <code>id</code>, <code>name</code>, and <code>updated</code>.<br>
+                            <br>
+                            Use <code>asc</code> or <code>desc</code> to specify sort direction, or specify <code>null</code> to take the default sort direction (ascending).<br>
+                            <br>
+                            For example: <code>{name: 'asc'}</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>limit</code></td>
+                            <td>Number</td>
+                            <td>Optional</td>
+                            <td><code>100</code></td>
+                            <td>Number of objects to return in response. Default is <code>100</code>, which is also the maximum value.</td>
+                        </tr>
+                        <tr>
+                            <td><code>page</code></td>
+                            <td>Object</td>
+                            <td>Optional</td>
+                            <td></td>
+                            <td>Use for pagination.</td>
+                        </tr>
+                        <tr>
+                            <td><code class="margin-left-1">next</code></td>
+                            <td>String</td>
+                            <td>Optional</td>
+                            <td></td>
+                            <td>Previously-returned cursor bookmark for fetching the next page.</td>
+                        </tr>
+                        <tr>
+                            <td><code class="margin-left-1">prev</code></td>
+                            <td>String</td>
+                            <td>Optional</td>
+                            <td></td>
+                            <td>Previously-returned cursor bookmark for fetching the previous page. Ignored if you also supply the start parameter.</td>
+                        </tr>
+                        <tr>
+                            <td><code>callback</code></td>
+                            <td>(result) =&gt; void</td>
+                            <td>Optional</td>
+                            <td></td>
+                            <td>Callback to the function. If not passed, the function will return a Promise instead.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </li>
+    </ol>
+    <h4 class="inpage-link tag-link">Basic Usage</h4>
+    <div class="code-toolbar">
+        <pre class="line-numbers language-javascript"><code class="language-javascript"><span class="token pn-variable">pubnub</span><span class="token punctuation">.</span><span class="token pn-variable pn-after-dot">objects</span><span class="token punctuation">.</span><span class="token function">getAllChannelMetadata</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+    <span class="token pn-variable pn-before-colon">include</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+        <span class="token pn-variable pn-before-colon">totalCount</span><span class="token operator">:</span> <span class="token boolean">true</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+        <div class="toolbar">
+            <div class="toolbar-item">
+                <button>Copy</button>
+            </div>
+        </div>
+    </div>
+    <h4 class="inpage-link tag-link">Response</h4>
+    <div class="code-toolbar">
+        <pre class="line-numbers language-json"><code class="language-json"><span class="token punctuation">{</span>
+    <span class="token property">"status"</span><span class="token operator">:</span> <span class="token number">200</span><span class="token punctuation">,</span>
+    <span class="token property">"data"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+        <span class="token punctuation">{</span>
+            <span class="token property">"id"</span><span class="token operator">:</span> <span class="token string">"my-channel"</span><span class="token punctuation">,</span>
+            <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"My channel"</span><span class="token punctuation">,</span>
+            <span class="token property">"description"</span><span class="token operator">:</span> <span class="token string">"A channel that is mine"</span><span class="token punctuation">,</span>
+            <span class="token property">"custom"</span><span class="token operator">:</span> <span class="token null keyword">null</span><span class="token punctuation">,</span>
+            <span class="token property">"updated"</span><span class="token operator">:</span> <span class="token string">"2019-02-20T23:11:20.893755"</span><span class="token punctuation">,</span>
+            <span class="token property">"eTag"</span><span class="token operator">:</span> <span class="token string">"RTc1NUQwNUItREMyNy00Q0YxLUJCNDItMEZDMTZDMzVCN0VGCg=="</span>
+        <span class="token punctuation">}</span><span class="token punctuation">,</span>
+        <span class="token punctuation">{</span>
+            <span class="token property">"id"</span><span class="token operator">:</span> <span class="token string">"main"</span><span class="token punctuation">,</span>
+            <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"Main channel"</span><span class="token punctuation">,</span>
+            <span class="token property">"description"</span><span class="token operator">:</span> <span class="token string">"The main channel"</span><span class="token punctuation">,</span>
+            <span class="token property">"custom"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+                <span class="token property">"public"</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+                <span class="token property">"motd"</span><span class="token operator">:</span> <span class="token string">"Always check your spelling!"</span>
+            <span class="token punctuation">}</span><span class="token punctuation">,</span>
+            <span class="token property">"updated"</span><span class="token operator">:</span> <span class="token string">"2019-02-20T23:11:20.893755"</span><span class="token punctuation">,</span>
+            <span class="token property">"eTag"</span><span class="token operator">:</span> <span class="token string">"RTc1NUQwNUItREMyNy00Q0YxLUJCNDItMEZDMTZDMzVCN0VGCg=="</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token property">"totalCount"</span><span class="token operator">:</span> <span class="token number">9</span><span class="token punctuation">,</span>
+    <span class="token property">"next"</span><span class="token operator">:</span> <span class="token string">"MUIwQTAwMUItQkRBRC00NDkyLTgyMEMtODg2OUU1N0REMTNBCg=="</span><span class="token punctuation">,</span>
+    <span class="token property">"prev"</span><span class="token operator">:</span> <span class="token string">"M0FFODRENzMtNjY2Qy00RUExLTk4QzktNkY1Q0I2MUJFNDRCCg=="</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+        <div class="toolbar">
+            <div class="toolbar-item">
+                <button>Copy</button>
+            </div>
+        </div>
+    </div>
+    <h3 class="inpage-link tag-link main-placeholder">Get Channel Metadata</h3>
+    <h4 class="inpage-link tag-link">Description</h4>
+    <p>Returns metadata for the specified Channel, optionally including the custom data object for each.</p>
+    <h4 class="inpage-link tag-link">Method(s)</h4>
+    <p>To <code>Get Channel Metadata</code> you can use the following method(s) in the JavaScript V4 SDK:</p>
+    <ol>
+        <li>
+            <div>
+                <code class="inpage-plink tag-link padding-left-0"><a class="title-red" data-id="get-channel-metadata-arg-" href="#get-channel-metadata-arg" id="get-channel-metadata-arg-" title="Get Channel Metadata Argument">pubnub.objects.getChannelMetadata(<br>
+                <span class="margin-left-1">{String <code>channel</code>, Object <code>include</code>},</span><span class="margin-left-1">Function <code>callback</code></span>)</a></code>
+            </div>
+            <div class="table-responsive wide-parm">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Parameter</th>
+                            <th>Type</th>
+                            <th>Required</th>
+                            <th>Defaults</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>channel</code></td>
+                            <td>String</td>
+                            <td>Yes</td>
+                            <td></td>
+                            <td>Channel name.</td>
+                        </tr>
+                        <tr>
+                            <td><code>include</code></td>
+                            <td>Object</td>
+                            <td>Optional</td>
+                            <td></td>
+                            <td>Include respective additional fields in the response.</td>
+                        </tr>
+                        <tr>
+                            <td><code class="margin-left-1">customFields</code></td>
+                            <td>Boolean</td>
+                            <td>Optional</td>
+                            <td><code>true</code></td>
+                            <td>Whether to fetch <code>custom</code> fields or not.</td>
+                        </tr>
+                        <tr>
+                            <td><code>callback</code></td>
+                            <td>(result) =&gt; void</td>
+                            <td>Optional</td>
+                            <td></td>
+                            <td>Callback to the function. If not passed, the function will return a Promise instead.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </li>
+    </ol>
+    <h4 class="inpage-link tag-link">Basic Usage</h4>
+    <div class="code-toolbar">
+        <pre class="line-numbers language-javascript"><code class="language-javascript"><span class="token pn-variable">pubnub</span><span class="token punctuation">.</span><span class="token pn-variable pn-after-dot">objects</span><span class="token punctuation">.</span><span class="token function">getChannelMetadata</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+    <span class="token pn-variable pn-before-colon">channel</span><span class="token operator">:</span> <span class="token string">'myChannel'</span><span class="token punctuation">,</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+        <div class="toolbar">
+            <div class="toolbar-item">
+                <button>Copy</button>
+            </div>
+        </div>
+    </div>
+    <h4 class="inpage-link tag-link">Response</h4>
+    <div class="code-toolbar">
+        <pre class="line-numbers language-json"><code class="language-json"><span class="token punctuation">{</span>
+    <span class="token property">"status"</span><span class="token operator">:</span> <span class="token number">200</span><span class="token punctuation">,</span>
+    <span class="token property">"data"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+        <span class="token property">"id"</span><span class="token operator">:</span> <span class="token string">"my-channel"</span><span class="token punctuation">,</span>
+        <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"My channel"</span><span class="token punctuation">,</span>
+        <span class="token property">"description"</span><span class="token operator">:</span> <span class="token string">"A channel that is mine"</span><span class="token punctuation">,</span>
+        <span class="token property">"updated"</span><span class="token operator">:</span> <span class="token string">"2019-02-20T23:11:20.893755"</span><span class="token punctuation">,</span>
+        <span class="token property">"eTag"</span><span class="token operator">:</span> <span class="token string">"RTc1NUQwNUItREMyNy00Q0YxLUJCNDItMEZDMTZDMzVCN0VGCg=="</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+        <div class="toolbar">
+            <div class="toolbar-item">
+                <button>Copy</button>
+            </div>
+        </div>
+    </div>
+    <h3 class="inpage-link tag-link main-placeholder">Set Channel Metadata</h3>
+    <h4 class="inpage-link tag-link">Description</h4>
+    <p>Set metadata for a Channel in the database, optionally including the custom data object for each.</p>
+    <h4 class="inpage-link tag-link">Method(s)</h4>
+    <p>To <code>Set Channel Metadata</code> you can use the following method(s) in the JavaScript V4 SDK:</p>
+    <ol>
+        <li>
+            <div>
+                <code class="inpage-plink tag-link padding-left-0"><a class="title-red" data-id="set-channel-metadata-arg-" href="#set-channel-metadata-arg" id="set-channel-metadata-arg-" title="Set Channel Metadata Argument">pubnub.objects.setChannelMetadata(<br>
+                <span class="margin-left-1">{String <code>channel</code>, Object <code>data</code>, Object <code>include</code>},</span><span class="margin-left-1">Function <code>callback</code></span>)</a></code>
+            </div>
+            <div class="table-responsive wide-parm">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Parameter</th>
+                            <th>Type</th>
+                            <th>Required</th>
+                            <th>Defaults</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>channel</code></td>
+                            <td>String</td>
+                            <td>Yes</td>
+                            <td></td>
+                            <td>Channel name.</td>
+                        </tr>
+                        <tr>
+                            <td><code>data</code></td>
+                            <td>Object</td>
+                            <td>Yes</td>
+                            <td></td>
+                            <td>JSON object with channel metadata to set.</td>
+                        </tr>
+                        <tr>
+                            <td><code class="margin-left-1">name</code></td>
+                            <td>String</td>
+                            <td>Optional</td>
+                            <td></td>
+                            <td>Name of a channel.</td>
+                        </tr>
+                        <tr>
+                            <td><code class="margin-left-1">description</code></td>
+                            <td>String</td>
+                            <td>Optional</td>
+                            <td></td>
+                            <td>Description of a channel.</td>
+                        </tr>
+                        <tr>
+                            <td><code class="margin-left-1">custom</code></td>
+                            <td>Object</td>
+                            <td>Optional</td>
+                            <td></td>
+                            <td>JSON object of key-value pairs with supported data types.</td>
+                        </tr>
+                        <tr>
+                            <td><code>include</code></td>
+                            <td>Object</td>
+                            <td>Optional</td>
+                            <td></td>
+                            <td>Include respective additional fields in the response.</td>
+                        </tr>
+                        <tr>
+                            <td><code class="margin-left-1">customFields</code></td>
+                            <td>Boolean</td>
+                            <td>Optional</td>
+                            <td><code>true</code></td>
+                            <td>Whether to fetch <code>custom</code> fields or not.</td>
+                        </tr>
+                        <tr>
+                            <td><code>callback</code></td>
+                            <td>(result) =&gt; void</td>
+                            <td>Optional</td>
+                            <td></td>
+                            <td>Callback to the function. If not passed, the function will return a Promise instead.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </li>
+    </ol>
+    <h4 class="inpage-link tag-link">Basic Usage</h4>
+    <div class="code-toolbar">
+        <pre class="line-numbers language-javascript"><code class="language-javascript"><span class="token pn-variable">pubnub</span><span class="token punctuation">.</span><span class="token pn-variable pn-after-dot">objects</span><span class="token punctuation">.</span><span class="token function">setChannelMetadata</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+    <span class="token pn-variable pn-before-colon">channel</span><span class="token operator">:</span> <span class="token string">'myChannel'</span><span class="token punctuation">,</span>
+    <span class="token pn-variable pn-before-colon">data</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+        <span class="token pn-variable pn-before-colon">name</span><span class="token operator">:</span> <span class="token string">'Channel Name'</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+        <div class="toolbar">
+            <div class="toolbar-item">
+                <button>Copy</button>
+            </div>
+        </div>
+    </div>
+    <h4 class="inpage-link tag-link">Response</h4>
+    <div class="code-toolbar">
+        <pre class="line-numbers language-json"><code class="language-json"><span class="token punctuation">{</span>
+    <span class="token property">"status"</span><span class="token operator">:</span> <span class="token number">200</span><span class="token punctuation">,</span>
+    <span class="token property">"data"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+        <span class="token property">"id"</span><span class="token operator">:</span> <span class="token string">"my-channel"</span><span class="token punctuation">,</span>
+        <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"My channel"</span><span class="token punctuation">,</span>
+        <span class="token property">"description"</span><span class="token operator">:</span> <span class="token string">"A channel that is mine"</span><span class="token punctuation">,</span>
+        <span class="token property">"updated"</span><span class="token operator">:</span> <span class="token string">"2019-02-20T23:11:20.893755"</span><span class="token punctuation">,</span>
+        <span class="token property">"eTag"</span><span class="token operator">:</span> <span class="token string">"RTc1NUQwNUItREMyNy00Q0YxLUJCNDItMEZDMTZDMzVCN0VGCg=="</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+        <div class="toolbar">
+            <div class="toolbar-item">
+                <button>Copy</button>
+            </div>
+        </div>
+    </div>
+    <h3 class="inpage-link tag-link main-placeholder">Remove Channel Metadata</h3>
+    <h4 class="inpage-link tag-link">Description</h4>
+    <p>Removes the metadata from a specified channel.</p>
+    <h4 class="inpage-link tag-link">Method(s)</h4>
+    <p>To <code>Remove Channel Metadata</code> you can use the following method(s) in the JavaScript V4 SDK:</p>
+    <ol>
+        <li>
+            <div>
+                <code class="inpage-plink tag-link padding-left-0"><a class="title-red" data-id="remove-channel-metadata-arg-" href="#remove-channel-metadata-arg" id="remove-channel-metadata-arg-" title="Remove Channel Metadata Argument">pubnub.objects.removeChannelMetadata(<br>
+                <span class="margin-left-1">{String <code>channel</code>},</span><span class="margin-left-1">Function <code>callback</code></span>)</a></code>
+            </div>
+            <div class="table-responsive wide-parm">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Parameter</th>
+                            <th>Type</th>
+                            <th>Required</th>
+                            <th>Defaults</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>channel</code></td>
+                            <td>String</td>
+                            <td>Yes</td>
+                            <td></td>
+                            <td>Channel name.</td>
+                        </tr>
+                        <tr>
+                            <td><code>callback</code></td>
+                            <td>(result) =&gt; void</td>
+                            <td>Optional</td>
+                            <td></td>
+                            <td>Callback to the function. If not passed, the function will return a Promise instead.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </li>
+    </ol>
+    <h4 class="inpage-link tag-link">Basic Usage</h4>
+    <div class="code-toolbar">
+        <pre class="line-numbers language-javascript"><code class="language-javascript"><span class="token pn-variable">pubnub</span><span class="token punctuation">.</span><span class="token pn-variable pn-after-dot">objects</span><span class="token punctuation">.</span><span class="token function">removeChannelMetadata</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+    <span class="token pn-variable pn-before-colon">channel</span><span class="token operator">:</span> <span class="token string">'myChannel'</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+        <div class="toolbar">
+            <div class="toolbar-item">
+                <button>Copy</button>
+            </div>
+        </div>
+    </div>
+    <h4 class="inpage-link tag-link">Response</h4>
+    <div class="code-toolbar">
+        <pre class="line-numbers language-json"><code class="language-json"><span class="token punctuation">{</span>
+    <span class="token property">"status"</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span>
+    <span class="token property">"data"</span><span class="token operator">:</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+        <div class="toolbar">
+            <div class="toolbar-item">
+                <button>Copy</button>
+            </div>
+        </div>
+    </div>
+    <h2 class="inpage-link tag-link main-placeholder">Channel Memberships</h2>
+    <h3 class="inpage-link tag-link main-placeholder">Get Channel Memberships</h3>
+    <h4 class="inpage-link tag-link">Description</h4>
+    <p>The method returns a list of channel memberships for a user. This method doesn't return a user's subscriptions.</p>
+    <h4 class="inpage-link tag-link">Method(s)</h4>
+    <p>To <code>Get Memberships</code> you can use the following method(s) in the JavaScript V4 SDK:</p>
+    <ol>
+        <li>
+            <div>
+                <code class="inpage-plink tag-link padding-left-0"><a class="title-red" data-id="get-channel-memberships-arg-" href="#get-channel-memberships-arg" id="get-channel-memberships-arg-" title="Get Channel Memberships Argument">pubnub.objects.getMemberships(<br>
+                <span class="margin-left-1">{String <code>uuid</code>, Object <code>include</code>, String <code>filter</code>, Object <code>sort</code>, Number <code>limit</code>, Object <code>page</code>},</span><span class="margin-left-1">Function <code>callback</code></span>)</a></code>
+            </div>
+            <div class="table-responsive wide-parm">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th style="width:26%">Parameter</th>
+                            <th>Type</th>
+                            <th>Required</th>
+                            <th>Defaults</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>uuid</code></td>
+                            <td>String</td>
+                            <td>Optional</td>
+                            <td>current <code>uuid</code></td>
+                            <td>Unique user identifier. If not supplied then current user’s <code>uuid</code> is used.</td>
+                        </tr>
+                        <tr>
+                            <td><code>include</code></td>
+                            <td>Object</td>
+                            <td>Optional</td>
+                            <td></td>
+                            <td>Include respective additional fields in the response.</td>
+                        </tr>
+                        <tr>
+                            <td><code class="margin-left-1">totalCount</code></td>
+                            <td>Boolean</td>
+                            <td>Optional</td>
+                            <td><code>false</code></td>
+                            <td>Request <code>totalCount</code> to be included in paginated response. By default, <code>totalCount</code> is omitted.</td>
+                        </tr>
+                        <tr>
+                            <td><code class="margin-left-1">customFields</code></td>
+                            <td>Boolean</td>
+                            <td>Optional</td>
+                            <td><code>false</code></td>
+                            <td>Whether to fetch <code>custom</code> fields or not.</td>
+                        </tr>
+                        <tr>
+                            <td><code class="margin-left-1">channelFields</code></td>
+                            <td>Boolean</td>
+                            <td>Optional</td>
+                            <td><code>false</code></td>
+                            <td>Include fields for channels metadata.</td>
+                        </tr>
+                        <tr>
+                            <td><code class="margin-left-1">customChannelFields</code></td>
+                            <td>Boolean</td>
+                            <td>Optional</td>
+                            <td><code>false</code></td>
+                            <td>Include custom fields for channels metadata.</td>
+                        </tr>
+                        <tr>
+                            <td><code>filter</code></td>
+                            <td>String</td>
+                            <td>Optional</td>
+                            <td></td>
+                            <td>
+                                Expression used to filter the results. Only objects whose properties satisfy the given expression are returned. The filter language is <a href="#objects-filtering-language-definition">defined here</a>.
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><code>sort</code></td>
+                            <td>Object</td>
+                            <td>Optional</td>
+                            <td></td>
+                            <td>Key-value pair of a property to sort by, and a sort direction. Available options are <code>updated</code>, <code>channel.id</code>, <code>channel.name</code>, and <code>channel.updated</code>.<br>
+                            <br>
+                            Use <code>asc</code> or <code>desc</code> to specify sort direction, or specify <code>null</code> to take the default sort direction (ascending).<br>
+                            <br>
+                            For example: <code>{channel.name: 'asc'}</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>limit</code></td>
+                            <td>Number</td>
+                            <td>Optional</td>
+                            <td><code>100</code></td>
+                            <td>Number of objects to return in response. Default is <code>100</code>, which is also the maximum value.</td>
+                        </tr>
+                        <tr>
+                            <td><code>page</code></td>
+                            <td>Object</td>
+                            <td>Optional</td>
+                            <td></td>
+                            <td>Use for pagination.</td>
+                        </tr>
+                        <tr>
+                            <td><code class="margin-left-1">next</code></td>
+                            <td>String</td>
+                            <td>Optional</td>
+                            <td></td>
+                            <td>Previously-returned cursor bookmark for fetching the next page.</td>
+                        </tr>
+                        <tr>
+                            <td><code class="margin-left-1">prev</code></td>
+                            <td>String</td>
+                            <td>Optional</td>
+                            <td></td>
+                            <td>Previously-returned cursor bookmark for fetching the previous page. Ignored if you also supply the start parameter.</td>
+                        </tr>
+                        <tr>
+                            <td><code>callback</code></td>
+                            <td>(result) =&gt; void</td>
+                            <td>Optional</td>
+                            <td></td>
+                            <td>Callback to the function. If not passed, the function will return a Promise instead.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </li>
+    </ol>
+    <h4 class="inpage-link tag-link">Basic Usage</h4>
+    <div class="code-toolbar">
+        <pre class="line-numbers language-javascript"><code class="language-javascript"><span class="token comment">// using UUID from the config</span>
+<span class="token pn-variable">pubnub</span><span class="token punctuation">.</span><span class="token pn-variable pn-after-dot">objects</span><span class="token punctuation">.</span><span class="token function">getMemberships</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment">// using passed in UUID</span>
+<span class="token pn-variable">pubnub</span><span class="token punctuation">.</span><span class="token pn-variable pn-after-dot">objects</span><span class="token punctuation">.</span><span class="token function">getMemberships</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+    <span class="token pn-variable pn-before-colon">uuid</span><span class="token operator">:</span> <span class="token string">'myUuid'</span><span class="token punctuation">,</span>
+    <span class="token pn-variable pn-before-colon">include</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+        <span class="token pn-variable pn-before-colon">channelFields</span><span class="token operator">:</span> <span class="token boolean">true</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+        <div class="toolbar">
+            <div class="toolbar-item">
+                <button>Copy</button>
+            </div>
+        </div>
+    </div>
+    <h4 class="inpage-link tag-link">Response</h4>
+    <div class="code-toolbar">
+        <pre class="line-numbers language-json"><code class="language-json"><span class="token punctuation">{</span>
+    <span class="token property">"status"</span><span class="token operator">:</span> <span class="token number">200</span><span class="token punctuation">,</span>
+    <span class="token property">"data"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+        <span class="token punctuation">{</span>
+            <span class="token property">"channel"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+                <span class="token property">"id"</span><span class="token operator">:</span> <span class="token string">"my-channel"</span><span class="token punctuation">,</span>
+                <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"My channel"</span><span class="token punctuation">,</span>
+                <span class="token property">"description"</span><span class="token operator">:</span> <span class="token string">"A channel that is mine"</span><span class="token punctuation">,</span>
+                <span class="token property">"custom"</span><span class="token operator">:</span> <span class="token null keyword">null</span><span class="token punctuation">,</span>
+                <span class="token property">"updated"</span><span class="token operator">:</span> <span class="token string">"2019-02-20T23:11:20.893755"</span><span class="token punctuation">,</span>
+                <span class="token property">"eTag"</span><span class="token operator">:</span> <span class="token string">"RTc1NUQwNUItREMyNy00Q0YxLUJCNDItMEZDMTZDMzVCN0VGCg=="</span>
+            <span class="token punctuation">}</span><span class="token punctuation">,</span>
+            <span class="token property">"custom"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+                <span class="token property">"starred"</span><span class="token operator">:</span> <span class="token boolean">false</span>
+            <span class="token punctuation">}</span><span class="token punctuation">,</span>
+            <span class="token property">"updated"</span><span class="token operator">:</span> <span class="token string">"2019-02-20T23:11:20.893755"</span><span class="token punctuation">,</span>
+            <span class="token property">"eTag"</span><span class="token operator">:</span> <span class="token string">"RUNDMDUwNjktNUYwRC00RTI0LUI1M0QtNUUzNkE2NkU0MEVFCg=="</span>
+        <span class="token punctuation">}</span><span class="token punctuation">,</span>
+        <span class="token punctuation">{</span>
+            <span class="token property">"channel"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+                <span class="token property">"id"</span><span class="token operator">:</span> <span class="token string">"main"</span><span class="token punctuation">,</span>
+                <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"Main channel"</span><span class="token punctuation">,</span>
+                <span class="token property">"description"</span><span class="token operator">:</span> <span class="token string">"The main channel"</span><span class="token punctuation">,</span>
+                <span class="token property">"custom"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+                    <span class="token property">"public"</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+                    <span class="token property">"motd"</span><span class="token operator">:</span> <span class="token string">"Always check your spelling!"</span>
+                <span class="token punctuation">}</span><span class="token punctuation">,</span>
+                <span class="token property">"updated"</span><span class="token operator">:</span> <span class="token string">"2019-02-20T23:11:20.893755"</span><span class="token punctuation">,</span>
+                <span class="token property">"eTag"</span><span class="token operator">:</span> <span class="token string">"RTc1NUQwNUItREMyNy00Q0YxLUJCNDItMEZDMTZDMzVCN0VGCg=="</span>
+            <span class="token punctuation">}</span><span class="token punctuation">,</span>
+            <span class="token property">"updated"</span><span class="token operator">:</span> <span class="token string">"2019-02-20T23:11:20.893755"</span><span class="token punctuation">,</span>
+            <span class="token property">"eTag"</span><span class="token operator">:</span> <span class="token string">"RUNDMDUwNjktNUYwRC00RTI0LUI1M0QtNUUzNkE2NkU0MEVFCg=="</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token property">"totalCount"</span><span class="token operator">:</span> <span class="token number">7</span><span class="token punctuation">,</span>
+    <span class="token property">"next"</span><span class="token operator">:</span> <span class="token string">"RDIwQUIwM0MtNUM2Ni00ODQ5LUFGRjMtNDk1MzNDQzE3MUVCCg=="</span><span class="token punctuation">,</span>
+    <span class="token property">"prev"</span><span class="token operator">:</span> <span class="token string">"MzY5RjkzQUQtNTM0NS00QjM0LUI0M0MtNjNBQUFGODQ5MTk2Cg=="</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+        <div class="toolbar">
+            <div class="toolbar-item">
+                <button>Copy</button>
+            </div>
+        </div>
+    </div>
+    <h3 class="inpage-link tag-link main-placeholder">Set Channel Memberships</h3>
+    <h4 class="inpage-link tag-link">Description</h4>
+    <p>Set channel memberships for a UUID.</p>
+    <h4 class="inpage-link tag-link">Method(s)</h4>
+    <p>To <code>Set Memberships</code> you can use the following method(s) in the JavaScript V4 SDK:</p>
+    <ol>
+        <li>
+            <div>
+                <code class="inpage-plink tag-link padding-left-0"><a class="title-red" data-id="set-channel-memberships-arg-" href="#set-channel-memberships-arg" id="set-channel-memberships-arg-" title="Set Channel Memberships Argument">pubnub.objects.setMemberships(<br>
+                <span class="margin-left-1">{String <code>uuid</code>, Array <code>channels</code>, Object <code>include</code>, String <code>filter</code>, Object <code>sort</code>, Number <code>limit</code>, Object <code>page</code>},</span><span class="margin-left-1">Function <code>callback</code></span>)</a></code>
+            </div>
+            <div class="table-responsive wide-parm">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th style="width:26%">Parameter</th>
+                            <th>Type</th>
+                            <th>Required</th>
+                            <th>Defaults</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>uuid</code></td>
+                            <td>String</td>
+                            <td>Optional</td>
+                            <td>current <code>uuid</code></td>
+                            <td>Unique user identifier. If not supplied then current user’s <code>uuid</code> is used.</td>
+                        </tr>
+                        <tr>
+                            <td><code>channels</code></td>
+                            <td>Array</td>
+                            <td>Yes</td>
+                            <td></td>
+                            <td>Array of <code>channels</code> to add to membership. Array can contain strings (channel-name only) or objects (which can include custom data).</td>
+                        </tr>
+                        <tr>
+                            <td><code>include</code></td>
+                            <td>Object</td>
+                            <td>Optional</td>
+                            <td></td>
+                            <td>Include respective additional fields in the response.</td>
+                        </tr>
+                        <tr>
+                            <td><code class="margin-left-1">totalCount</code></td>
+                            <td>Boolean</td>
+                            <td>Optional</td>
+                            <td><code>false</code></td>
+                            <td>Request <code>totalCount</code> to be included in paginated response. By default, <code>totalCount</code> is omitted.</td>
+                        </tr>
+                        <tr>
+                            <td><code class="margin-left-1">custom</code></td>
+                            <td>Object</td>
+                            <td>Optional</td>
+                            <td></td>
+                            <td>JSON object of key-value pairs with supported data types.</td>
+                        </tr>
+                        <tr>
+                            <td><code class="margin-left-1">customFields</code></td>
+                            <td>Boolean</td>
+                            <td>Optional</td>
+                            <td><code>false</code></td>
+                            <td>Whether to fetch <code>custom</code> fields or not.</td>
+                        </tr>
+                        <tr>
+                            <td><code class="margin-left-1">channelFields</code></td>
+                            <td>Boolean</td>
+                            <td>Optional</td>
+                            <td><code>false</code></td>
+                            <td>Include fields for channels metadata.</td>
+                        </tr>
+                        <tr>
+                            <td><code class="margin-left-1">customChannelFields</code></td>
+                            <td>Boolean</td>
+                            <td>Optional</td>
+                            <td><code>false</code></td>
+                            <td>Include custom fields for channels metadata.</td>
+                        </tr>
+                        <tr>
+                            <td><code>filter</code></td>
+                            <td>String</td>
+                            <td>Optional</td>
+                            <td></td>
+                            <td>
+                                Expression used to filter the results. Only objects whose properties satisfy the given expression are returned. The filter language is <a href="#objects-filtering-language-definition">defined here</a>.
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><code>sort</code></td>
+                            <td>Object</td>
+                            <td>Optional</td>
+                            <td></td>
+                            <td>Key-value pair of a property to sort by, and a sort direction. Available options are <code>updated</code>, <code>channel.id</code>, <code>channel.name</code>, and <code>channel.updated</code>.<br>
+                            <br>
+                            Use <code>asc</code> or <code>desc</code> to specify sort direction, or specify <code>null</code> to take the default sort direction (ascending).<br>
+                            <br>
+                            For example: <code>{channel.name: 'asc'}</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>limit</code></td>
+                            <td>Number</td>
+                            <td>Optional</td>
+                            <td><code>100</code></td>
+                            <td>Number of objects to return in response. Default is <code>100</code>, which is also the maximum value.</td>
+                        </tr>
+                        <tr>
+                            <td><code>page</code></td>
+                            <td>Object</td>
+                            <td>Optional</td>
+                            <td></td>
+                            <td>Use for pagination.</td>
+                        </tr>
+                        <tr>
+                            <td><code class="margin-left-1">next</code></td>
+                            <td>String</td>
+                            <td>Optional</td>
+                            <td></td>
+                            <td>Previously-returned cursor bookmark for fetching the next page.</td>
+                        </tr>
+                        <tr>
+                            <td><code class="margin-left-1">prev</code></td>
+                            <td>String</td>
+                            <td>Optional</td>
+                            <td></td>
+                            <td>Previously-returned cursor bookmark for fetching the previous page. Ignored if you also supply the start parameter.</td>
+                        </tr>
+                        <tr>
+                            <td><code>callback</code></td>
+                            <td>(result) =&gt; void</td>
+                            <td>Optional</td>
+                            <td></td>
+                            <td>Callback to the function. If not passed, the function will return a Promise instead.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </li>
+    </ol>
+    <h4 class="inpage-link tag-link">Basic Usage</h4>
+    <div class="code-toolbar">
+        <pre class="line-numbers language-javascript"><code class="language-javascript"><span class="token comment">// using UUID from the config</span>
+<span class="token pn-variable">pubnub</span><span class="token punctuation">.</span><span class="token pn-variable pn-after-dot">objects</span><span class="token punctuation">.</span><span class="token function">setMemberships</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+    <span class="token pn-variable pn-before-colon">channels</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">'ch-1'</span><span class="token punctuation">,</span> <span class="token string">'ch-2'</span><span class="token punctuation">]</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span> 
+
+<span class="token comment">// using passed in UUID</span>
+<span class="token pn-variable">pubnub</span><span class="token punctuation">.</span><span class="token pn-variable pn-after-dot">objects</span><span class="token punctuation">.</span><span class="token function">setMemberships</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+ <span class="token pn-variable pn-before-colon">uuid</span><span class="token operator">:</span> <span class="token string">'my-uuid'</span><span class="token punctuation">,</span>
+ <span class="token pn-variable pn-before-colon">channels</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+   <span class="token string">"my-channel-1"</span><span class="token punctuation">,</span>
+   <span class="token punctuation">{</span> <span class="token pn-variable pn-before-colon">id</span><span class="token operator">:</span> <span class="token string">"my-channel-2"</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
+   <span class="token punctuation">{</span> <span class="token pn-variable pn-before-colon">id</span><span class="token operator">:</span> <span class="token string">"my-channel-3"</span><span class="token punctuation">,</span> <span class="token pn-variable pn-before-colon">custom</span><span class="token operator">:</span> <span class="token punctuation">{</span> <span class="token pn-variable pn-before-colon">hello</span><span class="token operator">:</span> <span class="token string">"world"</span> <span class="token punctuation">}</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
+   <span class="token pn-variable pn-before-colon">include</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+        <span class="token comment">// To include channel fields in response</span>
+        <span class="token pn-variable pn-before-colon">channelFields</span><span class="token operator">:</span> <span class="token boolean">true</span>
+    <span class="token punctuation">}</span>
+ <span class="token punctuation">]</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+        <div class="toolbar">
+            <div class="toolbar-item">
+                <button>Copy</button>
+            </div>
+        </div>
+    </div>
+    <h4 class="inpage-link tag-link">Response</h4>
+    <div class="code-toolbar">
+        <pre class="line-numbers language-json"><code class="language-json"><span class="token punctuation">{</span>
+    <span class="token property">"status"</span><span class="token operator">:</span> <span class="token number">200</span><span class="token punctuation">,</span>
+    <span class="token property">"data"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+        <span class="token punctuation">{</span>
+            <span class="token property">"channel"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+              <span class="token property">"id"</span><span class="token operator">:</span> <span class="token string">"my-channel"</span><span class="token punctuation">,</span>
+              <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"My channel"</span><span class="token punctuation">,</span>
+              <span class="token property">"description"</span><span class="token operator">:</span> <span class="token string">"A channel that is mine"</span><span class="token punctuation">,</span>
+              <span class="token property">"custom"</span><span class="token operator">:</span> <span class="token null keyword">null</span><span class="token punctuation">,</span>
+              <span class="token property">"updated"</span><span class="token operator">:</span> <span class="token string">"2019-02-20T23:11:20.893755"</span><span class="token punctuation">,</span>
+              <span class="token property">"eTag"</span><span class="token operator">:</span> <span class="token string">"RTc1NUQwNUItREMyNy00Q0YxLUJCNDItMEZDMTZDMzVCN0VGCg=="</span>
+            <span class="token punctuation">}</span><span class="token punctuation">,</span>
+            <span class="token property">"custom"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+                <span class="token property">"starred"</span><span class="token operator">:</span> <span class="token boolean">false</span>
+            <span class="token punctuation">}</span><span class="token punctuation">,</span>
+            <span class="token property">"updated"</span><span class="token operator">:</span> <span class="token string">"2019-02-20T23:11:20.893755"</span><span class="token punctuation">,</span>
+            <span class="token property">"eTag"</span><span class="token operator">:</span> <span class="token string">"RUNDMDUwNjktNUYwRC00RTI0LUI1M0QtNUUzNkE2NkU0MEVFCg=="</span>
+        <span class="token punctuation">}</span><span class="token punctuation">,</span>
+        <span class="token punctuation">{</span>
+          <span class="token property">"channel"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+              <span class="token property">"id"</span><span class="token operator">:</span> <span class="token string">"main"</span><span class="token punctuation">,</span>
+              <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"Main channel"</span><span class="token punctuation">,</span>
+              <span class="token property">"description"</span><span class="token operator">:</span> <span class="token string">"The main channel"</span><span class="token punctuation">,</span>
+              <span class="token property">"custom"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+                  <span class="token property">"public"</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+                  <span class="token property">"motd"</span><span class="token operator">:</span> <span class="token string">"Always check your spelling!"</span>
+              <span class="token punctuation">}</span><span class="token punctuation">,</span>
+              <span class="token property">"updated"</span><span class="token operator">:</span> <span class="token string">"2019-02-20T23:11:20.893755"</span><span class="token punctuation">,</span>
+              <span class="token property">"eTag"</span><span class="token operator">:</span> <span class="token string">"RTc1NUQwNUItREMyNy00Q0YxLUJCNDItMEZDMTZDMzVCN0VGCg=="</span>
+          <span class="token punctuation">}</span><span class="token punctuation">,</span>
+          <span class="token property">"updated"</span><span class="token operator">:</span> <span class="token string">"2019-02-20T23:11:20.893755"</span><span class="token punctuation">,</span>
+          <span class="token property">"eTag"</span><span class="token operator">:</span> <span class="token string">"RUNDMDUwNjktNUYwRC00RTI0LUI1M0QtNUUzNkE2NkU0MEVFCg=="</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token property">"totalCount"</span><span class="token operator">:</span> <span class="token number">7</span><span class="token punctuation">,</span>
+    <span class="token property">"next"</span><span class="token operator">:</span> <span class="token string">"RDIwQUIwM0MtNUM2Ni00ODQ5LUFGRjMtNDk1MzNDQzE3MUVCCg=="</span><span class="token punctuation">,</span>
+    <span class="token property">"prev"</span><span class="token operator">:</span> <span class="token string">"MzY5RjkzQUQtNTM0NS00QjM0LUI0M0MtNjNBQUFGODQ5MTk2Cg=="</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+        <div class="toolbar">
+            <div class="toolbar-item">
+                <button>Copy</button>
+            </div>
+        </div>
+    </div>
+    <h3 class="inpage-link tag-link main-placeholder">Remove Channel Memberships</h3>
+    <h4 class="inpage-link tag-link">Description</h4>
+    <p>Remove channel memberships for a UUID.</p>
+    <h4 class="inpage-link tag-link">Method(s)</h4>
+    <p>To <code>Remove Memberships</code> you can use the following method(s) in the JavaScript V4 SDK:</p>
+    <ol>
+        <li>
+            <div>
+                <code class="inpage-plink tag-link padding-left-0"><a class="title-red" data-id="remove-channel-memberships-arg-" href="#remove-channel-memberships-arg" id="remove-channel-memberships-arg-" title="Remove Channel Memberships Argument">pubnub.objects.removeMemberships(<br>
+                <span class="margin-left-1">{String <code>uuid</code>, String[] <code>channels</code>, Object <code>include</code>, String <code>filter</code>, Object <code>sort</code>, Number <code>limit</code>, Object <code>page</code>},</span><span class="margin-left-1">Function <code>callback</code></span>)</a></code>
+            </div>
+            <div class="table-responsive wide-parm">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th style="width:26%">Parameter</th>
+                            <th>Type</th>
+                            <th>Required</th>
+                            <th>Defaults</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>uuid</code></td>
+                            <td>String</td>
+                            <td>Optional</td>
+                            <td>current <code>uuid</code></td>
+                            <td>Unique user identifier. If not supplied then current user’s <code>uuid</code> is used.</td>
+                        </tr>
+                        <tr>
+                            <td><code>channels</code></td>
+                            <td>String[]</td>
+                            <td>Yes</td>
+                            <td></td>
+                            <td>Channels to remove from membership.</td>
+                        </tr>
+                        <tr>
+                            <td><code>include</code></td>
+                            <td>Object</td>
+                            <td>Optional</td>
+                            <td></td>
+                            <td>Include respective additional fields in the response.</td>
+                        </tr>
+                        <tr>
+                            <td><code class="margin-left-1">totalCount</code></td>
+                            <td>Boolean</td>
+                            <td>Optional</td>
+                            <td><code>false</code></td>
+                            <td>Request <code>totalCount</code> to be included in paginated response. By default, <code>totalCount</code> is omitted.</td>
+                        </tr>
+                        <tr>
+                            <td><code class="margin-left-1">customFields</code></td>
+                            <td>Boolean</td>
+                            <td>Optional</td>
+                            <td><code>false</code></td>
+                            <td>Whether to fetch <code>custom</code> fields or not.</td>
+                        </tr>
+                        <tr>
+                            <td><code class="margin-left-1">channelFields</code></td>
+                            <td>Boolean</td>
+                            <td>Optional</td>
+                            <td><code>false</code></td>
+                            <td>Include fields for channels metadata.</td>
+                        </tr>
+                        <tr>
+                            <td><code class="margin-left-1">customChannelFields</code></td>
+                            <td>Boolean</td>
+                            <td>Optional</td>
+                            <td><code>false</code></td>
+                            <td>Include custom fields for channels metadata.</td>
+                        </tr>
+                        <tr>
+                            <td><code>filter</code></td>
+                            <td>String</td>
+                            <td>Optional</td>
+                            <td></td>
+                            <td>
+                                Expression used to filter the results. Only objects whose properties satisfy the given expression are returned. The filter language is <a href="#objects-filtering-language-definition">defined here</a>.
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><code>sort</code></td>
+                            <td>Object</td>
+                            <td>Optional</td>
+                            <td></td>
+                            <td>Key-value pair of a property to sort by, and a sort direction. Available options are <code>updated</code>, <code>channel.id</code>, <code>channel.name</code>, and <code>channel.updated</code>.<br>
+                            <br>
+                            Use <code>asc</code> or <code>desc</code> to specify sort direction., or specify <code>null</code> to take the default sort direction (ascending).<br>
+                            <br>
+                            For example: <code>{channel.name: 'asc'}</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>limit</code></td>
+                            <td>Number</td>
+                            <td>Optional</td>
+                            <td><code>100</code></td>
+                            <td>Number of objects to return in response. Default is <code>100</code>, which is also the maximum value.</td>
+                        </tr>
+                        <tr>
+                            <td><code>page</code></td>
+                            <td>Object</td>
+                            <td>Optional</td>
+                            <td></td>
+                            <td>Use for pagination.</td>
+                        </tr>
+                        <tr>
+                            <td><code class="margin-left-1">next</code></td>
+                            <td>String</td>
+                            <td>Optional</td>
+                            <td></td>
+                            <td>Previously-returned cursor bookmark for fetching the next page.</td>
+                        </tr>
+                        <tr>
+                            <td><code class="margin-left-1">prev</code></td>
+                            <td>String</td>
+                            <td>Optional</td>
+                            <td></td>
+                            <td>Previously-returned cursor bookmark for fetching the previous page. Ignored if you also supply the start parameter.</td>
+                        </tr>
+                        <tr>
+                            <td><code>callback</code></td>
+                            <td>(result) =&gt; void</td>
+                            <td>Optional</td>
+                            <td></td>
+                            <td>Callback to the function. If not passed, the function will return a Promise instead.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </li>
+    </ol>
+    <h4 class="inpage-link tag-link">Basic Usage</h4>
+    <div class="code-toolbar">
+        <pre class="line-numbers language-javascript"><code class="language-javascript"><span class="token comment">// using UUID from the config</span>
+<span class="token pn-variable">pubnub</span><span class="token punctuation">.</span><span class="token pn-variable pn-after-dot">objects</span><span class="token punctuation">.</span><span class="token function">removeMemberships</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+    <span class="token pn-variable pn-before-colon">channels</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">'ch-1'</span><span class="token punctuation">,</span> <span class="token string">'ch-2'</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span> 
+
+<span class="token comment">// using passed in UUID</span>
+<span class="token pn-variable">pubnub</span><span class="token punctuation">.</span><span class="token pn-variable pn-after-dot">objects</span><span class="token punctuation">.</span><span class="token function">removeMemberships</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+    <span class="token pn-variable pn-before-colon">uuid</span><span class="token operator">:</span> <span class="token string">'myUuid'</span><span class="token punctuation">,</span>
+    <span class="token pn-variable pn-before-colon">channels</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">'ch-1'</span><span class="token punctuation">,</span> <span class="token string">'ch-2'</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+        <div class="toolbar">
+            <div class="toolbar-item">
+                <button>Copy</button>
+            </div>
+        </div>
+    </div>
+    <h4 class="inpage-link tag-link">Response</h4>
+    <div class="code-toolbar">
+        <pre class="line-numbers language-json"><code class="language-json"><span class="token punctuation">{</span>
+    <span class="token property">"status"</span><span class="token operator">:</span> <span class="token number">200</span><span class="token punctuation">,</span>
+    <span class="token property">"data"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+        <span class="token punctuation">{</span>
+            <span class="token property">"channel"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+              <span class="token property">"id"</span><span class="token operator">:</span> <span class="token string">"my-channel"</span><span class="token punctuation">,</span>
+              <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"My channel"</span><span class="token punctuation">,</span>
+              <span class="token property">"description"</span><span class="token operator">:</span> <span class="token string">"A channel that is mine"</span><span class="token punctuation">,</span>
+              <span class="token property">"custom"</span><span class="token operator">:</span> <span class="token null keyword">null</span><span class="token punctuation">,</span>
+              <span class="token property">"updated"</span><span class="token operator">:</span> <span class="token string">"2019-02-20T23:11:20.893755"</span><span class="token punctuation">,</span>
+              <span class="token property">"eTag"</span><span class="token operator">:</span> <span class="token string">"RTc1NUQwNUItREMyNy00Q0YxLUJCNDItMEZDMTZDMzVCN0VGCg=="</span>
+            <span class="token punctuation">}</span><span class="token punctuation">,</span>
+            <span class="token property">"custom"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+                <span class="token property">"starred"</span><span class="token operator">:</span> <span class="token boolean">false</span>
+            <span class="token punctuation">}</span><span class="token punctuation">,</span>
+            <span class="token property">"updated"</span><span class="token operator">:</span> <span class="token string">"2019-02-20T23:11:20.893755"</span><span class="token punctuation">,</span>
+            <span class="token property">"eTag"</span><span class="token operator">:</span> <span class="token string">"RUNDMDUwNjktNUYwRC00RTI0LUI1M0QtNUUzNkE2NkU0MEVFCg=="</span>
+        <span class="token punctuation">}</span><span class="token punctuation">,</span>
+        <span class="token punctuation">{</span>
+            <span class="token property">"channel"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+              <span class="token property">"id"</span><span class="token operator">:</span> <span class="token string">"main"</span><span class="token punctuation">,</span>
+              <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"Main channel"</span><span class="token punctuation">,</span>
+              <span class="token property">"description"</span><span class="token operator">:</span> <span class="token string">"The main channel"</span><span class="token punctuation">,</span>
+              <span class="token property">"custom"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+                  <span class="token property">"public"</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+                  <span class="token property">"motd"</span><span class="token operator">:</span> <span class="token string">"Always check your spelling!"</span>
+              <span class="token punctuation">}</span><span class="token punctuation">,</span>
+              <span class="token property">"updated"</span><span class="token operator">:</span> <span class="token string">"2019-02-20T23:11:20.893755"</span><span class="token punctuation">,</span>
+              <span class="token property">"eTag"</span><span class="token operator">:</span> <span class="token string">"RTc1NUQwNUItREMyNy00Q0YxLUJCNDItMEZDMTZDMzVCN0VGCg=="</span>
+            <span class="token punctuation">}</span><span class="token punctuation">,</span>
+            <span class="token property">"updated"</span><span class="token operator">:</span> <span class="token string">"2019-02-20T23:11:20.893755"</span><span class="token punctuation">,</span>
+            <span class="token property">"eTag"</span><span class="token operator">:</span> <span class="token string">"RUNDMDUwNjktNUYwRC00RTI0LUI1M0QtNUUzNkE2NkU0MEVFCg=="</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token property">"totalCount"</span><span class="token operator">:</span> <span class="token number">7</span><span class="token punctuation">,</span>
+    <span class="token property">"next"</span><span class="token operator">:</span> <span class="token string">"RDIwQUIwM0MtNUM2Ni00ODQ5LUFGRjMtNDk1MzNDQzE3MUVCCg=="</span><span class="token punctuation">,</span>
+    <span class="token property">"prev"</span><span class="token operator">:</span> <span class="token string">"MzY5RjkzQUQtNTM0NS00QjM0LUI0M0MtNjNBQUFGODQ5MTk2Cg=="</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+        <div class="toolbar">
+            <div class="toolbar-item">
+                <button>Copy</button>
+            </div>
+        </div>
+    </div>
+    <h2 class="inpage-link tag-link main-placeholder">Channel Members</h2>
+    <h3 class="inpage-link tag-link main-placeholder">Get Channel Members</h3>
+    <h4 class="inpage-link tag-link">Description</h4>
+    <p>The method returns a list of members in a channel. The list will include user metadata for members that have additional metadata stored in the database.</p>
+    <h4 class="inpage-link tag-link">Method(s)</h4>
+    <p>To <code>Get Channel Members</code> you can use the following method(s) in the JavaScript V4 SDK:</p>
+    <ol>
+        <li>
+            <div>
+                <code class="inpage-plink tag-link padding-left-0"><a class="title-red" data-id="get-members-in-channel-arg-" href="#get-members-in-channel-arg" id="get-members-in-channel-arg-" title="Get Members in Channel Argument">pubnub.objects.getChannelMembers(<br>
+                <span class="margin-left-1">{String <code>channel</code>, Object <code>include</code>, String <code>filter</code>, Object <code>sort</code>, Number <code>limit</code>, Object <code>page</code>},</span><span class="margin-left-1">Function <code>callback</code></span>)</a></code>
+            </div>
+            <div class="table-responsive wide-parm">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Parameter</th>
+                            <th>Type</th>
+                            <th>Required</th>
+                            <th>Defaults</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>channel</code></td>
+                            <td>String</td>
+                            <td>Yes</td>
+                            <td></td>
+                            <td>Channel name.</td>
+                        </tr>
+                        <tr>
+                            <td><code>include</code></td>
+                            <td>Object</td>
+                            <td>Optional</td>
+                            <td></td>
+                            <td>Include respective additional fields in the response.</td>
+                        </tr>
+                        <tr>
+                            <td><code class="margin-left-1">totalCount</code></td>
+                            <td>Boolean</td>
+                            <td>Optional</td>
+                            <td><code>false</code></td>
+                            <td>Request <code>totalCount</code> to be included in paginated response. By default, <code>totalCount</code> is omitted.</td>
+                        </tr>
+                        <tr>
+                            <td><code class="margin-left-1">customFields</code></td>
+                            <td>Boolean</td>
+                            <td>Optional</td>
+                            <td><code>false</code></td>
+                            <td>Whether to fetch <code>custom</code> fields or not.</td>
+                        </tr>
+                        <tr>
+                            <td><code class="margin-left-1">UUIDFields</code></td>
+                            <td>Boolean</td>
+                            <td>Optional</td>
+                            <td><code>false</code></td>
+                            <td>Include fields for UUIDs metadata.</td>
+                        </tr>
+                        <tr>
+                            <td><code class="margin-left-1">customUUIDFields</code></td>
+                            <td>Boolean</td>
+                            <td>Optional</td>
+                            <td><code>false</code></td>
+                            <td>Include custom fields for UUIDs metadata.</td>
+                        </tr>
+                        <tr>
+                            <td><code>filter</code></td>
+                            <td>String</td>
+                            <td>Optional</td>
+                            <td></td>
+                            <td>
+                                Expression used to filter the results. Only objects whose properties satisfy the given expression are returned. The filter language is <a href="#objects-filtering-language-definition">defined here</a>.
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><code>sort</code></td>
+                            <td>Object</td>
+                            <td>Optional</td>
+                            <td></td>
+                            <td>Key-value pair of a property to sort by, and a sort direction. Available options are <code>updated</code>, <code>uuid.id</code>, <code>uuid.name</code>, and <code>uuid.updated</code>.<br>
+                            <br>
+                            Use <code>asc</code> or <code>desc</code> to specify sort direction, or specify <code>null</code> to take the default sort direction (ascending).<br>
+                            <br>
+                            For example: <code>{uuid.name: 'asc'}</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>limit</code></td>
+                            <td>Number</td>
+                            <td>Optional</td>
+                            <td><code>100</code></td>
+                            <td>Number of objects to return in response. Default is <code>100</code>, which is also the maximum value.</td>
+                        </tr>
+                        <tr>
+                            <td><code>page</code></td>
+                            <td>Object</td>
+                            <td>Optional</td>
+                            <td></td>
+                            <td>Use for pagination.</td>
+                        </tr>
+                        <tr>
+                            <td><code class="margin-left-1">next</code></td>
+                            <td>String</td>
+                            <td>Optional</td>
+                            <td></td>
+                            <td>Previously-returned cursor bookmark for fetching the next page.</td>
+                        </tr>
+                        <tr>
+                            <td><code class="margin-left-1">prev</code></td>
+                            <td>String</td>
+                            <td>Optional</td>
+                            <td></td>
+                            <td>Previously-returned cursor bookmark for fetching the previous page. Ignored if you also supply the start parameter.</td>
+                        </tr>
+                        <tr>
+                            <td><code>callback</code></td>
+                            <td>(result) =&gt; void</td>
+                            <td>Optional</td>
+                            <td></td>
+                            <td>Callback to the function. If not passed, the function will return a Promise instead.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </li>
+    </ol>
+    <h4 class="inpage-link tag-link">Basic Usage</h4>
+    <div class="code-toolbar">
+        <pre class="line-numbers language-javascript"><code class="language-javascript"><span class="token pn-variable">pubnub</span><span class="token punctuation">.</span><span class="token pn-variable pn-after-dot">objects</span><span class="token punctuation">.</span><span class="token function">getChannelMembers</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+    <span class="token pn-variable pn-before-colon">channel</span><span class="token operator">:</span> <span class="token string">'myChannel'</span><span class="token punctuation">,</span>
+    <span class="token pn-variable pn-before-colon">include</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+        <span class="token pn-variable pn-before-colon">UUIDFields</span><span class="token operator">:</span> <span class="token boolean">true</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+        <div class="toolbar">
+            <div class="toolbar-item">
+                <button>Copy</button>
+            </div>
+        </div>
+    </div>
+    <h4 class="inpage-link tag-link">Response</h4>
+    <div class="code-toolbar">
+        <pre class="line-numbers language-json"><code class="language-json"><span class="token punctuation">{</span>
+  <span class="token property">"status"</span><span class="token operator">:</span> <span class="token number">200</span><span class="token punctuation">,</span>
+  <span class="token property">"data"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+    <span class="token punctuation">{</span>
+      <span class="token property">"uuid"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+        <span class="token property">"id"</span><span class="token operator">:</span> <span class="token string">"uuid-1"</span><span class="token punctuation">,</span>
+        <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"John Doe"</span><span class="token punctuation">,</span>
+        <span class="token property">"externalId"</span><span class="token operator">:</span> <span class="token null keyword">null</span><span class="token punctuation">,</span>
+        <span class="token property">"profileUrl"</span><span class="token operator">:</span> <span class="token null keyword">null</span><span class="token punctuation">,</span>
+        <span class="token property">"email"</span><span class="token operator">:</span> <span class="token string">"jack@twitter.com"</span><span class="token punctuation">,</span>
+        <span class="token property">"custom"</span><span class="token operator">:</span> <span class="token null keyword">null</span><span class="token punctuation">,</span>
+        <span class="token property">"updated"</span><span class="token operator">:</span> <span class="token string">"2019-02-20T23:11:20.893755"</span><span class="token punctuation">,</span>
+        <span class="token property">"eTag"</span><span class="token operator">:</span> <span class="token string">"MDcyQ0REOTUtNEVBOC00QkY2LTgwOUUtNDkwQzI4MjgzMTcwCg=="</span>
+      <span class="token punctuation">}</span><span class="token punctuation">,</span>
+      <span class="token property">"custom"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+        <span class="token property">"role"</span><span class="token operator">:</span> <span class="token string">"admin"</span>
+      <span class="token punctuation">}</span><span class="token punctuation">,</span>
+      <span class="token property">"updated"</span><span class="token operator">:</span> <span class="token string">"2019-02-20T23:11:20.893755"</span><span class="token punctuation">,</span>
+      <span class="token property">"eTag"</span><span class="token operator">:</span> <span class="token string">"QkRENDA5MjItMUZCNC00REI5LUE4QTktRjJGNUMxNTc2MzE3Cg=="</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token punctuation">{</span>
+      <span class="token property">"uuid"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+        <span class="token property">"id"</span><span class="token operator">:</span> <span class="token string">"uuid-2"</span><span class="token punctuation">,</span>
+        <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"Bob Cat"</span><span class="token punctuation">,</span>
+        <span class="token property">"externalId"</span><span class="token operator">:</span> <span class="token null keyword">null</span><span class="token punctuation">,</span>
+        <span class="token property">"profileUrl"</span><span class="token operator">:</span> <span class="token null keyword">null</span><span class="token punctuation">,</span>
+        <span class="token property">"email"</span><span class="token operator">:</span> <span class="token string">"bobc@example.com"</span><span class="token punctuation">,</span>
+        <span class="token property">"custom"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+          <span class="token property">"phone"</span><span class="token operator">:</span> <span class="token string">"999-999-9999"</span>
+        <span class="token punctuation">}</span><span class="token punctuation">,</span>
+        <span class="token property">"updated"</span><span class="token operator">:</span> <span class="token string">"2019-02-21T03:29:00.173452"</span><span class="token punctuation">,</span>
+        <span class="token property">"eTag"</span><span class="token operator">:</span> <span class="token string">"QkRENDA5MjItMUZCNC00REI5LUE4QTktRjJGNUMxNTc2MzE3Cg=="</span>
+      <span class="token punctuation">}</span><span class="token punctuation">,</span>
+      <span class="token property">"updated"</span><span class="token operator">:</span> <span class="token string">"2019-02-20T23:11:20.893755"</span><span class="token punctuation">,</span>
+      <span class="token property">"eTag"</span><span class="token operator">:</span> <span class="token string">"QkRENDA5MjItMUZCNC00REI5LUE4QTktRjJGNUMxNTc2MzE3Cg=="</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">]</span><span class="token punctuation">,</span>
+  <span class="token property">"totalCount"</span><span class="token operator">:</span> <span class="token number">37</span><span class="token punctuation">,</span>
+  <span class="token property">"next"</span><span class="token operator">:</span> <span class="token string">"RDIwQUIwM0MtNUM2Ni00ODQ5LUFGRjMtNDk1MzNDQzE3MUVCCg=="</span><span class="token punctuation">,</span>
+  <span class="token property">"prev"</span><span class="token operator">:</span> <span class="token string">"MzY5RjkzQUQtNTM0NS00QjM0LUI0M0MtNjNBQUFGODQ5MTk2Cg=="</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+        <div class="toolbar">
+            <div class="toolbar-item">
+                <button>Copy</button>
+            </div>
+        </div>
+    </div>
+    <h3 class="inpage-link tag-link main-placeholder">Set Channel Members</h3>
+    <h4 class="inpage-link tag-link">Description</h4>
+    <p>This method sets members in a channel.</p>
+    <h4 class="inpage-link tag-link">Method(s)</h4>
+    <p>To <code>Set Channel Members</code> you can use the following method(s) in the JavaScript V4 SDK:</p>
+    <ol>
+        <li>
+            <div>
+                <code class="inpage-plink tag-link padding-left-0"><a class="title-red" data-id="set-members-in-channel-arg-" href="#set-members-in-channel-arg" id="set-members-in-channel-arg-" title="Set Members in Channel Argument">pubnub.objects.setChannelMembers(<br>
+                <span class="margin-left-1">{String <code>channel</code>, Array <code>uuids</code>, Object <code>include</code>, String <code>filter</code>, Object <code>sort</code>, Number <code>limit</code>, Object <code>page</code>},</span><span class="margin-left-1">Function <code>callback</code></span>)</a></code>
+            </div>
+            <div class="table-responsive wide-parm">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Parameter</th>
+                            <th>Type</th>
+                            <th>Required</th>
+                            <th>Defaults</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>channel</code></td>
+                            <td>String</td>
+                            <td>Yes</td>
+                            <td></td>
+                            <td>Channel name.</td>
+                        </tr>
+                        <tr>
+                            <td><code>uuids</code></td>
+                            <td>Array</td>
+                            <td>Yes</td>
+                            <td></td>
+                            <td>Array of members to add to the <code>channel</code>. Array can contain strings (uuid only) or objects (which can include custom data).</td>
+                        </tr>
+                        <tr>
+                            <td><code>include</code></td>
+                            <td>Object</td>
+                            <td>Optional</td>
+                            <td></td>
+                            <td>Include respective additional fields in the response.</td>
+                        </tr>
+                        <tr>
+                            <td><code class="margin-left-1">totalCount</code></td>
+                            <td>Boolean</td>
+                            <td>Optional</td>
+                            <td><code>false</code></td>
+                            <td>Request <code>totalCount</code> to be included in paginated response. By default, <code>totalCount</code> is omitted.</td>
+                        </tr>
+                        <tr>
+                            <td><code class="margin-left-1">customFields</code></td>
+                            <td>Boolean</td>
+                            <td>Optional</td>
+                            <td><code>false</code></td>
+                            <td>Whether to fetch <code>custom</code> fields or not.</td>
+                        </tr>
+                        <tr>
+                            <td><code class="margin-left-1">UUIDFields</code></td>
+                            <td>Boolean</td>
+                            <td>Optional</td>
+                            <td><code>false</code></td>
+                            <td>Include fields for UUIDs metadata.</td>
+                        </tr>
+                        <tr>
+                            <td><code class="margin-left-1">custom</code></td>
+                            <td>Object</td>
+                            <td>Optional</td>
+                            <td></td>
+                            <td>JSON object of key-value pairs with supported data types.</td>
+                        </tr>
+                        <tr>
+                            <td><code class="margin-left-1">customUUIDFields</code></td>
+                            <td>Boolean</td>
+                            <td>Optional</td>
+                            <td><code>false</code></td>
+                            <td>Include custom fields for UUIDs metadata.</td>
+                        </tr>
+                        <tr>
+                            <td><code>filter</code></td>
+                            <td>String</td>
+                            <td>Optional</td>
+                            <td></td>
+                            <td>
+                                Expression used to filter the results. Only objects whose properties satisfy the given expression are returned. The filter language is <a href="#objects-filtering-language-definition">defined here</a>.
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><code>sort</code></td>
+                            <td>Object</td>
+                            <td>Optional</td>
+                            <td></td>
+                            <td>Key-value pair of a property to sort by, and a sort direction. Available options are <code>updated</code>, <code>uuid.id</code>, <code>uuid.name</code>, and <code>uuid.updated</code>.<br>
+                            <br>
+                            Use <code>asc</code> or <code>desc</code> to specify sort direction, or specify <code>null</code> to take the default sort direction (ascending).<br>
+                            <br>
+                            For example: <code>{uuid.name: 'asc'}</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>limit</code></td>
+                            <td>Number</td>
+                            <td>Optional</td>
+                            <td><code>100</code></td>
+                            <td>Number of objects to return in response. Default is <code>100</code>, which is also the maximum value.</td>
+                        </tr>
+                        <tr>
+                            <td><code>page</code></td>
+                            <td>Object</td>
+                            <td>Optional</td>
+                            <td></td>
+                            <td>Use for pagination.</td>
+                        </tr>
+                        <tr>
+                            <td><code class="margin-left-1">next</code></td>
+                            <td>String</td>
+                            <td>Optional</td>
+                            <td></td>
+                            <td>Previously-returned cursor bookmark for fetching the next page.</td>
+                        </tr>
+                        <tr>
+                            <td><code class="margin-left-1">prev</code></td>
+                            <td>String</td>
+                            <td>Optional</td>
+                            <td></td>
+                            <td>Previously-returned cursor bookmark for fetching the previous page. Ignored if you also supply the start parameter.</td>
+                        </tr>
+                        <tr>
+                            <td><code>callback</code></td>
+                            <td>(result) =&gt; void</td>
+                            <td>Optional</td>
+                            <td></td>
+                            <td>Callback to the function. If not passed, the function will return a Promise instead.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </li>
+    </ol>
+    <h4 class="inpage-link tag-link">Basic Usage</h4>
+    <div class="code-toolbar">
+        <pre class="line-numbers language-javascript"><code class="language-javascript"><span class="token pn-variable">pubnub</span><span class="token punctuation">.</span><span class="token pn-variable pn-after-dot">objects</span><span class="token punctuation">.</span><span class="token function">setChannelMembers</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+    <span class="token pn-variable pn-before-colon">channel</span><span class="token operator">:</span> <span class="token string">'myChannel'</span><span class="token punctuation">,</span>
+    <span class="token pn-variable pn-before-colon">uuids</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">'uuid-1'</span><span class="token punctuation">,</span> <span class="token string">'uuid-2'</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+        <div class="toolbar">
+            <div class="toolbar-item">
+                <button>Copy</button>
+            </div>
+        </div>
+    </div>
+    <h4 class="inpage-link tag-link">Response</h4>
+    <div class="code-toolbar">
+        <pre class="line-numbers language-json"><code class="language-json"><span class="token punctuation">{</span>
+    <span class="token property">"status"</span><span class="token operator">:</span> <span class="token number">200</span><span class="token punctuation">,</span>
+    <span class="token property">"data"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+        <span class="token punctuation">{</span>
+            <span class="token property">"uuid"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+                <span class="token property">"id"</span><span class="token operator">:</span> <span class="token string">"uuid-1"</span><span class="token punctuation">,</span>
+                <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"John Doe"</span><span class="token punctuation">,</span>
+                <span class="token property">"externalId"</span><span class="token operator">:</span> <span class="token null keyword">null</span><span class="token punctuation">,</span>
+                <span class="token property">"profileUrl"</span><span class="token operator">:</span> <span class="token null keyword">null</span><span class="token punctuation">,</span>
+                <span class="token property">"email"</span><span class="token operator">:</span> <span class="token string">"johndoe@pubnub.com"</span><span class="token punctuation">,</span>
+                <span class="token property">"custom"</span><span class="token operator">:</span> <span class="token null keyword">null</span><span class="token punctuation">,</span>
+                <span class="token property">"updated"</span><span class="token operator">:</span> <span class="token string">"2019-02-20T23:11:20.893755"</span><span class="token punctuation">,</span>
+                <span class="token property">"eTag"</span><span class="token operator">:</span> <span class="token string">"MDcyQ0REOTUtNEVBOC00QkY2LTgwOUUtNDkwQzI4MjgzMTcwCg=="</span>
+            <span class="token punctuation">}</span><span class="token punctuation">,</span>
+            <span class="token property">"custom"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+                <span class="token property">"role"</span><span class="token operator">:</span> <span class="token string">"admin"</span>
+            <span class="token punctuation">}</span><span class="token punctuation">,</span>
+            <span class="token property">"updated"</span><span class="token operator">:</span> <span class="token string">"2019-02-20T23:11:20.893755"</span><span class="token punctuation">,</span>
+            <span class="token property">"eTag"</span><span class="token operator">:</span> <span class="token string">"QkRENDA5MjItMUZCNC00REI5LUE4QTktRjJGNUMxNTc2MzE3Cg=="</span>
+        <span class="token punctuation">}</span><span class="token punctuation">,</span>
+        <span class="token punctuation">{</span>
+            <span class="token property">"uuid"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+                <span class="token property">"id"</span><span class="token operator">:</span> <span class="token string">"uuid-2"</span><span class="token punctuation">,</span>
+                <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"Bob Cat"</span><span class="token punctuation">,</span>
+                <span class="token property">"externalId"</span><span class="token operator">:</span> <span class="token null keyword">null</span><span class="token punctuation">,</span>
+                <span class="token property">"profileUrl"</span><span class="token operator">:</span> <span class="token null keyword">null</span><span class="token punctuation">,</span>
+                <span class="token property">"email"</span><span class="token operator">:</span> <span class="token string">"bobc@example.com"</span><span class="token punctuation">,</span>
+                <span class="token property">"custom"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+                    <span class="token property">"phone"</span><span class="token operator">:</span> <span class="token string">"999-999-9999"</span>
+                <span class="token punctuation">}</span><span class="token punctuation">,</span>
+                <span class="token property">"updated"</span><span class="token operator">:</span> <span class="token string">"2019-02-21T03:29:00.173452"</span><span class="token punctuation">,</span>
+                <span class="token property">"eTag"</span><span class="token operator">:</span> <span class="token string">"QkRENDA5MjItMUZCNC00REI5LUE4QTktRjJGNUMxNTc2MzE3Cg=="</span>
+            <span class="token punctuation">}</span><span class="token punctuation">,</span>
+            <span class="token property">"updated"</span><span class="token operator">:</span> <span class="token string">"2019-02-20T23:11:20.893755"</span><span class="token punctuation">,</span>
+            <span class="token property">"eTag"</span><span class="token operator">:</span> <span class="token string">"QkRENDA5MjItMUZCNC00REI5LUE4QTktRjJGNUMxNTc2MzE3Cg=="</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token property">"totalCount"</span><span class="token operator">:</span> <span class="token number">37</span><span class="token punctuation">,</span>
+    <span class="token property">"next"</span><span class="token operator">:</span> <span class="token string">"RDIwQUIwM0MtNUM2Ni00ODQ5LUFGRjMtNDk1MzNDQzE3MUVCCg=="</span><span class="token punctuation">,</span>
+    <span class="token property">"prev"</span><span class="token operator">:</span> <span class="token string">"MzY5RjkzQUQtNTM0NS00QjM0LUI0M0MtNjNBQUFGODQ5MTk2Cg=="</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+        <div class="toolbar">
+            <div class="toolbar-item">
+                <button>Copy</button>
+            </div>
+        </div>
+    </div>
+    <h3 class="inpage-link tag-link main-placeholder">Remove Channel Members</h3>
+    <h4 class="inpage-link tag-link">Description</h4>
+    <p>Remove members from a Channel.</p>
+    <h4 class="inpage-link tag-link">Method(s)</h4>
+    <p>To <code>Remove Channel Members</code> you can use the following method(s) in the JavaScript V4 SDK:</p>
+    <ol>
+        <li>
+            <div>
+                <code class="inpage-plink tag-link padding-left-0"><a class="title-red" data-id="remove-members-in-channel-arg-" href="#remove-members-in-channel-arg" id="remove-members-in-channel-arg-" title="Remove Members in Channel Argument">pubnub.objects.removeChannelMembers(<br>
+                <span class="margin-left-1">{String <code>channel</code>, String[] <code>uuids</code>, Object <code>include</code>, String <code>filter</code>, Object <code>sort</code>, Number <code>limit</code>, Object <code>page</code>},</span><span class="margin-left-1">Function <code>callback</code></span>)</a></code>
+            </div>
+            <div class="table-responsive wide-parm">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Parameter</th>
+                            <th>Type</th>
+                            <th>Required</th>
+                            <th>Defaults</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>channel</code></td>
+                            <td>String</td>
+                            <td>Yes</td>
+                            <td></td>
+                            <td>Channel name.</td>
+                        </tr>
+                        <tr>
+                            <td><code>uuids</code></td>
+                            <td>String[]</td>
+                            <td>Yes</td>
+                            <td></td>
+                            <td>Members to remove from channel.</td>
+                        </tr>
+                        <tr>
+                            <td><code>include</code></td>
+                            <td>Object</td>
+                            <td>Optional</td>
+                            <td></td>
+                            <td>Include respective additional fields in the response.</td>
+                        </tr>
+                        <tr>
+                            <td><code class="margin-left-1">totalCount</code></td>
+                            <td>Boolean</td>
+                            <td>Optional</td>
+                            <td><code>false</code></td>
+                            <td>Request <code>totalCount</code> to be included in paginated response. By default, <code>totalCount</code> is omitted.</td>
+                        </tr>
+                        <tr>
+                            <td><code class="margin-left-1">customFields</code></td>
+                            <td>Boolean</td>
+                            <td>Optional</td>
+                            <td><code>false</code></td>
+                            <td>Whether to fetch <code>custom</code> fields or not.</td>
+                        </tr>
+                        <tr>
+                            <td><code class="margin-left-1">UUIDFields</code></td>
+                            <td>Boolean</td>
+                            <td>Optional</td>
+                            <td><code>false</code></td>
+                            <td>Include fields for UUIDs metadata.</td>
+                        </tr>
+                        <tr>
+                            <td><code class="margin-left-1">customUUIDFields</code></td>
+                            <td>Boolean</td>
+                            <td>Optional</td>
+                            <td><code>false</code></td>
+                            <td>Include custom fields for UUIDs metadata.</td>
+                        </tr>
+                        <tr>
+                            <td><code>filter</code></td>
+                            <td>String</td>
+                            <td>Optional</td>
+                            <td></td>
+                            <td>
+                                Expression used to filter the results. Only objects whose properties satisfy the given expression are returned. The filter language is <a href="#objects-filtering-language-definition">defined here</a>.
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><code>sort</code></td>
+                            <td>Object</td>
+                            <td>Optional</td>
+                            <td></td>
+                            <td>Key-value pair of a property to sort by, and a sort direction. Available options are <code>updated</code>, <code>uuid.id</code>, <code>uuid.name</code>, and <code>uuid.updated</code>.<br>
+                            <br>
+                            Use <code>asc</code> or <code>desc</code> to specify sort direction, or specify <code>null</code> to take the default sort direction (ascending).<br>
+                            <br>
+                            For example: <code>{uuid.name: 'asc'}</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>limit</code></td>
+                            <td>Number</td>
+                            <td>Optional</td>
+                            <td><code>100</code></td>
+                            <td>Number of objects to return in response. Default is <code>100</code>, which is also the maximum value.</td>
+                        </tr>
+                        <tr>
+                            <td><code>page</code></td>
+                            <td>Object</td>
+                            <td>Optional</td>
+                            <td></td>
+                            <td>Use for pagination.</td>
+                        </tr>
+                        <tr>
+                            <td><code class="margin-left-1">next</code></td>
+                            <td>String</td>
+                            <td>Optional</td>
+                            <td></td>
+                            <td>Previously-returned cursor bookmark for fetching the next page.</td>
+                        </tr>
+                        <tr>
+                            <td><code class="margin-left-1">prev</code></td>
+                            <td>String</td>
+                            <td>Optional</td>
+                            <td></td>
+                            <td>Previously-returned cursor bookmark for fetching the previous page. Ignored if you also supply the start parameter.</td>
+                        </tr>
+                        <tr>
+                            <td><code>callback</code></td>
+                            <td>(result) =&gt; void</td>
+                            <td>Optional</td>
+                            <td></td>
+                            <td>Callback to the function. If not passed, the function will return a Promise instead.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </li>
+    </ol>
+    <h4 class="inpage-link tag-link">Basic Usage</h4>
+    <div class="code-toolbar">
+        <pre class="line-numbers language-javascript"><code class="language-javascript"><span class="token pn-variable">pubnub</span><span class="token punctuation">.</span><span class="token pn-variable pn-after-dot">objects</span><span class="token punctuation">.</span><span class="token function">removeChannelMembers</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+    <span class="token pn-variable pn-before-colon">channel</span><span class="token operator">:</span> <span class="token string">'myChannel'</span><span class="token punctuation">,</span>
+    <span class="token pn-variable pn-before-colon">uuids</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">'uuid-1'</span><span class="token punctuation">,</span> <span class="token string">'uuid-2'</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+        <div class="toolbar">
+            <div class="toolbar-item">
+                <button>Copy</button>
+            </div>
+        </div>
+    </div>
+    <h4 class="inpage-link tag-link">Response</h4>
+    <div class="code-toolbar">
+        <pre class="line-numbers language-json"><code class="language-json"><span class="token punctuation">{</span>
+    <span class="token property">"status"</span><span class="token operator">:</span> <span class="token number">200</span><span class="token punctuation">,</span>
+    <span class="token property">"data"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+        <span class="token punctuation">{</span>
+            <span class="token property">"uuid"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+                <span class="token property">"id"</span><span class="token operator">:</span> <span class="token string">"uuid-1"</span><span class="token punctuation">,</span>
+                <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"John Doe"</span><span class="token punctuation">,</span>
+                <span class="token property">"externalId"</span><span class="token operator">:</span> <span class="token null keyword">null</span><span class="token punctuation">,</span>
+                <span class="token property">"profileUrl"</span><span class="token operator">:</span> <span class="token null keyword">null</span><span class="token punctuation">,</span>
+                <span class="token property">"email"</span><span class="token operator">:</span> <span class="token string">"johndoe@pubnub.com"</span><span class="token punctuation">,</span>
+                <span class="token property">"custom"</span><span class="token operator">:</span> <span class="token null keyword">null</span><span class="token punctuation">,</span>
+                <span class="token property">"updated"</span><span class="token operator">:</span> <span class="token string">"2019-02-20T23:11:20.893755"</span><span class="token punctuation">,</span>
+                <span class="token property">"eTag"</span><span class="token operator">:</span> <span class="token string">"MDcyQ0REOTUtNEVBOC00QkY2LTgwOUUtNDkwQzI4MjgzMTcwCg=="</span>
+            <span class="token punctuation">}</span><span class="token punctuation">,</span>
+            <span class="token property">"custom"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+                <span class="token property">"role"</span><span class="token operator">:</span> <span class="token string">"admin"</span>
+            <span class="token punctuation">}</span><span class="token punctuation">,</span>
+            <span class="token property">"updated"</span><span class="token operator">:</span> <span class="token string">"2019-02-20T23:11:20.893755"</span><span class="token punctuation">,</span>
+            <span class="token property">"eTag"</span><span class="token operator">:</span> <span class="token string">"QkRENDA5MjItMUZCNC00REI5LUE4QTktRjJGNUMxNTc2MzE3Cg=="</span>
+        <span class="token punctuation">}</span><span class="token punctuation">,</span>
+        <span class="token punctuation">{</span>
+            <span class="token property">"uuid"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+                <span class="token property">"id"</span><span class="token operator">:</span> <span class="token string">"uuid-2"</span><span class="token punctuation">,</span>
+                <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"Bob Cat"</span><span class="token punctuation">,</span>
+                <span class="token property">"externalId"</span><span class="token operator">:</span> <span class="token null keyword">null</span><span class="token punctuation">,</span>
+                <span class="token property">"profileUrl"</span><span class="token operator">:</span> <span class="token null keyword">null</span><span class="token punctuation">,</span>
+                <span class="token property">"email"</span><span class="token operator">:</span> <span class="token string">"bobc@example.com"</span><span class="token punctuation">,</span>
+                <span class="token property">"custom"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+                    <span class="token property">"phone"</span><span class="token operator">:</span> <span class="token string">"999-999-9999"</span>
+                <span class="token punctuation">}</span><span class="token punctuation">,</span>
+                <span class="token property">"updated"</span><span class="token operator">:</span> <span class="token string">"2019-02-21T03:29:00.173452"</span><span class="token punctuation">,</span>
+                <span class="token property">"eTag"</span><span class="token operator">:</span> <span class="token string">"QkRENDA5MjItMUZCNC00REI5LUE4QTktRjJGNUMxNTc2MzE3Cg=="</span>
+            <span class="token punctuation">}</span><span class="token punctuation">,</span>
+            <span class="token property">"updated"</span><span class="token operator">:</span> <span class="token string">"2019-02-20T23:11:20.893755"</span><span class="token punctuation">,</span>
+            <span class="token property">"eTag"</span><span class="token operator">:</span> <span class="token string">"QkRENDA5MjItMUZCNC00REI5LUE4QTktRjJGNUMxNTc2MzE3Cg=="</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token property">"totalCount"</span><span class="token operator">:</span> <span class="token number">37</span><span class="token punctuation">,</span>
+    <span class="token property">"next"</span><span class="token operator">:</span> <span class="token string">"RDIwQUIwM0MtNUM2Ni00ODQ5LUFGRjMtNDk1MzNDQzE3MUVCCg=="</span><span class="token punctuation">,</span>
+    <span class="token property">"prev"</span><span class="token operator">:</span> <span class="token string">"MzY5RjkzQUQtNTM0NS00QjM0LUI0M0MtNjNBQUFGODQ5MTk2Cg=="</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+        <div class="toolbar">
+            <div class="toolbar-item">
+                <button>Copy</button>
+            </div>
+        </div>
+    </div>
+    <h2 class="inpage-link tag-link">Objects Filtering Language Definition</h2>
+    <div>
+        <p>The filtering language for Objects is similar to the <a href="/docs/web-javascript/stream-filtering-tutorial#filtering-language-definition">stream filtering language</a>.</p>
+        <p>Note the following:</p>
+        <ul>
+            <li>Date/time properties, such as <code>updated</code>, must be compared to valid date/time strings formatted according to ISO 8601.</li>
+            <li>Custom properties must have the same type as the value used in the expression; it is an error to compare a custom property of one type to a value of another type.</li>
+            <li>Objects that do not have the referenced custom property at all are excluded regardless of the operator or value used in the expression. The <code>null</code> value can be used to filter out objects that do or do not have the referenced custom property.</li>
+            <li>The LIKE operator supports wildcards denoted by the <code>*</code> character. A wildcard matches any sequence of arbitrary Unicode characters, including the empty sequence. The literal asterisk is matched when escaped using the backslash (<code>\</code>) character.</li>
+            <li>Values used with LIKE must be properly encoded just like any other string value. Thus, in order to escape an asterisk, the raw value must contain <code>\\*</code>.</li>
+            <li>The entire expression must be properly URL-encoded when used in the query string.</li>
+        </ul>
+    </div>
+    <div class="code-toolbar">
+        <pre class="line-numbers language-javascript"><code class="language-javascript"><span class="token operator">&lt;</span><span class="token pn-variable">expression</span><span class="token operator">&gt;</span>           <span class="token operator">:</span><span class="token operator">:</span><span class="token operator">=</span> <span class="token operator">&lt;</span><span class="token pn-variable">and_expression</span><span class="token operator">&gt;</span> <span class="token punctuation">(</span> <span class="token string">"||"</span> <span class="token operator">&lt;</span><span class="token pn-variable">and_expression</span><span class="token operator">&gt;</span> <span class="token punctuation">)</span><span class="token operator">*</span>
+<span class="token operator">&lt;</span><span class="token pn-variable">and_expression</span><span class="token operator">&gt;</span>       <span class="token operator">:</span><span class="token operator">:</span><span class="token operator">=</span> <span class="token operator">&lt;</span><span class="token pn-variable">binary_condition</span><span class="token operator">&gt;</span> <span class="token punctuation">(</span> <span class="token string">"&amp;&amp;"</span> <span class="token operator">&lt;</span><span class="token pn-variable">binary_condition</span><span class="token operator">&gt;</span> <span class="token punctuation">)</span><span class="token operator">*</span>
+<span class="token operator">&lt;</span><span class="token pn-variable">binary_condition</span><span class="token operator">&gt;</span>     <span class="token operator">:</span><span class="token operator">:</span><span class="token operator">=</span> <span class="token string">"!"</span> <span class="token operator">&lt;</span><span class="token pn-variable">binary_condition</span><span class="token operator">&gt;</span> <span class="token operator">|</span> <span class="token string">"("</span> <span class="token operator">&lt;</span><span class="token pn-variable">expression</span><span class="token operator">&gt;</span> <span class="token string">")"</span> <span class="token operator">|</span> <span class="token operator">&lt;</span><span class="token pn-variable">relational_condition</span><span class="token operator">&gt;</span>
+<span class="token operator">&lt;</span><span class="token pn-variable">relational_condition</span><span class="token operator">&gt;</span> <span class="token operator">:</span><span class="token operator">:</span><span class="token operator">=</span> <span class="token operator">&lt;</span><span class="token pn-variable">property_path</span><span class="token operator">&gt;</span> <span class="token operator">&lt;</span><span class="token pn-variable">relational_operator</span><span class="token operator">&gt;</span> <span class="token operator">&lt;</span><span class="token pn-variable">value</span><span class="token operator">&gt;</span>
+<span class="token operator">&lt;</span><span class="token pn-variable">property_path</span><span class="token operator">&gt;</span>        <span class="token operator">:</span><span class="token operator">:</span><span class="token operator">=</span> <span class="token operator">&lt;</span><span class="token pn-variable">property_name</span><span class="token operator">&gt;</span> <span class="token punctuation">(</span> <span class="token string">"."</span> <span class="token operator">&lt;</span><span class="token pn-variable">property_name</span><span class="token operator">&gt;</span> <span class="token punctuation">)</span><span class="token operator">*</span>
+<span class="token operator">&lt;</span><span class="token pn-variable">property_name</span><span class="token operator">&gt;</span>        <span class="token operator">:</span><span class="token operator">:</span><span class="token operator">=</span> <span class="token operator">&lt;</span><span class="token pn-variable">identifier</span><span class="token operator">&gt;</span> <span class="token operator">|</span> <span class="token string">"["</span> <span class="token operator">&lt;</span><span class="token pn-variable">string</span><span class="token operator">&gt;</span> <span class="token string">"]"</span>
+<span class="token operator">&lt;</span><span class="token pn-variable">value</span><span class="token operator">&gt;</span>                <span class="token operator">:</span><span class="token operator">:</span><span class="token operator">=</span> <span class="token operator">&lt;</span><span class="token pn-variable">string</span><span class="token operator">&gt;</span> <span class="token operator">|</span> <span class="token operator">&lt;</span><span class="token pn-variable">number</span><span class="token operator">&gt;</span> <span class="token operator">|</span> <span class="token string">"true"</span> <span class="token operator">|</span> <span class="token string">"false"</span> <span class="token operator">|</span> <span class="token string">"null"</span>
+
+<span class="token pn-variable">Tokens</span>
+
+<span class="token operator">&lt;</span><span class="token pn-variable">identifier</span><span class="token operator">&gt;</span>           <span class="token operator">:</span><span class="token operator">:</span><span class="token operator">=</span>  <span class="token operator">&lt;</span><span class="token pn-variable">letter</span><span class="token operator">&gt;</span> <span class="token operator">|</span> <span class="token string">"$"</span> <span class="token operator">|</span> <span class="token string">"_"</span> <span class="token punctuation">(</span> <span class="token operator">&lt;</span><span class="token pn-variable">letter</span><span class="token operator">&gt;</span> <span class="token operator">|</span> <span class="token string">"$"</span> <span class="token operator">|</span> <span class="token string">"_"</span> <span class="token operator">|</span> <span class="token operator">&lt;</span><span class="token pn-variable">digit</span><span class="token operator">&gt;</span> <span class="token punctuation">)</span><span class="token operator">*</span>
+<span class="token operator">&lt;</span><span class="token pn-variable">relational_operator</span><span class="token operator">&gt;</span>  <span class="token operator">:</span><span class="token operator">:</span><span class="token operator">=</span> <span class="token string">"=="</span> <span class="token operator">|</span> <span class="token string">"!="</span> <span class="token operator">|</span> <span class="token string">"&lt;="</span> <span class="token operator">|</span> <span class="token string">"&gt;="</span> <span class="token operator">|</span> <span class="token string">"&lt;"</span> <span class="token operator">|</span> <span class="token string">"&gt;"</span> <span class="token operator">|</span> <span class="token string">"LIKE"</span>
+<span class="token operator">&lt;</span><span class="token pn-variable">string</span><span class="token operator">&gt;</span>               <span class="token operator">:</span><span class="token operator">:</span><span class="token operator">=</span> <span class="token operator">&lt;</span><span class="token pn-variable">double_quote</span><span class="token operator">&gt;</span> <span class="token punctuation">(</span> <span class="token string">"\" &lt;double_quote&gt; | "</span>\" <span class="token operator">&lt;</span><span class="token pn-variable">special_char</span><span class="token operator">&gt;</span>
+                            <span class="token operator">|</span> <span class="token string">"\" "</span><span class="token pn-variable">u</span>" <span class="token operator">&lt;</span><span class="token pn-variable">hex_digit</span><span class="token operator">&gt;</span> <span class="token operator">&lt;</span><span class="token pn-variable">hex_digit</span><span class="token operator">&gt;</span> <span class="token operator">&lt;</span><span class="token pn-variable">hex_digit</span><span class="token operator">&gt;</span> <span class="token operator">&lt;</span><span class="token pn-variable">hex_digit</span><span class="token operator">&gt;</span>
+                            <span class="token operator">|</span> <span class="token operator">&lt;</span><span class="token pn-variable">unicode_char</span><span class="token operator">&gt;</span> <span class="token operator">-</span> <span class="token operator">&lt;</span><span class="token pn-variable">double_quote</span><span class="token operator">&gt;</span> <span class="token operator">-</span> "\" <span class="token punctuation">)</span><span class="token operator">*</span> <span class="token operator">&lt;</span><span class="token pn-variable">double_quote</span><span class="token operator">&gt;</span>
+                            <span class="token operator">|</span> <span class="token string">"'"</span> <span class="token punctuation">(</span> <span class="token string">"\" "</span>'<span class="token string">" | "</span>\" <span class="token operator">&lt;</span><span class="token pn-variable">special_char</span><span class="token operator">&gt;</span>
+                            <span class="token operator">|</span> <span class="token string">"\" "</span><span class="token pn-variable">u</span>" <span class="token operator">&lt;</span><span class="token pn-variable">hex_digit</span><span class="token operator">&gt;</span> <span class="token operator">&lt;</span><span class="token pn-variable">hex_digit</span><span class="token operator">&gt;</span> <span class="token operator">&lt;</span><span class="token pn-variable">hex_digit</span><span class="token operator">&gt;</span> <span class="token operator">&lt;</span><span class="token pn-variable">hex_digit</span><span class="token operator">&gt;</span>
+                            <span class="token operator">|</span> <span class="token operator">&lt;</span><span class="token pn-variable">unicode_char</span><span class="token operator">&gt;</span> <span class="token operator">-</span> <span class="token string">"'"</span> <span class="token operator">-</span> <span class="token string">"\" )* "</span>'"
+<span class="token operator">&lt;</span><span class="token pn-variable">number</span><span class="token operator">&gt;</span>               <span class="token operator">:</span><span class="token operator">:</span><span class="token operator">=</span> <span class="token punctuation">(</span> <span class="token string">"+"</span> <span class="token operator">|</span> <span class="token string">"-"</span> <span class="token punctuation">)</span><span class="token operator">?</span> <span class="token punctuation">(</span> <span class="token operator">&lt;</span><span class="token pn-variable">digit</span><span class="token operator">&gt;</span> <span class="token punctuation">)</span><span class="token operator">*</span> <span class="token punctuation">(</span> <span class="token string">"."</span> <span class="token punctuation">)</span><span class="token operator">?</span> <span class="token operator">&lt;</span><span class="token pn-variable">digit</span><span class="token operator">&gt;</span> <span class="token punctuation">(</span> <span class="token operator">&lt;</span><span class="token pn-variable">digit</span><span class="token operator">&gt;</span> <span class="token punctuation">)</span><span class="token operator">*</span> 
+                            <span class="token punctuation">(</span> <span class="token string">"e"</span> <span class="token operator">|</span> <span class="token string">"E"</span> <span class="token punctuation">(</span> <span class="token string">"+"</span> <span class="token operator">|</span> <span class="token string">"-"</span> <span class="token punctuation">)</span><span class="token operator">?</span> <span class="token operator">&lt;</span><span class="token pn-variable">digit</span><span class="token operator">&gt;</span> <span class="token punctuation">(</span> <span class="token operator">&lt;</span><span class="token pn-variable">digit</span><span class="token operator">&gt;</span> <span class="token punctuation">)</span><span class="token operator">*</span> <span class="token punctuation">)</span><span class="token operator">?</span>
+<span class="token operator">&lt;</span><span class="token pn-variable">letter</span><span class="token operator">&gt;</span>               <span class="token operator">:</span><span class="token operator">:</span><span class="token operator">=</span> <span class="token pn-variable">Unicode</span> <span class="token function">Letter</span> <span class="token punctuation">(</span><span class="token pn-variable">category</span><span class="token punctuation">;</span> <span class="token pn-variable">any</span> <span class="token pn-variable">kind</span> <span class="token keyword keyword-of">of</span> <span class="token pn-variable">letter</span> <span class="token keyword keyword-from">from</span> <span class="token pn-variable">any</span> <span class="token pn-variable">language</span><span class="token punctuation">)</span>
+<span class="token operator">&lt;</span><span class="token pn-variable">digit</span><span class="token operator">&gt;</span>                <span class="token operator">:</span><span class="token operator">:</span><span class="token operator">=</span> <span class="token string">"0"</span> <span class="token punctuation">.</span><span class="token punctuation">.</span> <span class="token string">"9"</span>
+<span class="token operator">&lt;</span><span class="token pn-variable">hex_digit</span><span class="token operator">&gt;</span>            <span class="token operator">:</span><span class="token operator">:</span><span class="token operator">=</span> <span class="token operator">&lt;</span><span class="token pn-variable">digit</span><span class="token operator">&gt;</span> <span class="token operator">|</span> <span class="token string">"A"</span> <span class="token punctuation">.</span><span class="token punctuation">.</span> <span class="token string">"F"</span>
+<span class="token operator">&lt;</span><span class="token pn-variable">double_quote</span><span class="token operator">&gt;</span>         <span class="token operator">:</span><span class="token operator">:</span><span class="token operator">=</span> <span class="token pn-variable">the</span> " <span class="token pn-variable">character</span>
+<span class="token operator">&lt;</span><span class="token pn-variable">unicode_char</span><span class="token operator">&gt;</span>         <span class="token operator">:</span><span class="token operator">:</span><span class="token operator">=</span> <span class="token pn-variable">any</span> <span class="token pn-variable">character</span> <span class="token keyword keyword-in">in</span> <span class="token pn-variable">the</span> <span class="token pn-variable">Unicode</span> <span class="token pn-variable">range</span> <span class="token keyword keyword-from">from</span> <span class="token constant">U</span><span class="token operator">+</span><span class="token number">0020</span> <span class="token pn-variable">to</span> <span class="token constant">U</span><span class="token operator">+</span><span class="token number">10</span><span class="token pn-variable">FFFF</span> <span class="token pn-variable">inclusive</span>
+<span class="token operator">&lt;</span><span class="token pn-variable">special_char</span><span class="token operator">&gt;</span>         <span class="token operator">:</span><span class="token operator">:</span><span class="token operator">=</span> <span class="token string">"\" | "</span><span class="token operator">/</span><span class="token string">" | "</span><span class="token pn-variable">b</span><span class="token string">" | "</span><span class="token pn-variable">f</span><span class="token string">" | "</span><span class="token pn-variable">n</span><span class="token string">" | "</span><span class="token pn-variable">r</span><span class="token string">" | "</span><span class="token pn-variable">t</span>"
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+        <div class="toolbar">
+            <div class="toolbar-item">
+                <button>Copy</button>
+            </div>
+        </div>
+    </div>
+    <h3 class="inpage-link tag-link">Sample object filtering operations</h3>
+    <div>
+        <p></p>
+    </div>
+    <p>The following <strong>simple expression</strong> returns results whose custom property named <code>public</code> is equal to Boolean <code>true</code>.</p>
+    <div class="code-toolbar">
+        <pre class=" language-javascript"><code class=" language-javascript"><span class="token pn-variable">custom</span><span class="token punctuation">.</span><span class="token pn-variable pn-before-equal pn-after-dot">public</span> <span class="token operator">==</span> <span class="token boolean">true</span>
+</code></pre>
+        <div class="toolbar">
+            <div class="toolbar-item">
+                <button>Copy</button>
+            </div>
+        </div>
+    </div>
+    <p>The following <strong>date/time comparison</strong> returns results that were modified on or after August 31st, 2019 (UTC):</p>
+    <div class="code-toolbar">
+        <pre class=" language-javascript"><code class=" language-javascript"><span class="token pn-variable">updated</span> <span class="token operator">&gt;=</span> <span class="token string">"2019-08-31T00:00:00Z"</span>
+</code></pre>
+        <div class="toolbar">
+            <div class="toolbar-item">
+                <button>Copy</button>
+            </div>
+        </div>
+    </div>
+    <p>The following <strong>compound expression</strong> returns results that don't have a description, but do have a non-empty custom <code>label</code> or <code>description</code> property:</p>
+    <div class="code-toolbar">
+        <pre class=" language-javascript"><code class=" language-javascript"><span class="token pn-variable pn-before-equal">description</span> <span class="token operator">==</span> <span class="token keyword keyword-null">null</span> <span class="token operator">&amp;&amp;</span> <span class="token punctuation">(</span><span class="token pn-variable">custom</span><span class="token punctuation">.</span><span class="token pn-variable pn-after-dot">label</span> <span class="token operator">!=</span> <span class="token string">""</span> <span class="token operator">||</span> <span class="token pn-variable">custom</span><span class="token punctuation">.</span><span class="token pn-variable pn-after-dot">description</span> <span class="token operator">!=</span> <span class="token string">""</span><span class="token punctuation">)</span>
+</code></pre>
+        <div class="toolbar">
+            <div class="toolbar-item">
+                <button>Copy</button>
+            </div>
+        </div>
+    </div>
+    <p>The following <strong>wildcard expression</strong> returns results whose name starts with the letter X:</p>
+    <div class="code-toolbar">
+        <pre class=" language-javascript"><code class=" language-javascript"><span class="token pn-variable">name</span> <span class="token constant">LIKE</span> <span class="token string">'X*'</span>
+</code></pre>
+        <div class="toolbar">
+            <div class="toolbar-item">
+                <button>Copy</button>
+            </div>
+        </div>
+    </div>
+    <p>The following <strong>escaped wildcard expression</strong> returns results whose name contains an asterisk:</p>
+    <div class="code-toolbar">
+        <pre class=" language-javascript"><code class=" language-javascript"><span class="token pn-variable">name</span> <span class="token constant">LIKE</span> <span class="token string">'*\\**'</span>
+</code></pre>
+        <div class="toolbar">
+            <div class="toolbar-item">
+                <button>Copy</button>
+            </div>
+        </div>
+    </div>
